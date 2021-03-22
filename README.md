@@ -1,20 +1,29 @@
-Fantomas
-========
+Fantomless
+==========
 
 ![Fantomas logo](https://raw.githubusercontent.com/fsprojects/fantomas/master/fantomas_logo.png)
 
-F# source code formatter, inspired by [scalariform](https://github.com/mdr/scalariform) for Scala, [ocp-indent](https://github.com/OCamlPro/ocp-indent) for OCaml and [PythonTidy](https://github.com/acdha/PythonTidy) for Python.
+F# source code formatter, fork of fantomas, which was inspired by [scalariform](https://github.com/mdr/scalariform) for Scala, [ocp-indent](https://github.com/OCamlPro/ocp-indent) for OCaml and [PythonTidy](https://github.com/acdha/PythonTidy) for Python.
 
 [![Build Status Github Actions](https://github.com/fsprojects/fantomas/workflows/Build%20master/badge.svg?branch=master&event=push)](https://github.com/fsprojects/fantomas/actions)
 [![Build Status AppVeyor](https://ci.appveyor.com/api/projects/status/github/nojaf/fantomas)](https://ci.appveyor.com/project/nojaf/fantomas) [![Join the chat at https://gitter.im/fsprojects/fantomas](https://badges.gitter.im/fsprojects/fantomas.svg)](https://gitter.im/fsprojects/fantomas?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Why a fork
+
+Many reasons:
+1. The most important one is that fantomas' maintainer doesn't agree with fantomas removing unneeded parenthesis, so we're bringing this feature here.
+2. We also implemented a bugfix for comments misplacement that the maintainer doesn't agree with (trying to address his feedback would mean a lot more time to work on it, which we don't have).
+3. We don't hold any resentment about our PullRequests not being accepted; we can just create a fork and be happy (and we would love if at some point our diff is taken and this fork is not needed anymore).
+4. That being said, we don't understand some behaviours from fantomas' maintainer. We recognize that he does superb technical work, and has even fixed many of our issues, etc., but that doesn't, in our opinon, give him the right to keep being, at times, a complete jerk when replying to us in issues and some of our PullRequests. It's even more difficult to understand when, in this opensource world of meritocracy, we have even contributed so many fixes upstream ourselves (more than 10 PullRequests).
+5. Last but not least; we included a feature for generic type normalization which we found out makes fantomas (fantomless) incompatible with units of measure. As we don't use units of measure, we don't mind including this feature. But don't use fantomless if you use F#'s Units of Measure!
+
 ## How to use
 
 ### Command line tool / API
-Use this command to install Fantomas as a .NET 5 SDK global tool:
+Use this command to install Fantomless as a .NET 5 SDK global tool:
 
 ```
-dotnet tool install -g fantomas-tool
+dotnet tool install -g fantomless-tool
 ```
 
 For detailed guidelines, please read [Fantomas: How to use](docs/Documentation.md#using-the-command-line-tool).
