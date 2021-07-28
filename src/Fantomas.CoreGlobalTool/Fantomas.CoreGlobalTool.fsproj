@@ -6,9 +6,9 @@
     <!-- https://github.com/dotnet/fsharp/issues/6007#issuecomment-547041463 -->
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <RollForward>Major</RollForward>
-    <ToolCommandName>fantomas</ToolCommandName>
+    <ToolCommandName>fantomless</ToolCommandName>
     <PackAsTool>True</PackAsTool>
-    <AssemblyName>fantomas-tool</AssemblyName>
+    <AssemblyName>fantomless-tool</AssemblyName>
     <WarningsAsErrors>FS0025</WarningsAsErrors>
     <IsPackable>true</IsPackable>
   </PropertyGroup>

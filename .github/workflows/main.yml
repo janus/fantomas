@@ -33,3 +33,28 @@ jobs:
     - name: "trigger fantomas-tools action"
       if: matrix.os == 'ubuntu-latest' && github.ref == 'refs/heads/master'
       run: "curl -H 'Accept: application/vnd.github.everest-preview+json' -H 'Authorization: token ${{secrets.FANTOMAS_TOOLS_TOKEN}}' --request POST --data '{\"event_type\": \"fantomas-commit-on-master\"}' https://api.github.com/repos/fsprojects/fantomas-tools/dispatches"
+
+  publish:
+    env:
+      DEFAULT_REF_TO_NUGET_PUSH: refs/heads/master
+      VERSION: 4.7.0
+    runs-on: windows-latest
+    needs: build
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Make paket available
+      run: dotnet tool restore
+    - name: Paket restore
+      run: dotnet paket restore
+    - name: Create nuget pkg
+      run: dotnet pack --configuration Release src/Fantomas.CoreGlobalTool/Fantomas.CoreGlobalTool.fsproj
+    - name: Upload
+      run: |
+        If ($Env:GITHUB_REF -eq $Env:DEFAULT_REF_TO_NUGET_PUSH) {
+            If ('${{ secrets.NUGET_API_KEY }}' -ne '') {
+                $fileName= "src/Fantomas.CoreGlobalTool/bin/Release/fantomless-tool.$env:VERSION.nupkg"
+                dotnet nuget push $fileName --api-key ${{secrets.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
+            }
+        }
+
