@@ -21,9 +21,9 @@ let private (|CompatibleVersion|_|) (version: string) =
             None
     | _ -> None
 
-// In the future, fantomas-tool will be renamed to fantomas.
+// In the future, fantomless-tool will be renamed to fantomas.
 let private (|CompatibleToolName|_|) toolName =
-    if toolName = "fantomas-tool"
+    if toolName = "fantomless-tool"
        || toolName = "fantomas" then
         Some toolName
     else
@@ -136,7 +136,7 @@ let private (|CompatibleTool|_|) lines =
 
 let private isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
 
-// Find an executable fantomas-tool file on the PATH
+// Find an executable fantomless-tool file on the PATH
 let private fantomasVersionOnPath () : (FantomasExecutableFile * FantomasVersion) option =
     let fantomasExecutableOnPathOpt =
         match Option.ofObj (Environment.GetEnvironmentVariable("PATH")) with
@@ -146,7 +146,7 @@ let private fantomasVersionOnPath () : (FantomasExecutableFile * FantomasVersion
             if isWindows then
                 let fantomasExe = Path.Combine(folder, "fantomas.exe")
 
-                let fantomasToolExe = Path.Combine(folder, "fantomas-tool.exe")
+                let fantomasToolExe = Path.Combine(folder, "fantomless-tool.exe")
 
                 if File.Exists fantomasExe then
                     Some fantomasExe
@@ -156,7 +156,7 @@ let private fantomasVersionOnPath () : (FantomasExecutableFile * FantomasVersion
                     None
             else
                 let fantomas = Path.Combine(folder, "fantomas")
-                let fantomasTool = Path.Combine(folder, "fantomas-tool")
+                let fantomasTool = Path.Combine(folder, "fantomless-tool")
 
                 if File.Exists fantomas then
                     Some fantomas
