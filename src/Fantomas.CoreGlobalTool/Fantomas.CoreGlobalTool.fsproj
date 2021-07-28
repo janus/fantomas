@@ -6,10 +6,12 @@
     <!-- https://github.com/dotnet/fsharp/issues/6007#issuecomment-547041463 -->
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <RollForward>Major</RollForward>
-    <ToolCommandName>fantomas</ToolCommandName>
+    <ToolCommandName>fantomless</ToolCommandName>
     <PackAsTool>True</PackAsTool>
     <Version>4.5.11</Version>
     <AssemblyName>fantomas-tool</AssemblyName>
+    <Version>4.5.7</Version>
+    <AssemblyName>fantomless-tool</AssemblyName>
     <WarningsAsErrors>FS0025</WarningsAsErrors>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageIcon>fantomas_logo.png</PackageIcon>
