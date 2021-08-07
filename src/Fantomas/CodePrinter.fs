@@ -2093,6 +2093,14 @@ and genExpr astContext synExpr ctx =
         | ElIf ((e1, e2, _, _, _) :: es, enOpt) ->
             // https://docs.microsoft.com/en-us/dotnet/fsharp/style-guide/formatting#formatting-if-expressions
             fun ctx ->
+                let cleanIfExpr e1 =
+                    match e1 with
+                    | Paren (lpr, exp, rpr, pr) ->
+                        match exp with
+                        | OptVar (s, isOpt, range) -> if not isOpt then exp else e1
+                        | _ -> e1
+                    | _ -> e1
+
                 let elfis =
                     es
                     |> List.mapi
@@ -2166,7 +2174,7 @@ and genExpr astContext synExpr ctx =
 
                 let genOneliner enOpt =
                     genIf synExpr.Range
-                    +> genExpr astContext e1
+                    +> genExpr astContext (cleanIfExpr e1)
                     +> sepNlnWhenWriteBeforeNewlineNotEmpty sepSpace
                     +> genThen synExpr.Range
                     +> genExpr astContext e2
@@ -2183,7 +2191,7 @@ and genExpr astContext synExpr ctx =
                     //           x
                     // bool expr x should be indented
                     +> autoIndentAndNlnWhenWriteBeforeNewlineNotEmpty (
-                        genExprInIfOrMatch astContext e1
+                        genExprInIfOrMatch astContext (cleanIfExpr e1)
                         +> sepNlnWhenWriteBeforeNewlineNotEmpty sepSpace
                     )
                     +> genThen synExpr.Range
