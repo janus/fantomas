@@ -267,7 +267,7 @@ type CustomerId =
 """
 
 [<Test>]
-let ``generic type style should be respected`` () =
+let ``generic type style should be improved, 712`` () =
     formatSourceString
         false
         """
@@ -278,7 +278,37 @@ type 'a Foo = Foo of 'a
     |> should
         equal
         """
-type 'a Foo = Foo of 'a
+type Foo<'a> = Foo of 'a
+"""
+
+[<Test>]
+let ``generic type style should be improved (II), 712`` () =
+    formatSourceString
+        false
+        """
+type 'T Foo when 'T :> IDisposable = { Bar: 'T }
+    """
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type Foo<'T when 'T :> IDisposable> = { Bar: 'T }
+"""
+
+[<Test>]
+let ``generic type style should be improved (III), 712`` () =
+    formatSourceString
+        false
+        """
+type Foo<'T> = Bar of 'T option
+    """
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type Foo<'T> = Bar of option<'T>
 """
 
 [<Test>]

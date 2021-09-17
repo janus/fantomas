@@ -784,6 +784,12 @@ let internal sepOpenT = !- "("
 /// closing token of tuple
 let internal sepCloseT = !- ")"
 
+/// opening angle bracket
+let internal sepOpenAng = !- "<"
+
+/// closing angle bracket
+let internal sepCloseAng = !- ">"
+
 // we need to make sure each expression in the function application has offset at least greater than
 // indentation of the function expression itself
 // we replace sepSpace in such case

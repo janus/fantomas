@@ -4,9 +4,9 @@ open NUnit.Framework
 open FsUnit
 open Fantomas.Tests.TestHelper
 
-// the current behavior results in a compile error since "(string * string) list" is converted to "string * string list"
+// the old behavior resulted in a compile error since "(string * string) list" was converted to "string * string list"
 [<Test>]
-let ``should keep the (string * string) list type signature in records`` () =
+let ``should understand the (string * string) list type signature in records`` () =
     formatSourceString
         false
         """type MSBuildParams =
@@ -22,28 +22,40 @@ let ``should keep the (string * string) list type signature in records`` () =
     |> should
         equal
         """type MSBuildParams =
-    { Targets: string list
-      Properties: (string * string) list
-      MaxCpuCount: int option option
-      ToolsVersion: string option
-      Verbosity: MSBuildVerbosity option
-      FileLoggers: MSBuildFileLoggerConfig list option }
+    { Targets: list<string>
+      Properties: list<(string * string)>
+      MaxCpuCount: option<option<int>>
+      ToolsVersion: option<string>
+      Verbosity: option<MSBuildVerbosity>
+      FileLoggers: option<list<MSBuildFileLoggerConfig>> }
 """
 
 [<Test>]
-let ``should keep the (string * string) list type signature in functions`` () =
-    shouldNotChangeAfterFormat
-        """
-let MSBuildWithProjectProperties outputPath (targets: string) (properties: string -> (string * string) list) projects =
+let ``should understand the (string * string) list type signature in functions`` () =
+    formatSourceString
+        false
+        """let MSBuildWithProjectProperties outputPath (targets: string) (properties: string -> (string * string) list) projects =
+    doingsomstuff
+"""
+        config
+    |> should
+        equal
+        """let MSBuildWithProjectProperties outputPath (targets: string) (properties: string -> list<(string * string)>) projects =
     doingsomstuff
 """
 
 
 [<Test>]
-let ``should keep the string * string list type signature in functions`` () =
-    shouldNotChangeAfterFormat
-        """
-let MSBuildWithProjectProperties outputPath (targets: string) (properties: (string -> string) * string list) projects =
+let ``should understand the string * string list type signature in functions`` () =
+    formatSourceString
+        false
+        """let MSBuildWithProjectProperties outputPath (targets: string) (properties: (string -> string) * string list) projects =
+    doingsomstuff
+"""
+        config
+    |> should
+        equal
+        """let MSBuildWithProjectProperties outputPath (targets: string) (properties: (string -> string) * list<string>) projects =
     doingsomstuff
 """
 
@@ -71,7 +83,7 @@ let ``should not add parens in signature`` () =
 """
 
 [<Test>]
-let ``should keep the string * string * string option type signature`` () =
+let ``should understand the string * string * string option type signature`` () =
     formatSourceString
         false
         """type DGML =
@@ -84,11 +96,11 @@ let ``should keep the string * string * string option type signature`` () =
         equal
         """type DGML =
     | Node of string
-    | Link of string * string * (string option)
+    | Link of string * string * (option<string>)
 """
 
 [<Test>]
-let ``should keep the (string option * Node) list type signature`` () =
+let ``should understand the (string option * Node) list type signature`` () =
     formatSourceString
         false
         """type Node =
@@ -102,7 +114,7 @@ let ``should keep the (string option * Node) list type signature`` () =
         equal
         """type Node =
     { Name: string;
-      NextNodes: (string option * Node) list }
+      NextNodes: list<(option<string> * Node)> }
 """
 
 [<Test>]

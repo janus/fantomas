@@ -2275,10 +2275,18 @@ and Variable<'model, 'msg> =
 
 [<Test>]
 let ``union type with constraint`` () =
-    formatSourceString false """type 'a t when 'a :> IDisposable = T  of  'a option""" config
+    formatSourceString false """type 'a t when 'a :> IDisposable = T  of  option<'a>""" config
     |> should
         equal
-        """type 'a t when 'a :> IDisposable = T of 'a option
+        """type t<'a when 'a :> IDisposable> = T of option<'a>
+"""
+
+[<Test>]
+let ``union type with constraint (II)`` () =
+    formatSourceString false """type t<'a when 'a :> IDisposable> = T  of  option<'a>""" config
+    |> should
+        equal
+        """type t<'a when 'a :> IDisposable> = T of option<'a>
 """
 
 [<Test>]
