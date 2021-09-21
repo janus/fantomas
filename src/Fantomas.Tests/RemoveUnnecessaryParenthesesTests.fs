@@ -107,3 +107,118 @@ if foooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 elif bazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz then
     foobar
 """
+
+[<Test>]
+let ``parentheses in discriminated unions are unnecessary, 684`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| None -> ()
+| Some(bar) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| None -> ()
+| Some bar -> ()
+"""
+
+[<Test>]
+let ``parentheses in discriminated unions are unnecessary (2), 684`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| Something -> ()
+| OtherThing(bar) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| Something -> ()
+| OtherThing bar -> ()
+"""
+
+[<Test>]
+let ``parentheses in discriminated unions are unnecessary (3), 684`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| Something -> ()
+| OtherThing(bar), baz -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| Something -> ()
+| OtherThing bar, baz -> ()
+"""
+
+[<Test>]
+let ``parentheses in discriminated unions should be kept (I), 684`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| Something -> ()
+| OtherThing (bar, baz) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| Something -> ()
+| OtherThing (bar, baz) -> ()
+"""
+
+[<Test>]
+let ``parentheses in discriminated unions should be kept (II), 684`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| Something -> ()
+| OtherThing (AndLastThing bar) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| Something -> ()
+| OtherThing (AndLastThing bar) -> ()
+"""
+
+[<Test>]
+let ``parentheses in discriminated unions should be kept (III), 684`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| Something -> ()
+| OtherThing ({ Bar = Baz.FooBar } as fooBarBaz) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| Something -> ()
+| OtherThing ({ Bar = Baz.FooBar } as fooBarBaz) -> ()
+"""
+

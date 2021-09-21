@@ -68,7 +68,7 @@ let ``default config should add space after discrimintation union member`` () =
         false
         """match x with
 | Zero() -> ()
-| One (o) -> ()
+| One o -> ()
 | Two(o,t) -> ()
 """
         config
@@ -78,7 +78,7 @@ let ``default config should add space after discrimintation union member`` () =
         """
 match x with
 | Zero () -> ()
-| One (o) -> ()
+| One o -> ()
 | Two (o, t) -> ()
 """
 

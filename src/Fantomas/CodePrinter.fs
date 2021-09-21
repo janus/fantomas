@@ -4975,10 +4975,21 @@ and genPat astContext pat =
 
     | PatParen PatUnitConst -> !- "()"
     | PatParen p ->
-        sepOpenT
+        let isParenNecessary =
+            if astContext.IsInsideMatchClausePattern then
+                match p with
+                | SynPat.Named (expression, _, _, _, _) ->
+                    match expression with
+                    | SynPat.Record (_, _) -> true
+                    | _ -> false
+                | _ -> true
+            else
+                true
+
+        ifElse isParenNecessary sepOpenT sepNone
         +> genPat astContext p
         +> enterNodeTokenByName pat.Range RPAREN
-        +> sepCloseT
+        +> ifElse isParenNecessary sepCloseT sepNone
     | PatTuple ps ->
         expressionFitsOnRestOfLine
             (col sepComma ps (genPat astContext))

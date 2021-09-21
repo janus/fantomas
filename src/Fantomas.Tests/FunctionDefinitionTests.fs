@@ -420,7 +420,7 @@ let ``should handle desugared matches correctly`` () =
         false
         """
 type U = X of int
-let f = fun x -> match x with X (x) -> x
+let f = fun x -> match x with X x -> x
 """
         config
     |> prepend newline
@@ -432,7 +432,7 @@ type U = X of int
 let f =
     fun x ->
         match x with
-        | X (x) -> x
+        | X x -> x
 """
 
 [<Test>]

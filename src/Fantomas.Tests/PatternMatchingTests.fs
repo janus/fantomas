@@ -1169,7 +1169,7 @@ type Thing =
 with
     override this.ToString () =
         match this with
-        | Foo (ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) ->
+        | Foo ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff ->
             ""
 """
         { config with
@@ -1183,7 +1183,7 @@ type Thing =
     | Foo of msg: string
     override this.ToString() =
         match this with
-        | Foo (ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) ->
+        | Foo ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff ->
             ""
 """
 
@@ -1199,7 +1199,7 @@ type Thing =
 with
     override this.ToString () : string =
         match this with
-        | Foo (ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) ->
+        | Foo ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff ->
             ""
 """
         { config with
@@ -1214,7 +1214,7 @@ type Thing =
     | Foo of msg : string
     override this.ToString() : string =
         match this with
-        | Foo (ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) ->
+        | Foo ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff ->
             ""
 """
 
