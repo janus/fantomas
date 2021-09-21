@@ -507,7 +507,7 @@ let ``default config should indent`` () =
 /// Find out the end token
 let rec getEndCol (r: Range) (tokenizer: FSharpLineTokenizer) lexState =
     match tokenizer.ScanToken(!lexState) with
-    | Some (tok), state ->
+    | Some tok, state ->
         Debug.WriteLine("End token: {0}", sprintf "%A" tok |> box)
         if tok.RightColumn >= r.EndColumn
            && isSignificantToken tok then
@@ -525,7 +525,7 @@ let rec getEndCol (r: Range) (tokenizer: FSharpLineTokenizer) lexState =
 /// Find out the end token
 let rec getEndCol (r: Range) (tokenizer: FSharpLineTokenizer) lexState =
     match tokenizer.ScanToken(!lexState) with
-    | Some (tok), state ->
+    | Some tok, state ->
         Debug.WriteLine("End token: {0}", sprintf "%A" tok |> box)
 
         if tok.RightColumn >= r.EndColumn
