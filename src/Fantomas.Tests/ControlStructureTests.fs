@@ -155,7 +155,7 @@ let ``try/with and finally`` () =
             else raise (OuterError("outer"))
          with
           | Failure _ -> ()
-          | InnerError(str) -> printfn "Error1 %s" str
+          | InnerError str -> printfn "Error1 %s" str
        finally
           printfn "Always print this."
     """
@@ -173,7 +173,7 @@ let function1 x y =
                 raise (OuterError("outer"))
         with
         | Failure _ -> ()
-        | InnerError (str) -> printfn "Error1 %s" str
+        | InnerError str -> printfn "Error1 %s" str
     finally
         printfn "Always print this."
 """

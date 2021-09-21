@@ -761,14 +761,14 @@ let useEntries month year =
     let income =
         events
         |> Seq.choose (function
-            | Event.AddIncome (ai) when (filter ai.Created && isNotCancelled ai.Id) -> Some ai
+            | Event.AddIncome ai when (filter ai.Created && isNotCancelled ai.Id) -> Some ai
             | _ -> None)
         |> sortMapAndToArray
 
     let expenses =
         events
         |> Seq.choose (function
-            | Event.AddExpense (ae) when (filter ae.Created && isNotCancelled ae.Id) -> Some ae
+            | Event.AddExpense ae when (filter ae.Created && isNotCancelled ae.Id) -> Some ae
             | _ -> None)
         |> sortMapAndToArray
 
@@ -799,14 +799,14 @@ let useEntries month year =
     let income =
         events
         |> Seq.choose (function
-            | Event.AddIncome (ai) when (filter ai.Created && isNotCancelled ai.Id) -> Some ai
+            | Event.AddIncome ai when (filter ai.Created && isNotCancelled ai.Id) -> Some ai
             | _ -> None)
         |> sortMapAndToArray
 
     let expenses =
         events
         |> Seq.choose (function
-            | Event.AddExpense (ae) when (filter ae.Created && isNotCancelled ae.Id) -> Some ae
+            | Event.AddExpense ae when (filter ae.Created && isNotCancelled ae.Id) -> Some ae
             | _ -> None)
         |> sortMapAndToArray
 
