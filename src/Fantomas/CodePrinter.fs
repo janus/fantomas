@@ -2148,7 +2148,7 @@ and genExpr astContext synExpr ctx =
                 let genElifOneliner (elf1: SynExpr, elf2: SynExpr, elifKeywordRange, thenKeywordRange) =
                     TriviaContext.``else if / elif`` elifKeywordRange
                     +> sepNlnWhenWriteBeforeNewlineNotEmpty sepSpace
-                    +> genExpr astContext elf1
+                    +> genExpr astContext (cleanIfExpr elf1)
                     +> sepNlnWhenWriteBeforeNewlineNotEmpty sepSpace
                     +> genThen thenKeywordRange
                     +> sepNlnWhenWriteBeforeNewlineNotEmpty sepSpace
@@ -2156,7 +2156,7 @@ and genExpr astContext synExpr ctx =
 
                 let genElifMultiLine (elf1: SynExpr, elf2, elifKeywordRange, thenKeywordRange) =
                     (TriviaContext.``else if / elif`` elifKeywordRange)
-                    +> autoIndentAndNlnWhenWriteBeforeNewlineNotEmpty (genExprInIfOrMatch astContext elf1)
+                    +> autoIndentAndNlnWhenWriteBeforeNewlineNotEmpty (genExprInIfOrMatch astContext (cleanIfExpr elf1))
                     +> sepNlnWhenWriteBeforeNewlineNotEmpty sepSpace
                     +> genThen thenKeywordRange
                     +> indent
