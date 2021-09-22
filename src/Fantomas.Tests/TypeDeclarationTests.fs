@@ -201,7 +201,7 @@ type public MyClass<'a> public (x, y) as this =
     static member StaticMethod a = a + 1
     member internal self.Prop1 = x
     member self.Prop2 with get() = z
-                      and set(a) = z <- a
+                      and set a = z <- a
     member self.Method(a,b) = x + y + z + a + b"""
         { config with MaxFunctionBindingWidth = 120 }
     |> prepend newline
@@ -224,7 +224,7 @@ type public MyClass<'a> public (x, y) as this =
 
     member self.Prop2
         with get () = z
-        and set (a) = z <- a
+        and set a = z <- a
 
     member self.Method(a, b) = x + y + z + a + b
 """
@@ -498,10 +498,10 @@ type NumberStrings() =
       with get index = ordinals.[index]
       and set index value = ordinals.[index] <- value
    member this.Ordinal
-      with get(index) = ordinals.[index]
+      with get index = ordinals.[index]
       and set index value = ordinals.[index] <- value
    member this.Cardinal
-      with get(index) = cardinals.[index]
+      with get index = cardinals.[index]
       and set index value = cardinals.[index] <- value"""
         config
     |> prepend newline
@@ -517,11 +517,11 @@ type NumberStrings() =
         and set index value = ordinals.[index] <- value
 
     member this.Ordinal
-        with get (index) = ordinals.[index]
+        with get index = ordinals.[index]
         and set index value = ordinals.[index] <- value
 
     member this.Cardinal
-        with get (index) = cardinals.[index]
+        with get index = cardinals.[index]
         and set index value = cardinals.[index] <- value
 """
 
@@ -650,8 +650,8 @@ type Person(nameIn : string, idIn : int) =
     let mutable name = nameIn
     let mutable id = idIn
     do printfn "Created a person object."
-    member this.Name with get() = name and set(v) = name <- v
-    member this.ID with get() = id and set(v) = id <- v
+    member this.Name with get() = name and set v = name <- v
+    member this.ID with get() = id and set v = id <- v
     new() =
         Person("Invalid Name", -1)
         then printfn "Created an invalid person object."
@@ -668,11 +668,11 @@ type Person(nameIn: string, idIn: int) =
 
     member this.Name
         with get () = name
-        and set (v) = name <- v
+        and set v = name <- v
 
     member this.ID
         with get () = id
-        and set (v) = id <- v
+        and set v = id <- v
 
     new() =
         Person("Invalid Name", -1)
@@ -1179,10 +1179,10 @@ let ``attributes on extension methods should not add newlines, 473`` () =
 type TestExtensions =
 
     [<Extension>]
-    static member SomeExtension(x) = ""
+    static member SomeExtension x = ""
 
     [<Extension>]
-    static member SomeOtherExtension(x) = ""
+    static member SomeOtherExtension x = ""
 """
         { config with MaxValueBindingWidth = 120 }
     |> prepend newline
@@ -1193,10 +1193,10 @@ type TestExtensions =
 type TestExtensions =
 
     [<Extension>]
-    static member SomeExtension(x) = ""
+    static member SomeExtension x = ""
 
     [<Extension>]
-    static member SomeOtherExtension(x) = ""
+    static member SomeOtherExtension x = ""
 """
 
 [<Test>]
@@ -1629,7 +1629,7 @@ let ``multiple members with one long parameter`` () =
     "b"
 
     static member Serialize (loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong2: SomeType) = Encode.string v.Meh
-    static member Deserialize (loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee) : SomeType = Decode.SomeType loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee
+    static member Deserialize loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee : SomeType = Decode.SomeType loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee
 """
         config
     |> prepend newline
@@ -1649,7 +1649,7 @@ type SomeType =
         Encode.string v.Meh
 
     static member Deserialize
-        (loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee)
+        loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee
         : SomeType =
         Decode.SomeType
             loooooooooooooooooooooooooooooooooooooooooooooooooooooonnnnnnnnnnnnnnnnnnnnngggggggggggJsonVaaaaalueeeeeeeeeeeeeeee
@@ -2221,7 +2221,7 @@ type Box() =
     member x.Color2
         // A Box has a color property with get and set.
         with get() = color
-        and set(c) = color <- c
+        and set c = color <- c
 
     // If there's no get/set, the comment is preserved
     member x.hello = "world"
@@ -2237,12 +2237,12 @@ type Box() =
     // A Box has a color property with get and set.
     member x.Color
         with get () = color
-        and set (c) = color <- c
+        and set c = color <- c
 
     member x.Color2
         // A Box has a color property with get and set.
         with get () = color
-        and set (c) = color <- c
+        and set c = color <- c
 
     // If there's no get/set, the comment is preserved
     member x.hello = "world"
