@@ -103,7 +103,7 @@ type Shape2D(x0 : float, y0 : float) =
        y <- y + dy
 
     abstract member Rotate: float -> unit
-    default this.Rotate(angle) = rotAngle <- rotAngle + angle
+    default this.Rotate angle = rotAngle <- rotAngle + angle
     """
         { config with MaxValueBindingWidth = 120 }
     |> prepend newline
@@ -132,7 +132,7 @@ type Shape2D(x0: float, y0: float) =
         y <- y + dy
 
     abstract member Rotate: float -> unit
-    default this.Rotate(angle) = rotAngle <- rotAngle + angle
+    default this.Rotate angle = rotAngle <- rotAngle + angle
 """
 
 [<Test>]
@@ -1137,6 +1137,6 @@ type Foo() =
     member this.MyReadWriteProperty
         with get () = //comment get
             myInternalValue
-        and set (value) = // comment set
+        and set value = // comment set
             myInternalValue <- value
 """

@@ -222,3 +222,112 @@ match foo with
 | OtherThing ({ Bar = Baz.FooBar } as fooBarBaz) -> ()
 """
 
+[<Test>]
+let ``parentheses around lambda's parameters should be removed (I), 684`` () =
+    formatSourceString
+        false
+        """
+(fun (foo) -> bar foo) |> ignore
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+(fun foo -> bar foo) |> ignore
+"""
+
+[<Test>]
+let ``parentheses around function parameters should be removed (II), 684`` () =
+    formatSourceString
+        false
+        """
+(fun foo (bar) -> baz foo) |> ignore
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+(fun foo bar -> baz foo) |> ignore
+"""
+
+[<Test>]
+let ``parentheses around lambda's parameters should be kept (I), 684`` () =
+    formatSourceString
+        false
+        """
+(fun (foo: bar) -> baz foo) |> ignore
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+(fun (foo: bar) -> baz foo) |> ignore
+"""
+
+[<Test>]
+let ``parentheses around lambda's parameters should be kept (II), 684`` () =
+    formatSourceString
+        false
+        """
+(fun (foo, bar) -> baz foo, baz bar) |> ignore
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+(fun (foo, bar) -> baz foo, baz bar) |> ignore
+"""
+
+[<Test>]
+let ``parentheses around lambda's parameters should be kept (III), 684`` () =
+    formatSourceString
+        false
+        """
+(fun (foo: bar) (baz: foobar) -> foobarbaz foo baz) |> ignore
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+(fun (foo: bar) (baz: foobar) -> foobarbaz foo baz)
+|> ignore
+"""
+
+[<Test>]
+let ``parentheses in untyped params should be removed, 684`` () =
+    formatSourceString
+        false
+        """
+module Foo =
+    let sum (a) (b) = a + b
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+module Foo =
+    let sum a b = a + b
+"""
+
+[<Test>]
+let ``parentheses in typed params should be kept, 684`` () =
+    formatSourceString
+        false
+        """
+module Foo =
+    let sum (a: int) (b: int) = a + b
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+module Foo =
+    let sum (a: int) (b: int) = a + b
+"""

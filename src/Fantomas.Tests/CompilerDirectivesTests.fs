@@ -2529,7 +2529,7 @@ let ``define before opening bracket of array, 1597`` () =
             [||]
     #endif
 
-        member _.GetEnvironmentVariable(varName) =
+        member _.GetEnvironmentVariable varName =
             System.Environment.GetEnvironmentVariable(varName)
 
         member _.SetEnvironmentVariable(varName, value) =
@@ -2553,7 +2553,7 @@ let Environment =
             [||]
 #endif
 
-        member _.GetEnvironmentVariable(varName) =
+        member _.GetEnvironmentVariable varName =
             System.Environment.GetEnvironmentVariable(varName)
 
         member _.SetEnvironmentVariable(varName, value) =
