@@ -103,7 +103,7 @@ type Shape2D(x0 : float, y0 : float) =
        y <- y + dy
 
     abstract member Rotate: float -> unit
-    default this.Rotate(angle) = rotAngle <- rotAngle + angle
+    default this.Rotate angle = rotAngle <- rotAngle + angle
     """
         { config with
               MaxValueBindingWidth = 120 }
@@ -133,7 +133,7 @@ type Shape2D(x0: float, y0: float) =
         y <- y + dy
 
     abstract member Rotate: float -> unit
-    default this.Rotate(angle) = rotAngle <- rotAngle + angle
+    default this.Rotate angle = rotAngle <- rotAngle + angle
 """
 
 [<Test>]
