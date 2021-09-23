@@ -2112,7 +2112,7 @@ type InputOptions =
       Validators: array<(string -> bool)> }
 
 type InputBuilder() =
-    member t.Yield(_) =
+    member t.Yield _ =
         { Label = None
           Kind = Text None
           Validators = [||] }

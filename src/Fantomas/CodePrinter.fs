@@ -5037,6 +5037,7 @@ and genPat astContext pat =
                 match expression with
                 | Ident _ -> false
                 | _ -> true
+            | SynPat.Wild _ -> false
             | _ -> true
 
         let shortExpr =
