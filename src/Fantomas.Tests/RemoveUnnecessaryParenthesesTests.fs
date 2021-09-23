@@ -166,6 +166,44 @@ match foo with
 """
 
 [<Test>]
+let ``parentheses in discriminated unions are unnecessary (4), 684`` () =
+    formatSourceString
+        false
+        """
+match baz with
+| Something -> ()
+| OtherThing(_) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match baz with
+| Something -> ()
+| OtherThing _ -> ()
+"""
+
+[<Test>]
+let ``parentheses in discriminated unions are unnecessary (5), 684`` () =
+    formatSourceString
+        false
+        """
+match baz with
+| Something -> ()
+| (_) -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match baz with
+| Something -> ()
+| _ -> ()
+"""
+
+[<Test>]
 let ``parentheses in discriminated unions should be kept (I), 684`` () =
     formatSourceString
         false

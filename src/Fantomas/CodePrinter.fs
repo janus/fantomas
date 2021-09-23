@@ -4996,6 +4996,7 @@ and genPat astContext pat =
                     match expression with
                     | SynPat.Record (_, _) -> true
                     | _ -> false
+                | SynPat.Wild _ -> false
                 | _ -> true
             else
                 match p with
