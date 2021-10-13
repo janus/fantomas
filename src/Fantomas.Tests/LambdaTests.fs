@@ -166,7 +166,7 @@ List.filter (fun ({ ContentBefore = contentBefore }) ->
         equal
         """
 List.filter (fun ({ ContentBefore = contentBefore }) ->
-    // some comment
+                                                    // some comment
     let a = 8
     let b = List.length contentBefore
     a + b)
@@ -191,7 +191,7 @@ let a =
         """
 let a =
     (fun ({ ContentBefore = contentBefore }) ->
-        // some comment
+                                                    // some comment
         let a = 8
         let b = List.length contentBefore
         a + b)
@@ -543,7 +543,7 @@ Target.create "Install" (fun _ ->
         equal
         """
 Target.create "Install" (fun _ -> Yarn.install (fun o -> { o with WorkingDirectory = clientDir })
-// Paket restore will already happen when the build.fsx dependencies are restored
+    // Paket restore will already happen when the build.fsx dependencies are restored
 )
 """
 
@@ -563,7 +563,7 @@ Target.create "Install" (fun x ->
         equal
         """
 Target.create "Install" (fun x -> Yarn.install (fun o -> { o with WorkingDirectory = clientDir })
-// Paket restore will already happen when the build.fsx dependencies are restored
+    // Paket restore will already happen when the build.fsx dependencies are restored
 )
 """
 
@@ -736,7 +736,7 @@ services.AddHttpsRedirection(Action<HttpsRedirectionOptions>(fun options ->
         """
 services.AddHttpsRedirection(
     Action<HttpsRedirectionOptions> (fun options ->
-        // meh
+    // meh
         options.HttpsPort <- Nullable(7002))
 )
 |> ignore
@@ -1134,7 +1134,7 @@ let ``parenthesis function call with long lambda argument`` () =
         equal
         """
 (if true then foo else goo) (fun _ ->
-    // comment
+                                                        // comment
     42)
 """
 

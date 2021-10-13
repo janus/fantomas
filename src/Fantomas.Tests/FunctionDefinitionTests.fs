@@ -1303,7 +1303,7 @@ let longFunctionWithLotsOfParametersAndReturnType
     (aSecondVeryLongParam: AVeryLongTypeThatYouNeedToUse)
     (aThirdVeryLongParam: AVeryLongTypeThatYouNeedToUse)
     : ReturnType =
-    // ... the body of the method follows
+        // ... the body of the method follows
     ()
 """
 
@@ -1329,7 +1329,7 @@ let longFunctionWithLongTupleParameterAndReturnType
         aSecondVeryLongParam: AVeryLongTypeThatYouNeedToUse,
         aThirdVeryLongParam: AVeryLongTypeThatYouNeedToUse
     ) : ReturnType =
-    // ... the body of the method follows
+        // ... the body of the method follows
     ()
 """
 
@@ -1357,7 +1357,7 @@ let longFunctionWithLongTupleParameterAndReturnType
     )
     : ReturnType
     =
-    // ... the body of the method follows
+        // ... the body of the method follows
     ()
 """
 

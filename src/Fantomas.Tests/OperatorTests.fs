@@ -342,8 +342,8 @@ let watchFiles =
             !!(serverPath </> "*.fs")
             ++ (serverPath </> "*.fsproj") // combines fs and fsproj
             |> ChangeWatcher.run (fun changes -> printfn "FILE CHANGE %A" changes
-            // stopFunc()
-            //Async.Start (startFunc())
+                                      // stopFunc()
+                                      //Async.Start (startFunc())
             )
 
         ()
@@ -381,8 +381,8 @@ let watchFiles =
         use _ =
             !!(serverPath </> "*.fs") ++ "*.fsproj" // combines fs and fsproj
             |> ChangeWatcher.run (fun changes -> printfn "FILE CHANGE %A" changes
-            // stopFunc()
-            //Async.Start (startFunc())
+                                      // stopFunc()
+                                      //Async.Start (startFunc())
             )
 
         ()
@@ -938,7 +938,7 @@ let ``add in keyword when let binding is part of single infix expression`` () =
     |> should
         equal
         """
-// Check for the [<ProjectionParameter>] attribute on an argument position
+    // Check for the [<ProjectionParameter>] attribute on an argument position
 let isCustomOperationProjectionParameter i (nm: Ident) =
     match tryGetArgInfosForCustomOperator nm with
     | None -> false

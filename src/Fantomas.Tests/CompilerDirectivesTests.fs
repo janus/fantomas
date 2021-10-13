@@ -669,7 +669,7 @@ type FunctionComponent =
 #if FABLE_COMPILER
         let elemType =
             ReactBindings.React.``lazy`` (fun () ->
-                // React.lazy requires a default export
+            // React.lazy requires a default export
                 (importValueDynamic f)
                     .``then`` (fun x -> createObj [ "default" ==> x ]))
 
@@ -889,7 +889,7 @@ type FunctionComponent =
 #if FABLE_COMPILER
         let elemType =
             ReactBindings.React.``lazy`` (fun () ->
-                // React.lazy requires a default export
+            // React.lazy requires a default export
                 (importValueDynamic f)
                     .``then`` (fun x -> createObj [ "default" ==> x ]))
 
@@ -2019,9 +2019,9 @@ let UpdateUI
     (info: FileInfo)
     ()
     =
-    // File is good so enable the refresh button
+                 // File is good so enable the refresh button
     h.refreshButton.Sensitive <- true
-    // Do real UI work here
+                 // Do real UI work here
     h.classStructureTree.Model <- theModel
     h.codeView.Buffer.Clear()
     h.mainWindow.Title <- "AltCover.Visualizer"
@@ -2064,9 +2064,9 @@ let UpdateUI
     (info: FileInfo)
     ()
     =
-    // File is good so enable the refresh button
+                 // File is good so enable the refresh button
     h.refreshButton.Sensitive <- true
-    // Do real UI work here
+                 // Do real UI work here
     h.classStructureTree.Model <- theModel
     h.codeView.Buffer.Clear()
     h.mainWindow.Title <- "AltCover.Visualizer"

@@ -258,7 +258,7 @@ let ``inner comment should make item multiline`` () =
         equal
         """
 let a =
-    // foo
+        // foo
     getA ()
 
 return a
@@ -400,9 +400,9 @@ let blah<'a> config : Type =
         equal
         """
 let blah<'a> config : Type =
-    //#if DEBUG
+//#if DEBUG
     failwith ""
-    //#endif
+//#endif
     DoThing.doIt ()
     let result = Runner.Run<'a> config
     ()

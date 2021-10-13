@@ -82,9 +82,9 @@ let main argv =
         printfn "Would execute actions, but --dry-run was supplied: %+A" instructions
         0
     else
-    // proceed with main method
+        // proceed with main method
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
@@ -134,9 +134,9 @@ let main argv =
         printfn "Would execute actions, but --dry-run was supplied: %+A" instructions
         0
     | RunMode.Wet ->
-    // proceed with main method
+        // proceed with main method
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
@@ -189,7 +189,7 @@ let main argv =
 
     printfn "here it comes"
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
@@ -239,9 +239,9 @@ let main argv =
         printfn "Would execute actions, but --dry-run was supplied: %+A" instructions
         0
     | RunMode.Wet ->
-    // proceed with main method
+        // proceed with main method
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
@@ -384,7 +384,7 @@ let sum a b =
     | a, b ->
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+        // some grand explainer about the code
     Some(a + b)
 """
 
@@ -419,7 +419,7 @@ let sum a b =
     | _ ->
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+            // some grand explainer about the code
     Some(a + b)
 """
 
@@ -457,7 +457,7 @@ let sum a b =
     else
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+            // some grand explainer about the code
     Some(a + b)
 """
 
@@ -495,7 +495,7 @@ let sum a b =
     | _ ->
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+            // some grand explainer about the code
     Some(a + b)
 """
 
@@ -1850,7 +1850,7 @@ let nextModel, objectsRemoved =
         (fun acc item ->
             match entityInCurrentModel with
             | None ->
-                // look it's a tuple
+          // look it's a tuple
                 nextModel, objectsRemoved
             | Some subjectToRemove ->
 
@@ -1895,7 +1895,7 @@ let nextModel, objectsRemoved =
         (fun acc item ->
             match entityInCurrentModel with
             | None ->
-                // look it's a tuple but wrapped in parenthesis
+          // look it's a tuple but wrapped in parenthesis
                 (nextModel, objectsRemoved)
             | Some subjectToRemove ->
 

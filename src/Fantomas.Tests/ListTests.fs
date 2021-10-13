@@ -351,7 +351,7 @@ let prismCli commando =
         """let prismCli commando =
     let props =
         createObj [ "component" ==> "pre"
-                    //"className" ==> "language-fsharp"
+            //"className" ==> "language-fsharp"
                      ]
 
     ()
@@ -377,7 +377,7 @@ let prismCli commando =
         """let prismCli commando =
     let props =
         createObj [|"component" ==> "pre"
-                    //"className" ==> "language-fsharp"
+            //"className" ==> "language-fsharp"
                     |]
 
     ()
@@ -397,7 +397,7 @@ let ``line comment inside list`` () =
         equal
         """
 [7
- // foo
+// foo
  ]
 """
 
@@ -415,7 +415,7 @@ let ``line comment inside array`` () =
         equal
         """
 [| 7
-   // foo
+// foo
    |]
 """
 
@@ -1735,7 +1735,7 @@ let nestedList: list<obj> =
        [| "11111111bbbbbbbbbbbbbbb"
           "22222222bbbbbbbbbbbbbbb"
           "33333333bbbbbbbbbbbbbbb"
-          // this case looks weird but seen rarely
+        // this case looks weird but seen rarely
           |] |]
 """
 
@@ -1991,7 +1991,7 @@ let choices : list<Foo> =
 let choices: list<Foo> =
     [ yield! getMore 9
       yield
-          // Test
+            // Test
           Foo 2 ]
 """
 
@@ -2014,7 +2014,7 @@ let choices : list<Foo> =
         """
 let choices: list<Foo> =
     [ yield!
-          // Test
+            // Test
           [ Foo 2 ] ]
 """
 
@@ -2037,9 +2037,9 @@ let x = [
         """
 let x =
     [
-      // comment
+    // comment
       1
-      // another comment
+    // another comment
       2 ]
 """
 
@@ -2277,8 +2277,8 @@ let fns =
 let fns =
     [ { x = "long enough to not go to one line"
         y = 5 }
-      //      { name = fn "String" "endsWith" 0
-      //        deprecated = NotDeprecated }
-      // I think the space at the start of the lines above matter
+ //      { name = fn "String" "endsWith" 0
+ //        deprecated = NotDeprecated }
+ // I think the space at the start of the lines above matter
       ]
 """

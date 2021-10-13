@@ -584,7 +584,7 @@ let a ex =
     if null = ex then
         fooo ()
         None
-    // this was None
+        // this was None
     elif ex.GetType() = typeof<obj> then
         Some ex
     else
@@ -758,10 +758,10 @@ let ``line comment inside short `with` block (of a try-with), 1219`` () =
         equal
         """
 try
-    //comment1
+          //comment1
     TrySomething(someParam)
 with
-    //comment2
+          //comment2
     | ex -> MakeSureToCleanup(someParam)
 """
 
@@ -794,7 +794,7 @@ module Foo =
                 let! content = tryDownloadFile url
                 return Some content
             with
-                // should we specify HttpRequestException?
+                    // should we specify HttpRequestException?
                 | ex ->
                     Infrastructure.ReportWarning ex
                     return None
@@ -827,12 +827,12 @@ let ``line comment inside nested `with` block (of a try-with), 1219`` () =
         equal
         """
 try
-    //comment1
+          //comment1
     try
-        //comment2
+              //comment2
         TrySomething(someParam)
     with
-        //comment3
+              //comment3
         | ex -> MakeSureToCleanup(someParam)
 
 with
@@ -983,7 +983,7 @@ module Foo =
         try
             failwith ""
         with
-            // hi!
+        // hi!
             | :? Exception as e -> failwith ""
 """
 
@@ -1156,14 +1156,14 @@ let ``try/with in infix expression should be indented, 1746`` () =
         equal
         """
 let isAbstractNonVirtualMember (m: FSharpMemberOrFunctionOrValue) =
-    // is an abstract member
+      // is an abstract member
     m.IsDispatchSlot
-    // this member doesn't implement anything
+      // this member doesn't implement anything
     && (try
             m.ImplementedAbstractSignatures <> null
             && m.ImplementedAbstractSignatures.Count = 0
         with
         | _ -> true) // exceptions here trying to acces the member means we're safe
-    // this member is not an override
+      // this member is not an override
     && not m.IsOverrideOrExplicitInterfaceImplementation
 """
