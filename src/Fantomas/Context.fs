@@ -16,6 +16,7 @@ type WriterEvent =
     | WriteBeforeNewline of string
     | WriteLineBecauseOfTrivia
     | WriteLineInsideTrivia
+    | RemoveNewLine
     | IndentBy of int
     | UnIndentBy of int
     | SetIndent of int
@@ -109,6 +110,12 @@ module WriterModel =
                     | h :: tail -> String.empty :: (h.TrimEnd()) :: tail
 
                 { m with Lines = lines; Column = 0 }
+            | RemoveNewLine ->
+                let otherLines = List.tail m.Lines
+
+                { m with
+                    Lines = otherLines
+                    Column = 0 }
             | Write s ->
                 { m with
                     Lines = (List.head m.Lines + s) :: (List.tail m.Lines)
@@ -1147,6 +1154,19 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
             |> Option.map (fun lastChar -> lastChar <> ' '))
         |> Option.defaultValue false
 
+    let indented =
+        if ctx.WriterModel.Indent > 0
+           || ctx.WriterModel.AtColumn > 0 then
+
+            let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
+            let indentSpace = String.replicate indentSize " "
+
+            currentLastLine
+            |> Option.map (fun line -> line.EndsWith indentSpace)
+            |> Option.defaultValue false
+        else
+            false
+
     match c with
     | Comment (LineCommentAfterSourceCode s) ->
         let comment = sprintf "%s%s" (if addSpace then " " else String.empty) s
@@ -1158,6 +1178,31 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         -- s
         +> sepSpace
         +> ifElse after sepNlnForTrivia sepNone
+    | Comment (LineCommentOnSingleLine (s, commentRange)) ->
+        let writerModel = ctx.WriterModel
+        let oldIndent = writerModel.Indent
+        let oldColumn = writerModel.AtColumn
+        let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
+
+        ifElse
+            addNewline
+            (writerEvent (SetAtColumn 0)
+             +> writerEvent (SetIndent commentRange.StartColumn)
+             +> sepNlnForTrivia
+             +> writerEvent (RestoreAtColumn oldColumn)
+             +> writerEvent (RestoreIndent oldIndent))
+            (ifElse
+                indented
+                (writerEvent (SetAtColumn 0)
+                 +> writerEvent RemoveNewLine
+                 +> writerEvent (SetIndent commentRange.StartColumn)
+                 +> sepNlnForTrivia
+                 +> writerEvent (RestoreAtColumn oldColumn)
+                 +> writerEvent (RestoreIndent oldIndent))
+                (ifElse (indentSize = 0) (rep commentRange.StartColumn !- " ") sepNone))
+        +> !-s
+        +> sepNlnForTrivia
+
     | Newline -> (ifElse addNewline (sepNlnForTrivia +> sepNlnForTrivia) sepNlnForTrivia)
     | Keyword _
     | Number _
@@ -1165,9 +1210,9 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
     | IdentOperatorAsWord _
     | IdentBetweenTicks _
     | CharContent _
-    | EmbeddedIL _ -> sepNone // don't print here but somewhere in CodePrinter
-    | Directive s
-    | Comment (LineCommentOnSingleLine s) ->
+    | EmbeddedIL _ -> sepNone
+    // don't print here but somewhere in CodePrinter
+    | Directive s ->
         (ifElse addNewline sepNlnForTrivia sepNone)
         +> !-s
         +> sepNlnForTrivia

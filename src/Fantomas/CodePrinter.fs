@@ -507,7 +507,7 @@ and genAttributes astContext (ats: SynAttributes) =
             chain ctx)
         sepNone
 
-and genPreXmlDoc (PreXmlDoc (lines, _)) =
+and genPreXmlDoc (PreXmlDoc (lines, _range)) =
     colPost sepNln sepNln lines (sprintf "///%s" >> (!-))
 
 and genExprSepEqPrependType

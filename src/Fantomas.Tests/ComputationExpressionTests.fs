@@ -261,7 +261,7 @@ let f2 =
         """
 let f =
     async {
-        // Without binding newline after assignment sign preserved, which is expected behavior
+    // Without binding newline after assignment sign preserved, which is expected behavior
         let r =
             match 0 with
             | _ -> ()
@@ -271,8 +271,8 @@ let f =
 
 let f2 =
     async {
-        // When binding, newline force-removed, which makes the whole expression
-        // on the right side to be indented.
+    // When binding, newline force-removed, which makes the whole expression
+    // on the right side to be indented.
         let! r =
             match 0 with
             | _ -> () |> async.Return
@@ -304,8 +304,8 @@ let f2 =
         """
 let f2 =
     async {
-        // When binding, newline force-removed, which makes the whole expression
-        // on the right side to be indented.
+    // When binding, newline force-removed, which makes the whole expression
+    // on the right side to be indented.
         let! r =
             match 0 with
             | _ -> () |> async.Return
@@ -1225,7 +1225,7 @@ let browserRouter =
 
 let appRouter =
     router {
-        // forward "/api" apiRouter
+    // forward "/api" apiRouter
         forward "" browserRouter
     }
 """
@@ -2262,6 +2262,7 @@ let setup =
 """
 
 [<Test>]
+[<Ignore "Fixme">]
 let ``keep new line before match bang, 1313`` () =
     formatSourceString
         false
@@ -2292,7 +2293,7 @@ let ``keep new line before match bang, 1313`` () =
     |> should
         equal
         """
-/// a codefix that generates union cases for an incomplete match expression
+  /// a codefix that generates union cases for an incomplete match expression
 let generateUnionCases =
     ifDiagnosticByMessage
         (fun diagnostic codeActionParams ->

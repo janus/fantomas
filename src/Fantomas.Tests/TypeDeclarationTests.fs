@@ -3047,7 +3047,7 @@ type MethInfo =
     | FSMeth of tcGlobals: TcGlobals
 
     /// Get the information about provided static parameters, if any
-    // #if NO_EXTENSIONTYPING
+// #if NO_EXTENSIONTYPING
     member ProvidedStaticParameterInfo: option<obj>
 // #else
 //     member ProvidedStaticParameterInfo: option<(Tainted<ProvidedMethodBase> * Tainted<ProvidedParameterInfo> [])>

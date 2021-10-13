@@ -1335,8 +1335,8 @@ let a =
         equal
         """
 let a =
-    // check if the current # char is part of an define expression
-    // if so add to defines
+        // check if the current # char is part of an define expression
+        // if so add to defines
     let captureHashDefine idx =
         if trimmed.StartsWith("#if") then
             defines.Add(processLine "#if" trimmed lineNumber offset)
@@ -1630,7 +1630,7 @@ let tryDecompile (ty: FSharpEntity) =
     match ty.TryFullName with
     | Some fullName -> return decompile ty.Assembly.SimpleName externalSym
     | None ->
-      // might be abbreviated type (like string)
+                // might be abbreviated type (like string)
       return!
         (if ty.IsFSharpAbbreviation then
            Some ty.AbbreviatedType
@@ -2129,20 +2129,20 @@ let ``line comment before multiline if expression, 1588`` () =
         equal
         """
 if
-    // Don't support implicit [<ReflectedDefinition>] on generated members, except the implicit members
-    // for 'let' bound functions in classes.
+              // Don't support implicit [<ReflectedDefinition>] on generated members, except the implicit members
+              // for 'let' bound functions in classes.
     (not v.IsCompilerGenerated
      || v.IsIncrClassGeneratedMember)
     &&
 
     (env.reflect // Check the attributes on any enclosing module
      ||
-     // Check the attributes on the value
+               // Check the attributes on the value
      HasFSharpAttribute g g.attrib_ReflectedDefinitionAttribute v.Attribs
      ||
-     // Also check the enclosing type for members - for historical reasons, in the TAST member values
-     // are stored in the entity that encloses the type, hence we will not have noticed the ReflectedDefinition
-     // on the enclosing type at this point.
+               // Also check the enclosing type for members - for historical reasons, in the TAST member values
+               // are stored in the entity that encloses the type, hence we will not have noticed the ReflectedDefinition
+               // on the enclosing type at this point.
      HasFSharpAttribute g g.attrib_ReflectedDefinitionAttribute v.TopValDeclaringEntity.Attribs)
 then
 
@@ -2351,7 +2351,7 @@ let ``multiple multiline elifs`` () =
 if startWithMember sel then
     (String.Join(String.Empty, "type T = ", Environment.NewLine, String(' ', startCol), sel), TypeMember)
 elif String.startsWithOrdinal "and" (sel.TrimStart()) then
-    // Replace "and" by "type" or "let rec"
+            // Replace "and" by "type" or "let rec"
     if startLine = endLine then
         (pattern.Replace(sel, replacement, 1), p)
     else

@@ -41,7 +41,7 @@ let a = 9
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine lineComment) ] } ] -> lineComment == "// meh"
+    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine (lineComment, _)) ] } ] -> lineComment == "// meh"
     | _ -> failwith "Expected line comment"
 
 [<Test>]
@@ -54,7 +54,7 @@ let a = 'c'
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine lineComment) ] } ] -> lineComment == "// foo"
+    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine (lineComment, _)) ] } ] -> lineComment == "// foo"
     | _ -> failwith "Expected line comment"
 
 [<Test>]
@@ -96,7 +96,7 @@ let a = 7
 // bar"""
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine comments) ] } ] ->
+    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine (comments, _)) ] } ] ->
         String.normalizeNewLine comments
         == expectedComment
     | _ -> fail ()
@@ -127,7 +127,7 @@ let ``comment after all source code`` () =
 
     match triviaNodes with
     | [ { Type = mn
-          ContentAfter = [ Comment (LineCommentOnSingleLine lineComment) ] } ] ->
+          ContentAfter = [ Comment (LineCommentOnSingleLine (lineComment, _)) ] } ] ->
         mn == SynModuleDecl_Types
 
         lineComment
@@ -255,7 +255,7 @@ let a =  b + c
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine comment) ] } ] -> comment == "// (* meh *)"
+    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine (comment, _)) ] } ] -> comment == "// (* meh *)"
     | _ -> failwith "Expected line comment"
 
 [<Test>]
@@ -466,7 +466,7 @@ type LongIdentWithDots =
 // LongIdent can be empty list - it is used to denote that name of some AST element is absent (i.e. empty type name in inherit)"""
 
     match trivia with
-    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine comment) ] } ] ->
+    | [ { ContentBefore = [ Comment (LineCommentOnSingleLine (comment, _)) ] } ] ->
         String.normalizeNewLine comment == expectedComment
     | _ -> fail ()
 

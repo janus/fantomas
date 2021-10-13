@@ -245,6 +245,7 @@ let f () =
 """
 
 [<Test>]
+[<Ignore "Fixme">]
 let ``should align mis-aligned comments`` () =
     formatSourceString
         false
@@ -265,14 +266,14 @@ let f() =
     |> should
         equal
         """
-/// XML COMMENT A
-// Other comment
+   /// XML COMMENT A
+     // Other comment
 let f () =
-    // COMMENT A
+      // COMMENT A
     let y = 1
-    /// XML COMMENT B
+      /// XML COMMENT B
     let z = 1
-    // COMMENT B
+  // COMMENT B
     x + x + x
 """
 
@@ -323,7 +324,7 @@ let a =
         """
 let a =
     { // foo
-      // bar
+    // bar
       B = 7 }
 """
 
@@ -368,8 +369,8 @@ let a =
         """
 let a =
     {c = 4
-     // foo
-     // bar
+      // foo
+      // bar
      B = 7}
 """
 
@@ -477,9 +478,9 @@ let ``should keep comments on else if`` () =
         """
 if a then ()
 else
-    // Comment 1
+// Comment 1
     if b then ()
-    // Comment 2
+// Comment 2
     else ()
 """
         config
@@ -1316,7 +1317,7 @@ type T =
       module_: string
       name: string
       modifier: string
-      // Delay in ms since it entered the queue
+    // Delay in ms since it entered the queue
       delay: float }
 """
 
@@ -1349,7 +1350,7 @@ let a = 8
         equal
         """
 let a = 8
-// foobar
+  // foobar
 """
 
 [<Test>]
@@ -1604,7 +1605,7 @@ open FSharp.NativeInterop
 
 let Main () =
     let mutable x = 3.1415
-    // meh?
+  // meh?
     &&x
 """
 
@@ -1659,6 +1660,55 @@ Host
 """
 
 [<Test>]
+let ``should not move the starting point of a single-line comment, 1233`` () =
+    formatSourceString
+        false
+        """
+type CustomCancelSource() =
+    interface IDisposable with
+        member self.Dispose() =
+            try
+                self.Cancel()
+            with
+            | :? ObjectDisposedException ->
+                ()
+            // TODO: cleanup also subscribed handlers? see https://stackoverflow.com/q/58912910/544947
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type CustomCancelSource() =
+    interface IDisposable with
+        member self.Dispose() =
+            try
+                self.Cancel()
+            with
+            | :? ObjectDisposedException -> ()
+            // TODO: cleanup also subscribed handlers? see https://stackoverflow.com/q/58912910/544947
+"""
+
+[<Test>]
+let ``should not move the starting point of a single-line comment (2), 1233`` () =
+    formatSourceString
+        false
+        """
+let foo a =
+    someLongFunctionCall parameterOne parameterTwo parameterThree
+    // bar
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let foo a =
+    someLongFunctionCall parameterOne parameterTwo parameterThree
+    // bar
+"""
+
+[<Test>]
 let ``comment after bracket in record should not be duplicated in computation expression, 1912`` () =
     formatSourceString
         false
@@ -1694,7 +1744,7 @@ type TorDirectory =
             return
                 { TorDirectory.NetworkStatus = NetworkStatusDocument.Parse consensusStr
                   ServerDescriptors = Map.empty
-                // comment
+                    // comment
                 }
         }
 """
@@ -1721,7 +1771,7 @@ with
 try
     try
         ()
-    // xxx
+        // xxx
     with
     | _ -> ()
 with
