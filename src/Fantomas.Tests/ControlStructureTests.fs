@@ -721,7 +721,7 @@ let ``keep new line before for loop, 1317`` () =
     |> should
         equal
         """
-/// Fold over the array passing the index and element at that index to a folding function
+  /// Fold over the array passing the index and element at that index to a folding function
 let foldi (folder: 'State -> int -> 'T -> 'State) (state: 'State) (array: 'T []) =
     checkNonNull "array" array
 
@@ -1156,14 +1156,14 @@ let ``try/with in infix expression should be indented, 1746`` () =
         equal
         """
 let isAbstractNonVirtualMember (m: FSharpMemberOrFunctionOrValue) =
-    // is an abstract member
+      // is an abstract member
     m.IsDispatchSlot
-    // this member doesn't implement anything
+      // this member doesn't implement anything
     && (try
             m.ImplementedAbstractSignatures <> null
             && m.ImplementedAbstractSignatures.Count = 0
         with
         | _ -> true) // exceptions here trying to acces the member means we're safe
-    // this member is not an override
+      // this member is not an override
     && not m.IsOverrideOrExplicitInterfaceImplementation
 """

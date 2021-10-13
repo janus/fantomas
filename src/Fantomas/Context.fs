@@ -1147,6 +1147,16 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
             |> Option.map (fun lastChar -> lastChar <> ' '))
         |> Option.defaultValue false
 
+    let indented =
+        if ctx.WriterModel.Indent > 0 then
+            let indentSpace = String.replicate ctx.WriterModel.Indent " "
+
+            currentLastLine
+            |> Option.map (fun line -> line.EndsWith indentSpace)
+            |> Option.defaultValue false
+        else
+            false
+
     match c with
     | Comment (LineCommentAfterSourceCode s) ->
         let comment = sprintf "%s%s" (if addSpace then " " else String.empty) s
@@ -1158,6 +1168,80 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         -- s
         +> sepSpace
         +> ifElse after sepNlnForTrivia sepNone
+    | Comment (LineCommentOnSingleLine (s, commentRange)) ->
+        let writerModel = ctx.WriterModel
+        let oldIndent = writerModel.Indent
+        let oldColumn = writerModel.AtColumn
+
+        let oneSpace = 1
+
+
+        //printfn "%A" s
+        (*printfn "%A" addNewline
+        printfn "%A" addSpace
+        printfn "%A" writerModel.Indent
+        printfn "%A" writerModel.AtColumn
+        printfn "%A" commentRange.StartColumn
+        printfn "%A" writerModel.AtColumn
+        printfn "%A" ctx.Column
+        printfn "%A" addNewline
+        printfn "%A" commentRange.StartColumn
+        printfn "%A" writerModel.Indent
+        printfn "%A" s
+        printfn "Identend = %A" indented*)
+
+        let delta1 =
+            if commentRange.StartColumn = writerModel.Indent then
+                0
+            elif ctx.Column > commentRange.StartColumn then
+                (commentRange.StartColumn - writerModel.Indent)
+            else
+                (commentRange.StartColumn - writerModel.AtColumn)
+
+        let delta2 =
+            if indented then
+                (commentRange.StartColumn - writerModel.Indent)
+            elif commentRange.StartColumn = writerModel.Indent then
+                0
+            else
+                (commentRange.StartColumn - ctx.Column)
+
+        (*(ifElse addNewline sepNlnForTrivia sepNone)
+        +> ifElse (ctx.WriterModel.Indent = 0) (rep commentRange.StartColumn !- " ") sepNone
+        +> !-s
+        +> sepNlnForTrivia*)
+
+        (ifElse addNewline sepNln sepNone)
+        +> ifElse addNewline (rep delta1 !- " ") (rep delta2 !- " ")
+        +> !-s
+        +> sepNlnForTrivia
+
+    (*writerEvent (SetAtColumn 0)
+        +> writerEvent (SetIndent commentRange.StartColumn)
+        +> writerEvent (SetIndent 0)
+        +> (ifElse addNewline sepNlnForTrivia sepNone)
+        +> (rep commentRange.StartColumn !- " ")
+        +> writerEvent (RestoreAtColumn oldColumn)
+        +> writerEvent (RestoreIndent oldIndent)
+        +> ifElse
+            (not addNewline
+             && commentRange.StartColumn > writerModel.AtColumn)
+            (rep oneSpace !- " ")
+            sepNone
+        +> !-s
+        +> sepNlnForTrivia*)
+
+    (*ifElse
+            addNewline
+            (writerEvent (SetAtColumn 0)
+             +> writerEvent (SetIndent commentRange.StartColumn)
+             +> sepNlnForTrivia
+             +> writerEvent (RestoreAtColumn oldColumn)
+             +> writerEvent (RestoreIndent oldIndent)
+             +> writerEvent (Write s))
+            (sepNone //Todo:  This is a hack. sepSpace is not working here.
+             +> !-s)*)
+    //+> sepNlnForTrivia
     | Newline -> (ifElse addNewline (sepNlnForTrivia +> sepNlnForTrivia) sepNlnForTrivia)
     | Keyword _
     | Number _
@@ -1165,9 +1249,9 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
     | IdentOperatorAsWord _
     | IdentBetweenTicks _
     | CharContent _
-    | EmbeddedIL _ -> sepNone // don't print here but somewhere in CodePrinter
-    | Directive s
-    | Comment (LineCommentOnSingleLine s) ->
+    | EmbeddedIL _ -> sepNone
+    //| KeywordString _ -> sepNone // don't print here but somewhere in CodePrinter
+    | Directive s ->
         (ifElse addNewline sepNlnForTrivia sepNone)
         +> !-s
         +> sepNlnForTrivia

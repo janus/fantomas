@@ -155,18 +155,22 @@ let private addAllTriviaAsContentAfter (trivia: Trivia list) (singleNode: Trivia
 
 let private addTriviaToTriviaNode (startOfSourceCode: int) (triviaNodes: TriviaNodeAssigner list) trivia =
     match trivia with
-    | { Item = Comment (LineCommentOnSingleLine _ as comment)
+    | { Item = Comment (LineCommentOnSingleLine (comment, _))
         Range = range } ->
         let nodeAfterLine = findFirstNodeAfterLine triviaNodes range.StartLine
 
         match nodeAfterLine with
         | Some _ ->
             nodeAfterLine
-            |> updateTriviaNode (fun tn -> tn.ContentBefore.Add(Comment(comment))) triviaNodes
+            |> updateTriviaNode
+                (fun tn -> tn.ContentBefore.Add(Comment(LineCommentOnSingleLine(comment, range))))
+                triviaNodes
         | None ->
             // try and find a node above
             findNodeBeforeLineFromStart triviaNodes range.StartLine
-            |> updateTriviaNode (fun tn -> tn.ContentAfter.Add(Comment(comment))) triviaNodes
+            |> updateTriviaNode
+                (fun tn -> tn.ContentAfter.Add(Comment(LineCommentOnSingleLine(comment, range))))
+                triviaNodes
 
     | { Item = Comment (BlockComment (comment, _, _))
         Range = range } ->

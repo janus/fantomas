@@ -980,7 +980,7 @@ let ``short record type with comment should go to multiline`` () =
         """
 type Foo =
     { A: int
-      // comment
+                    // comment
       B: string }
 """
 
@@ -1674,7 +1674,7 @@ let ``record with comments above field, indent 3`` () =
         equal
         """
 { Foo =
-   // bar
+    // bar
    someValue }
 """
 
@@ -1693,7 +1693,7 @@ let ``anonymous record with multiline field`` () =
         equal
         """
 {| Foo =
-    //  meh
+              //  meh
     someValue |}
 """
 
@@ -1712,7 +1712,7 @@ let ``anonymous record with multiline field, indent 2`` () =
         equal
         """
 {| Foo =
-    //  meh
+              //  meh
     someValue |}
 """
 
@@ -1731,7 +1731,7 @@ let ``anonymous record with multiline field, indent 3`` () =
         equal
         """
 {| Foo =
-   //  meh
+              //  meh
    someValue |}
 """
 
@@ -1750,7 +1750,7 @@ let ``anonymous record with multiline field, indent 5`` () =
         equal
         """
 {| Foo =
-     //  meh
+              //  meh
      someValue |}
 """
 
@@ -1771,7 +1771,7 @@ let ``a foo`` () =
         """
 {| Foo =
    someValue
-      //
+                //
       a |}
 """
 
@@ -1800,7 +1800,7 @@ let ``long record field assigment`` () =
     // one indent starting from {
     someFunctionCall arg1 arg2
   B =
-    // one indent starting from label B
+      // one indent starting from label B
     someFunctionCall arg1 arg2 }
 """
 
@@ -1820,7 +1820,7 @@ let ``anonymous update record, indent_size 3`` () =
         """
 {| f with
       Foo =
-         //  meh
+                        //  meh
          someValue |}
 """
 
@@ -1914,9 +1914,9 @@ let ``anonymous records with comments on record fields, 2067`` () =
         equal
         """
 {|
-   // The foo value.
+    // The foo value.
    FooValue = fooValue
-   // The bar value.
+    // The bar value.
    BarValue = barValue |}
 """
 

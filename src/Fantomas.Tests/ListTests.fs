@@ -1991,7 +1991,7 @@ let choices : list<Foo> =
 let choices: list<Foo> =
     [ yield! getMore 9
       yield
-          // Test
+            // Test
           Foo 2 ]
 """
 
@@ -2014,7 +2014,7 @@ let choices : list<Foo> =
         """
 let choices: list<Foo> =
     [ yield!
-          // Test
+            // Test
           [ Foo 2 ] ]
 """
 

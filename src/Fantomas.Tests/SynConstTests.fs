@@ -339,7 +339,7 @@ let ``trivia after SynConst.Boolean, 1518`` () =
         """
 match ast with
 | ParsedInput.SigFile _input ->
-    // There is not much to explore in signature files
+        // There is not much to explore in signature files
     true
 | ParsedInput.ImplFile input -> validateImplFileInput input
 

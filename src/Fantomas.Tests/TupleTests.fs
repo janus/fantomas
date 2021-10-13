@@ -289,7 +289,7 @@ func(
 let func (a, b) = a + b
 
 func (
-    // abc
+        // abc
     0,
     1
 )
@@ -318,10 +318,10 @@ func(
 let func (a, b) = a + b
 
 func (
-    // abc
+        // abc
     0, // def
-    // ghi
+        // ghi
     1 // jkl
-// mno
+        // mno
 )
 """

@@ -507,8 +507,24 @@ and genAttributes astContext (ats: SynAttributes) =
             chain ctx)
         sepNone
 
-and genPreXmlDoc (PreXmlDoc (lines, _)) =
-    colPost sepNln sepNln lines (sprintf "///%s" >> (!-))
+and genPreXmlDoc (PreXmlDoc (lines, range)) =
+    let offset =
+        if lines.Length > 0 then
+            if lines.[0].StartsWith " "
+               || lines.[0].StartsWith "\t" then
+                0
+            else
+                range.StartColumn - 1
+        else
+            0
+
+    colPost
+        sepNln
+        sepNln
+        lines
+        (sprintf "%s///%s" (String.replicate offset " ")
+         >> (!-))
+//(sprintf "///%s" >> (!-))
 
 and genExprSepEqPrependType
     (astContext: ASTContext)

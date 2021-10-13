@@ -265,14 +265,14 @@ let f() =
     |> should
         equal
         """
-/// XML COMMENT A
-// Other comment
+   /// XML COMMENT A
+     // Other comment
 let f () =
     // COMMENT A
     let y = 1
-    /// XML COMMENT B
+      /// XML COMMENT B
     let z = 1
-    // COMMENT B
+  // COMMENT B
     x + x + x
 """
 
@@ -477,9 +477,9 @@ let ``should keep comments on else if`` () =
         """
 if a then ()
 else
-    // Comment 1
+// Comment 1
     if b then ()
-    // Comment 2
+// Comment 2
     else ()
 """
         config
@@ -1349,7 +1349,7 @@ let a = 8
         equal
         """
 let a = 8
-// foobar
+  // foobar
 """
 
 [<Test>]
@@ -1656,6 +1656,55 @@ Host
     .Run()
 
 //
+"""
+
+[<Test>]
+let ``should not move the starting point of a single-line comment, 1233`` () =
+    formatSourceString
+        false
+        """
+type CustomCancelSource() =
+    interface IDisposable with
+        member self.Dispose() =
+            try
+                self.Cancel()
+            with
+            | :? ObjectDisposedException ->
+                ()
+            // TODO: cleanup also subscribed handlers? see https://stackoverflow.com/q/58912910/544947
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type CustomCancelSource() =
+    interface IDisposable with
+        member self.Dispose() =
+            try
+                self.Cancel()
+            with
+            | :? ObjectDisposedException -> ()
+            // TODO: cleanup also subscribed handlers? see https://stackoverflow.com/q/58912910/544947
+"""
+
+[<Test>]
+let ``should not move the starting point of a single-line comment (2), 1233`` () =
+    formatSourceString
+        false
+        """
+let foo a =
+    someLongFunctionCall parameterOne parameterTwo parameterThree
+    // bar
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let foo a =
+    someLongFunctionCall parameterOne parameterTwo parameterThree
+    // bar
 """
 
 [<Test>]

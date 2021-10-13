@@ -39,7 +39,7 @@ let foo () =
 """
 
 [<Test>]
-let ``sequential in if branch, let or use in else branch`` () =
+let ``sequential in if branch, let or use in else branch, 2002001`` () =
     formatSourceString
         false
         """
@@ -82,14 +82,14 @@ let main argv =
         printfn "Would execute actions, but --dry-run was supplied: %+A" instructions
         0
     else
-    // proceed with main method
+        // proceed with main method
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
 [<Test>]
-let ``sequential in first clause, let or use in last clause`` () =
+let ``sequential in first clause, let or use in last clause, 2002001`` () =
     formatSourceString
         false
         """
@@ -134,14 +134,14 @@ let main argv =
         printfn "Would execute actions, but --dry-run was supplied: %+A" instructions
         0
     | RunMode.Wet ->
-    // proceed with main method
+        // proceed with main method
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
 [<Test>]
-let ``always add newline before un-indented last clause`` () =
+let ``always add newline before un-indented last clause, 2002001`` () =
     formatSourceString
         false
         """
@@ -189,12 +189,12 @@ let main argv =
 
     printfn "here it comes"
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
 [<Test>]
-let ``sequential in first clause, let or use in last clause, match bang`` () =
+let ``sequential in first clause, let or use in last clause, match bang, 2002001`` () =
     formatSourceString
         false
         """
@@ -239,9 +239,9 @@ let main argv =
         printfn "Would execute actions, but --dry-run was supplied: %+A" instructions
         0
     | RunMode.Wet ->
-    // proceed with main method
+        // proceed with main method
     let output = Library.execute instructions
-    // do more stuff
+        // do more stuff
     0
 """
 
@@ -358,7 +358,7 @@ module Foo =
 """
 
 [<Test>]
-let ``match is return value of let binding`` () =
+let ``match is return value of let binding, 2002001`` () =
     formatSourceString
         false
         """
@@ -384,12 +384,12 @@ let sum a b =
     | a, b ->
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+        // some grand explainer about the code
     Some(a + b)
 """
 
 [<Test>]
-let ``nested match expression should not indent in both cases`` () =
+let ``nested match expression should not indent in both cases, 2002001`` () =
     formatSourceString
         false
         """
@@ -419,12 +419,12 @@ let sum a b =
     | _ ->
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+            // some grand explainer about the code
     Some(a + b)
 """
 
 [<Test>]
-let ``nested ifThenElse should not indent in both cases`` () =
+let ``nested ifThenElse should not indent in both cases, 2002001`` () =
     formatSourceString
         false
         """
@@ -457,12 +457,12 @@ let sum a b =
     else
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+            // some grand explainer about the code
     Some(a + b)
 """
 
 [<Test>]
-let ``match followed by if should not indent in both cases`` () =
+let ``match followed by if should not indent in both cases, 2002001`` () =
     formatSourceString
         false
         """
@@ -495,7 +495,7 @@ let sum a b =
     | _ ->
 
     logMessage "a and b are both positive"
-    // some grand explainer about the code
+            // some grand explainer about the code
     Some(a + b)
 """
 
@@ -1864,7 +1864,7 @@ let nextModel, objectsRemoved =
 """
 
 [<Test>]
-let ``parenthesis tuple is consider as short branch`` () =
+let ``parenthesis tuple is consider as short branch, 2002001`` () =
     formatSourceString
         false
         """

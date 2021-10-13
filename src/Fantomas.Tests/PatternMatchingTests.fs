@@ -935,9 +935,9 @@ Seq.takeWhile
         """
 Seq.takeWhile (function
     | Write ""
-    // for example:
-    // type Foo =
-    //     static member Bar () = ...
+                         // for example:
+                         // type Foo =
+                         //     static member Bar () = ...
     | IndentBy _
     | WriteLine
     | SetAtColumn _
@@ -1085,12 +1085,12 @@ module Foo =
     module Bar =
         let buildUsage argInfos =
             match v.IsMember, v.IsInstanceMember, v.LogicalName, v.DisplayName with
-            // Ordinary functions or values
+                // Ordinary functions or values
             | false, _, _, name when
                 not (hasAttribute<RequireQualifiedAccessAttribute> v.ApparentEnclosingEntity.Attributes)
                 ->
                 name + " " + parArgs
-            // Ordinary static members or things (?) that require fully qualified access
+                // Ordinary static members or things (?) that require fully qualified access
             | _, _, _, name -> name + parArgs
 """
 
@@ -1407,7 +1407,7 @@ match x with
         """
 match x with
 | Some y ->
-  // meh
+    // meh
   y
 | None -> 42
 """
@@ -1596,7 +1596,7 @@ match x with
      + "\n"
      + itemsText
  | Bar x ->
-     // comment
+                // comment
      "")
 |||> Some
 """

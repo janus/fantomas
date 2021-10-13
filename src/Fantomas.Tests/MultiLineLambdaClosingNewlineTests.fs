@@ -923,7 +923,7 @@ module Foo =
         (fun bar -> // foo
             printfn ""
             bar + "11111111111111111111111111111111"
-        // bar
+            // bar
         ) // ziggy
 """
 
