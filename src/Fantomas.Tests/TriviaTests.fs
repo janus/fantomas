@@ -143,7 +143,7 @@ let ``block comment added to trivia`` () =
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentAfter = [ Comment (BlockComment (comment, _, _)) ] } ] -> comment == "(* meh *)"
+    | [ { ContentAfter = [ Comment (BlockComment (comment, _, _, _)) ] } ] -> comment == "(* meh *)"
     | _ -> failwith "Expected block comment"
 
 [<Test>]
@@ -156,7 +156,7 @@ let a =  b
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true)) ] } ] -> comment == "(* meh *)"
+    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true, _)) ] } ] -> comment == "(* meh *)"
     | _ -> failwith "Expected block comment"
 
 [<Test>]
@@ -168,7 +168,7 @@ let ``block comment on newline EOF added to trivia`` () =
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentAfter = [ Comment (BlockComment (comment, true, _)) ] } ] -> comment == "(* meh *)"
+    | [ { ContentAfter = [ Comment (BlockComment (comment, true, _, _)) ] } ] -> comment == "(* meh *)"
     | _ -> failwith "Expected block comment"
 
 [<Test>]
@@ -178,7 +178,7 @@ let ``block comment on EOF added to trivia`` () =
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentAfter = [ Comment (BlockComment (comment, _, _)) ] } ] -> comment == "(* meh *)"
+    | [ { ContentAfter = [ Comment (BlockComment (comment, _, _, _)) ] } ] -> comment == "(* meh *)"
     | _ -> failwith "Expected block comment"
 
 [<Test>]
@@ -191,7 +191,7 @@ let a =  c + d
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true)) ] } ] -> comment == "(* (* meh *) *)"
+    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true, _)) ] } ] -> comment == "(* (* meh *) *)"
     | _ -> failwith "Expected block comment"
 
 
@@ -205,7 +205,7 @@ let a =  9
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true)) ] } ] -> comment == "(* // meh *)"
+    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true, _)) ] } ] -> comment == "(* // meh *)"
     | _ -> failwith "Expected block comment"
 
 
@@ -225,7 +225,7 @@ bla *)"""
         |> String.normalizeNewLine
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true)) ] } ] -> comment == expectedComment
+    | [ { ContentBefore = [ Comment (BlockComment (comment, _, true, _)) ] } ] -> comment == expectedComment
     | _ -> failwith "Expected block comment"
 
 
@@ -241,7 +241,7 @@ x
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (BlockComment (combinedComment, _, true)) ] } ] ->
+    | [ { ContentBefore = [ Comment (BlockComment (combinedComment, _, true, _)) ] } ] ->
         combinedComment == "(* foo *)\n(* bar *)"
     | _ -> Assert.Fail(sprintf "Unexpected trivia %A" triviaNodes)
 
@@ -272,7 +272,7 @@ MEH
     let triviaNodes = toTrivia source |> List.head
 
     match triviaNodes with
-    | [ { ContentBefore = [ Comment (BlockComment (c, _, true)) ] } ] -> c == (String.normalizeNewLine comment)
+    | [ { ContentBefore = [ Comment (BlockComment (c, _, true, _)) ] } ] -> c == (String.normalizeNewLine comment)
     | _ -> failwith "Expected block comment"
 
 [<Test>]

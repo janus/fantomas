@@ -767,7 +767,7 @@ let ``comment between opening parenthesis and lambda, 1190`` () =
         equal
         """
 (
-(* comment before gets swallowed *)
+    (* comment before gets swallowed *)
 fun x -> x * 42)
 
 (fun x ->

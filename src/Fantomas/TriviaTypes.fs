@@ -11,7 +11,7 @@ type Token =
 type Comment =
     | LineCommentAfterSourceCode of comment: string
     | LineCommentOnSingleLine of comment: string * range
-    | BlockComment of string * newlineBefore: bool * newlineAfter: bool
+    | BlockComment of string * newlineBefore: bool * newlineAfter: bool * range
 
 (* LineComment Examples
 

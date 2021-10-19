@@ -1172,11 +1172,22 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let comment = sprintf "%s%s" (if addSpace then " " else String.empty) s
 
         writerEvent (WriteBeforeNewline comment)
-    | Comment (BlockComment (s, before, after)) ->
-        ifElse (before && addNewline) sepNlnForTrivia sepNone
-        +> sepSpace
-        -- s
-        +> sepSpace
+    | Comment (BlockComment (blockComment, before, after, commentRange)) ->
+        let writerModel = ctx.WriterModel
+        let oldIndent = writerModel.Indent
+        let oldColumn = writerModel.AtColumn
+
+        ifElse
+            (before && addNewline)
+            (writerEvent (SetAtColumn 0)
+             +> writerEvent (SetIndent commentRange.StartColumn)
+             +> sepNlnForTrivia
+             +> writerEvent (RestoreAtColumn oldColumn)
+             +> writerEvent (RestoreIndent oldIndent)
+             +> writerEvent (Write blockComment))
+            (sepSpace
+             +> writerEvent (Write blockComment)
+             +> sepSpace)
         +> ifElse after sepNlnForTrivia sepNone
     | Comment (LineCommentOnSingleLine (s, commentRange)) ->
         let writerModel = ctx.WriterModel
