@@ -1669,7 +1669,7 @@ let GenApp (cenv: cenv) cgbuf eenv (f, fty, tyargs, curriedArgs, m) sequel =
 
               arityInfo.Length = curriedArgs.Length)
              &&
-             (* no tailcall out of exception handler, etc. *)
+            (* no tailcall out of exception handler, etc. *)
              (match sequelIgnoringEndScopesAndDiscard sequel with
               | Return
               | ReturnVoid -> true

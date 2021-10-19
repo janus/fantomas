@@ -1609,6 +1609,83 @@ let foo a =
 """
 
 [<Test>]
+let ``should not move the starting point of a multi-line comment, 1223`` () =
+    formatSourceString
+        false
+        """
+module Foo =
+    let private GetConfirmedEtherBalanceInternal (web3: Web3) (publicAddress: string): Async<HexBigInteger> =
+        async {
+             let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
+(*
+             if (Config.DebugLog) then
+                 Infrastructure.LogError (SPrintF2 "Last block number and last confirmed block number: %s: %s"
+                                                  (latestBlock.Value.ToString()) (blockForConfirmationReference.BlockNumber.Value.ToString()))
+ *)
+            return blockForConfirmationReference
+        }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+module Foo =
+    let private GetConfirmedEtherBalanceInternal (web3: Web3) (publicAddress: string) : Async<HexBigInteger> =
+        async {
+            let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
+(*
+             if (Config.DebugLog) then
+                 Infrastructure.LogError (SPrintF2 "Last block number and last confirmed block number: %s: %s"
+                                                  (latestBlock.Value.ToString()) (blockForConfirmationReference.BlockNumber.Value.ToString()))
+ *)
+            return blockForConfirmationReference
+        }
+"""
+
+[<Test>]
+let ``should not move the starting point of a multi-line comment (2), 1223`` () =
+    formatSourceString
+        false
+        """
+module Foo =
+    let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
+(* test *)
+    return blockForConfirmationReference
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+module Foo =
+    let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
+(* test *)
+    return blockForConfirmationReference
+"""
+
+[<Test>]
+let ``should not move the starting point of a multi-line comment (3), 1223`` () =
+    formatSourceString
+        false
+        """
+module Foo =
+    let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
+        (* test *)
+    return blockForConfirmationReference
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+module Foo =
+    let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
+        (* test *)
+    return blockForConfirmationReference
+"""
+
+[<Test>]
 let ``comment after bracket in record should not be duplicated in computation expression, 1912`` () =
     formatSourceString
         false

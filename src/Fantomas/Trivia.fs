@@ -297,7 +297,7 @@ let private addTriviaToTriviaNode
                     (fun tn -> tn.ContentAfter.Add(Comment(LineCommentOnSingleLine(comment, range))))
                     triviaNodes
 
-    | { Item = Comment (BlockComment (comment, _, _))
+    | { Item = Comment (BlockComment (comment, _, _, _))
         Range = range } ->
         let nodeAfter =
             findNodeAfterLineAndColumn triviaNodes range.StartLine range.StartColumn
@@ -311,25 +311,38 @@ let private addTriviaToTriviaNode
              && na.Range.StartLine > range.EndLine)
             ->
             Some na
-            |> updateTriviaNode (fun tn -> tn.ContentBefore.Add(Comment(BlockComment(comment, true, true)))) triviaNodes
+            |> updateTriviaNode
+                (fun tn -> tn.ContentBefore.Add(Comment(BlockComment(comment, true, true, range))))
+                triviaNodes
         | Some n, _ when n.Range.EndLine = range.StartLine ->
             Some n
             |> updateTriviaNode
-                (fun tn -> tn.ContentAfter.Add(Comment(BlockComment(comment, false, false))))
+                (fun tn -> tn.ContentAfter.Add(Comment(BlockComment(comment, false, false, range))))
+                triviaNodes
+        | Some nb, Some n when (nb.Range.EndLine > range.StartLine) ->
+            Some n
+            |> updateTriviaNode
+                (fun tn ->
+                    let newline = tn.Range.StartLine > range.EndLine
+                    tn.ContentBefore.Add(Comment(BlockComment(comment, true, newline, range))))
                 triviaNodes
         | _, Some n ->
             Some n
             |> updateTriviaNode
                 (fun tn ->
                     let newline = tn.Range.StartLine > range.EndLine
-                    tn.ContentBefore.Add(Comment(BlockComment(comment, false, newline))))
+                    tn.ContentBefore.Add(Comment(BlockComment(comment, false, newline, range))))
                 triviaNodes
         | Some _, _ when (commentIsAfterLastTriviaNode triviaNodes range) ->
             findLastNode triviaNodes
-            |> updateTriviaNode (fun tn -> tn.ContentAfter.Add(Comment(BlockComment(comment, true, false)))) triviaNodes
+            |> updateTriviaNode
+                (fun tn -> tn.ContentAfter.Add(Comment(BlockComment(comment, true, false, range))))
+                triviaNodes
         | Some n, _ ->
             Some n
-            |> updateTriviaNode (fun tn -> tn.ContentAfter.Add(Comment(BlockComment(comment, true, false)))) triviaNodes
+            |> updateTriviaNode
+                (fun tn -> tn.ContentAfter.Add(Comment(BlockComment(comment, true, false, range))))
+                triviaNodes
         | None, None -> triviaNodes
 
     | { Item = Comment (LineCommentAfterSourceCode _ as comment)

@@ -949,7 +949,7 @@ let rec private getTriviaFromTokensThemSelves
             getRangeBetween mkRange headToken (Option.defaultValue headToken lastToken)
 
         let info =
-            Trivia.Create(Comment(BlockComment(comment, false, false))) range
+            Trivia.Create(Comment(BlockComment(comment, false, false, range))) range
             |> List.prependItem foundTrivia
 
         getTriviaFromTokensThemSelves mkRange lastButOne lastToken rest info
