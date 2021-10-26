@@ -2056,7 +2056,8 @@ let ``single line named fields in a pattern matching should have space surroundi
 let examineData x =
     match data with
     | OnePartData(part1 = p1) -> p1
-    | TwoPartData(part1 = p1; part2=p2) -> p1 + p2"""
+    | TwoPartData(part1 = p1; part2=p2) -> p1 + p2
+"""
         config
     |> prepend newline
     |> should
@@ -2148,5 +2149,36 @@ match // foo
 
 match! // foo!
     a with
+| _ -> ()
+"""
+
+[<Test>]
+let ``vanity alignment used when using long case in match block, 1926`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| SomeVeryLongMatchCase(1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890) ->
+    bar()
+| _ -> () """
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| SomeVeryLongMatchCase
+    (
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890
+    ) -> bar ()
 | _ -> ()
 """

@@ -4964,9 +4964,28 @@ and genPat astContext pat =
 
     | PatParen (_, PatUnitConst, _) -> !- "()"
     | PatParen (lpr, p, rpr) ->
-        genTriviaFor SynPat_Paren_OpeningParenthesis lpr sepOpenT
-        +> genPat astContext p
-        +> genTriviaFor SynPat_Paren_ClosingParenthesis rpr sepCloseT
+        let shortExpr =
+            genTriviaFor SynConst_Unit_OpeningParenthesis lpr sepOpenT
+            +> genPat astContext p
+            +> genTriviaFor SynConst_Unit_ClosingParenthesis rpr sepCloseT
+
+        let longExpr =
+            ifElse
+                astContext.IsInsideMatchClausePattern
+                (indent
+                 +> sepNln
+                 +> genTriviaFor SynConst_Unit_OpeningParenthesis lpr sepOpenT
+                 +> sepNln
+                 -- "    "
+                 +> genPat astContext p
+                 +> sepNln
+                 +> genTriviaFor SynConst_Unit_ClosingParenthesis rpr sepCloseT
+                 +> unindent)
+                (genTriviaFor SynConst_Unit_OpeningParenthesis lpr sepOpenT
+                 +> genPat astContext p
+                 +> genTriviaFor SynConst_Unit_ClosingParenthesis rpr sepCloseT)
+
+        expressionFitsOnRestOfLine shortExpr longExpr
     | PatTuple ps ->
         expressionFitsOnRestOfLine
             (col sepComma ps (genPat astContext))
