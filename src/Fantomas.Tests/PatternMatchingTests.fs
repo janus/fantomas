@@ -1176,8 +1176,10 @@ type Thing =
     | Foo of msg: string
     override this.ToString() =
         match this with
-        | Foo (ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) ->
-            ""
+        | Foo
+            (
+                ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            ) -> ""
 """
 
 [<Test>]
@@ -1207,8 +1209,10 @@ type Thing =
     | Foo of msg : string
     override this.ToString() : string =
         match this with
-        | Foo (ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff) ->
-            ""
+        | Foo
+            (
+                ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+            ) -> ""
 """
 
 [<Test>]
@@ -2122,6 +2126,37 @@ match!
         """
 match! a with // foo
 | B b -> ()
+"""
+
+[<Test>]
+let ``vanity alignment used when using long case in match block, 1926`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| SomeVeryLongMatchCase(1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890) ->
+    bar()
+| _ -> () """
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| SomeVeryLongMatchCase
+    (
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890
+    ) -> bar ()
+| _ -> ()
 """
 
 [<Test>]
