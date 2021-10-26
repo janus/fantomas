@@ -2056,3 +2056,34 @@ match!
 | None -> false
 | Some balance -> someRetrievedBalance = balance
 """
+
+[<Test>]
+let ``vanity alignment used when using long case in match block, 1926`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| SomeVeryLongMatchCase(1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890, 1234567890) ->
+    bar()
+| _ -> () """
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| SomeVeryLongMatchCase
+    (
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890,
+        1234567890
+    ) -> bar ()
+| _ -> ()
+"""
