@@ -130,7 +130,7 @@ let ``when input is empty`` () =
 
 [<Test>]
 let ``when predicate always returns false`` () =
-    let property (xs: int list) : bool =
+    let property (xs: list<int>) : bool =
         let before, after =
             List.partitionWhile (fun _ _ -> false) xs
 
@@ -140,7 +140,7 @@ let ``when predicate always returns false`` () =
 
 [<Test>]
 let ``when predicate always returns true`` () =
-    let property (xs: int list) : bool =
+    let property (xs: list<int>) : bool =
         let before, after =
             List.partitionWhile (fun _ _ -> true) xs
 
@@ -150,7 +150,7 @@ let ``when predicate always returns true`` () =
 
 [<Test>]
 let ``when predicate returns true until certain index`` () =
-    let property (xs: int list, i: int) : bool =
+    let property (xs: list<int>, i: int) : bool =
         let before, after =
             List.partitionWhile (fun index _ -> i <> index) xs
 

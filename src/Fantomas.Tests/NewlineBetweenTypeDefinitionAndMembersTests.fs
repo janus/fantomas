@@ -327,7 +327,7 @@ let ``newline before interface, 1346`` () =
         false
         """
 type andSeq<'t> =
-    | AndSeq of 't seq
+    | AndSeq of seq<'t>
 
     interface IEnumerable<'t> with
         member this.GetEnumerator(): Collections.IEnumerator =
@@ -341,7 +341,7 @@ type andSeq<'t> =
         equal
         """
 type andSeq<'t> =
-    | AndSeq of 't seq
+    | AndSeq of seq<'t>
 
     interface IEnumerable<'t> with
         member this.GetEnumerator() : Collections.IEnumerator =

@@ -54,7 +54,7 @@ let ``discriminated unions with members`` () =
 type Type
     = TyLam of Type * Type
     | TyVar of string
-    | TyCon of string * Type list
+    | TyCon of string * list<Type>
     with override this.ToString() =
             match this with
             | TyLam (t1, t2) -> sprintf "(%s -> %s)" (t1.ToString()) (t2.ToString())
@@ -68,7 +68,7 @@ type Type
 type Type =
     | TyLam of Type * Type
     | TyVar of string
-    | TyCon of string * Type list
+    | TyCon of string * list<Type>
     override this.ToString() =
         match this with
         | TyLam (t1, t2) -> sprintf "(%s -> %s)" (t1.ToString()) (t2.ToString())
@@ -84,7 +84,7 @@ let ``newline between discriminated unions and members`` () =
 type Type
     = TyLam of Type * Type
     | TyVar of string
-    | TyCon of string * Type list
+    | TyCon of string * list<Type>
     with override this.ToString() =
             match this with
             | TyLam (t1, t2) -> sprintf "(%s -> %s)" (t1.ToString()) (t2.ToString())
@@ -99,7 +99,7 @@ type Type
 type Type =
     | TyLam of Type * Type
     | TyVar of string
-    | TyCon of string * Type list
+    | TyCon of string * list<Type>
 
     override this.ToString() =
         match this with
@@ -361,7 +361,7 @@ type PayableFilters = | [<CompiledName "statusSelector">] Status
 let ``single case DU with comment above clause, 567`` () =
     formatSourceString
         false
-        """type 'a MyGenericType =
+        """type MyGenericType<'a> =
   ///
   Foo
 """
@@ -370,7 +370,7 @@ let ``single case DU with comment above clause, 567`` () =
     |> should
         equal
         """
-type 'a MyGenericType =
+type MyGenericType<'a> =
     ///
     Foo
 """
@@ -569,10 +569,10 @@ type SynType =
     ///   isPostfix: indicates a postfix type application e.g. "int list" or "(int, string) dict"
     | App of
         typeName: SynType  *
-        lessRange: range option *
-        typeArgs: SynType list *
-        commaRanges: range list *
-        greaterRange: range option *
+        lessRange: option<range> *
+        typeArgs: list<SynType> *
+        commaRanges: list<range> *
+        greaterRange: option<range> *
         isPostfix: bool * range: range // interstitial commas
 """
         config
@@ -590,10 +590,10 @@ type SynType =
     ///   isPostfix: indicates a postfix type application e.g. "int list" or "(int, string) dict"
     | App of
         typeName: SynType *
-        lessRange: range option *
-        typeArgs: SynType list *
-        commaRanges: range list *
-        greaterRange: range option *
+        lessRange: option<range> *
+        typeArgs: list<SynType> *
+        commaRanges: list<range> *
+        greaterRange: option<range> *
         isPostfix: bool *
         range: range // interstitial commas
 """
@@ -605,8 +605,8 @@ let ``multiline single union case field`` () =
         """
 namespace X
 
-type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * AssemblyReference list
-type ResolvedExtensionReference = ResolvedExtensionReference of string * AssemblyReference list * Tainted<ITypeProvider> list
+type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * list<AssemblyReference>
+type ResolvedExtensionReference = ResolvedExtensionReference of string * list<AssemblyReference> * list<Tainted<ITypeProvider>>
 """
         config
     |> prepend newline
@@ -615,10 +615,10 @@ type ResolvedExtensionReference = ResolvedExtensionReference of string * Assembl
         """
 namespace X
 
-type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * AssemblyReference list
+type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * list<AssemblyReference>
 
 type ResolvedExtensionReference =
-    | ResolvedExtensionReference of string * AssemblyReference list * Tainted<ITypeProvider> list
+    | ResolvedExtensionReference of string * list<AssemblyReference> * list<Tainted<ITypeProvider>>
 """
 
 [<Test>]
@@ -628,8 +628,8 @@ let ``multiline single union case field, implementation file`` () =
         """
 namespace X
 
-type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * AssemblyReference list
-type ResolvedExtensionReference = ResolvedExtensionReference of string * AssemblyReference list * Tainted<ITypeProvider> list
+type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * list<AssemblyReference>
+type ResolvedExtensionReference = ResolvedExtensionReference of string * list<AssemblyReference> * list<Tainted<ITypeProvider>>
 """
         config
     |> prepend newline
@@ -638,10 +638,10 @@ type ResolvedExtensionReference = ResolvedExtensionReference of string * Assembl
         """
 namespace X
 
-type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * AssemblyReference list
+type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * list<AssemblyReference>
 
 type ResolvedExtensionReference =
-    | ResolvedExtensionReference of string * AssemblyReference list * Tainted<ITypeProvider> list
+    | ResolvedExtensionReference of string * list<AssemblyReference> * list<Tainted<ITypeProvider>>
 """
 
 [<Test>]
@@ -761,7 +761,7 @@ let ``multiline DU case`` () =
 [<NoEquality; NoComparison>]
 type SynBinding =
     SynBinding of
-                        accessibility: SynAccess option *
+                        accessibility: option<SynAccess> *
                         kind: SynBindingKind *
                         mustInline: bool *
                         isMutable: bool *
@@ -769,7 +769,7 @@ type SynBinding =
                         xmlDoc: PreXmlDoc *
                         valData: SynValData *
                         headPat: SynPat *
-                        returnInfo: SynBindingReturnInfo option *
+                        returnInfo: option<SynBindingReturnInfo> *
                         expr: SynExpr *
                         range: range *
                         seqPoint: DebugPointAtBinding
@@ -782,7 +782,7 @@ type SynBinding =
 [<NoEquality; NoComparison>]
 type SynBinding =
     | SynBinding of
-        accessibility: SynAccess option *
+        accessibility: option<SynAccess> *
         kind: SynBindingKind *
         mustInline: bool *
         isMutable: bool *
@@ -790,7 +790,7 @@ type SynBinding =
         xmlDoc: PreXmlDoc *
         valData: SynValData *
         headPat: SynPat *
-        returnInfo: SynBindingReturnInfo option *
+        returnInfo: option<SynBindingReturnInfo> *
         expr: SynExpr *
         range: range *
         seqPoint: DebugPointAtBinding

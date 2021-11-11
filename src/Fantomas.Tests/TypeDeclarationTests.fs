@@ -692,8 +692,8 @@ let ``should keep brackets around type signatures`` () =
     formatSourceString
         false
         """
-let user_printers = ref([] : (string * (term -> unit)) list)
-let the_interface = ref([] : (string * (string * hol_type)) list)
+let user_printers = ref([] : list<(string * (term -> unit))>)
+let the_interface = ref([] : list<(string * (string * hol_type))>)
     """
         { config with
               MaxValueBindingWidth = 50 }
@@ -701,8 +701,8 @@ let the_interface = ref([] : (string * (string * hol_type)) list)
     |> should
         equal
         """
-let user_printers = ref ([]: (string * (term -> unit)) list)
-let the_interface = ref ([]: (string * (string * hol_type)) list)
+let user_printers = ref ([]: list<(string * (term -> unit))>)
+let the_interface = ref ([]: list<(string * (string * hol_type))>)
 """
 
 [<Test>]
@@ -768,13 +768,13 @@ let ``^a needs spaces when used as a type parameter`` () =
     formatSourceString
         false
         """
-let inline tryAverage(seq: seq< ^a >): ^a option =  None"""
+let inline tryAverage(seq: seq< ^a >): option< ^a > =  None"""
         config
     |> prepend newline
     |> should
         equal
         """
-let inline tryAverage (seq: seq< ^a >) : ^a option = None
+let inline tryAverage (seq: seq< ^a >) : option< ^a > = None
 """
 
 [<Test>]
@@ -782,13 +782,13 @@ let ``multiple hats need spaces`` () =
     formatSourceString
         false
         """
-let inline tryAverage(map: Map< ^a,^b>): ^a option =  None"""
+let inline tryAverage(map: Map< ^a,^b>): option< ^a > =  None"""
         config
     |> prepend newline
     |> should
         equal
         """
-let inline tryAverage (map: Map< ^a, ^b >) : ^a option = None
+let inline tryAverage (map: Map< ^a, ^b >) : option< ^a > = None
 """
 
 [<Test>]
@@ -1177,7 +1177,7 @@ type Item =
 type Exit =
     | Passable of Details * desitnation: Room
     | Locked of Details * key: Item * next: Exit
-    | NoExit of Details option
+    | NoExit of option<Details>
 
 and Exits =
     { North: Exit
@@ -1187,7 +1187,7 @@ and Exits =
 
 and Room =
     { Details: Details
-      Items: Item list
+      Items: list<Item>
       Exits: Exits }
 """
         config
@@ -1204,7 +1204,7 @@ type Item = { Details: Details }
 type Exit =
     | Passable of Details * desitnation: Room
     | Locked of Details * key: Item * next: Exit
-    | NoExit of Details option
+    | NoExit of option<Details>
 
 and Exits =
     { North: Exit
@@ -1214,7 +1214,7 @@ and Exits =
 
 and Room =
     { Details: Details
-      Items: Item list
+      Items: list<Item>
       Exits: Exits }
 """
 
@@ -1227,7 +1227,7 @@ let ``don't add additional newlines between recursive type declarations with att
 type Exit =
     | Passable of Details * desitnation: Room
     | Locked of Details * key: Item * next: Exit
-    | NoExit of Details option
+    | NoExit of option<Details>
 
 and Exits =
     { North: Exit
@@ -1237,7 +1237,7 @@ and Exits =
 
 and [<Marker()>] Room =
     { Details: Details
-      Items: Item list
+      Items: list<Item>
       Exits: Exits }
 """
         config
@@ -1250,7 +1250,7 @@ module Game
 type Exit =
     | Passable of Details * desitnation: Room
     | Locked of Details * key: Item * next: Exit
-    | NoExit of Details option
+    | NoExit of option<Details>
 
 and Exits =
     { North: Exit
@@ -1260,7 +1260,7 @@ and Exits =
 
 and [<Marker>] Room =
     { Details: Details
-      Items: Item list
+      Items: list<Item>
       Exits: Exits }
 """
 
@@ -1305,10 +1305,10 @@ let ``line comment above single line abstract slot should not make it multiline,
         false
         """[<AllowNullLiteral>]
 type Graph2dOptions =
-    abstract zoomMin: float option with get, set
-    // abstract moment: MomentConstructor option with get, set
-    abstract maxHeight: HeightWidthType option with get, set
-    abstract zIndex: float option with get, set
+    abstract zoomMin: option<float> with get, set
+    // abstract moment: option<MomentConstructor> with get, set
+    abstract maxHeight: option<HeightWidthType> with get, set
+    abstract zIndex: option<float> with get, set
 """
         config
     |> prepend newline
@@ -1317,10 +1317,10 @@ type Graph2dOptions =
         """
 [<AllowNullLiteral>]
 type Graph2dOptions =
-    abstract zoomMin: float option with get, set
-    // abstract moment: MomentConstructor option with get, set
-    abstract maxHeight: HeightWidthType option with get, set
-    abstract zIndex: float option with get, set
+    abstract zoomMin: option<float> with get, set
+    // abstract moment: option<MomentConstructor> with get, set
+    abstract maxHeight: option<HeightWidthType> with get, set
+    abstract zIndex: option<float> with get, set
 """
 
 [<Test>]
@@ -1776,7 +1776,7 @@ type SubGroupStackOptions =
 
 [<AllowNullLiteral>]
 type DataGroup =
-    abstract className: string option with get, set
+    abstract className: option<string> with get, set
 """
         config
     |> prepend newline
@@ -1790,7 +1790,7 @@ type SubGroupStackOptions =
 
 [<AllowNullLiteral>]
 type DataGroup =
-    abstract className: string option with get, set
+    abstract className: option<string> with get, set
 """
 
 [<Test>]
@@ -1847,7 +1847,7 @@ let ``attribute on type and abstract member followed by type, 949`` () =
 [<AllowNullLiteral>]
 type TimelineOptionsGroupCallbackFunction =
     [<Emit "$0($1...)">]
-    abstract Invoke: group:TimelineGroup * callback:(TimelineGroup option -> unit) -> unit
+    abstract Invoke: group:TimelineGroup * callback:(option<TimelineGroup> -> unit) -> unit
 
 type TimelineOptionsGroupEditableType = U2<bool, TimelineGroupEditableOption>
 """
@@ -1859,7 +1859,7 @@ type TimelineOptionsGroupEditableType = U2<bool, TimelineGroupEditableOption>
 [<AllowNullLiteral>]
 type TimelineOptionsGroupCallbackFunction =
     [<Emit "$0($1...)">]
-    abstract Invoke: group: TimelineGroup * callback: (TimelineGroup option -> unit) -> unit
+    abstract Invoke: group: TimelineGroup * callback: (option<TimelineGroup> -> unit) -> unit
 
 type TimelineOptionsGroupEditableType = U2<bool, TimelineGroupEditableOption>
 """
@@ -1872,7 +1872,7 @@ let ``attribute on type and abstract member followed by let binding`` () =
 [<AllowNullLiteral>]
 type TimelineOptionsGroupCallbackFunction =
     [<Emit "$0($1...)">]
-    abstract Invoke: group:TimelineGroup * callback:(TimelineGroup option -> unit) -> unit
+    abstract Invoke: group:TimelineGroup * callback:(option<TimelineGroup> -> unit) -> unit
 
 let myBinding a = 7
 """
@@ -1884,7 +1884,7 @@ let myBinding a = 7
 [<AllowNullLiteral>]
 type TimelineOptionsGroupCallbackFunction =
     [<Emit "$0($1...)">]
-    abstract Invoke: group: TimelineGroup * callback: (TimelineGroup option -> unit) -> unit
+    abstract Invoke: group: TimelineGroup * callback: (option<TimelineGroup> -> unit) -> unit
 
 let myBinding a = 7
 """
@@ -2247,7 +2247,7 @@ let ``generic recursive types`` () =
         false
         """
 type ViewBinding<'model,'msg> = string * Variable<'model,'msg>
-and ViewBindings<'model,'msg> = ViewBinding<'model,'msg> list
+and ViewBindings<'model,'msg> = list<ViewBinding<'model,'msg>>
 and Variable<'model,'msg> =
     | Bind of Getter<'model>
     | BindTwoWay of Getter<'model> * Setter<'model,'msg>
@@ -2262,7 +2262,7 @@ and Variable<'model,'msg> =
         equal
         """
 type ViewBinding<'model, 'msg> = string * Variable<'model, 'msg>
-and ViewBindings<'model, 'msg> = ViewBinding<'model, 'msg> list
+and ViewBindings<'model, 'msg> = list<ViewBinding<'model, 'msg>>
 
 and Variable<'model, 'msg> =
     | Bind of Getter<'model>
@@ -2288,8 +2288,8 @@ let ``add newline and indent for multiline internal record definition, 658`` () 
         """
 type RequestParser<'ctx, 'a> = internal {
   consumedFields: Set<ConsumedFieldName>
-  parse: 'ctx -> Request ->  Async<Result<'a, Error list>>
-  prohibited: ProhibitedRequestGetter list
+  parse: 'ctx -> Request ->  Async<Result<'a, list<Error>>>
+  prohibited: list<ProhibitedRequestGetter>
 }
 """
         config
@@ -2300,8 +2300,8 @@ type RequestParser<'ctx, 'a> = internal {
 type RequestParser<'ctx, 'a> =
     internal
         { consumedFields: Set<ConsumedFieldName>
-          parse: 'ctx -> Request -> Async<Result<'a, Error list>>
-          prohibited: ProhibitedRequestGetter list }
+          parse: 'ctx -> Request -> Async<Result<'a, list<Error>>>
+          prohibited: list<ProhibitedRequestGetter> }
 """
 
 [<Test>]

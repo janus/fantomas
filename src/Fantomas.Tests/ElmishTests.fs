@@ -958,7 +958,7 @@ let ``react hook`` () =
 let private useLocationDetail (auth0 : Auth0Hook) (roles : RolesHook) id =
     let id = Guid.Parse(id)
     let eventCtx = React.useContext (eventContext)
-    let (creatorName, setCreatorName) = React.useState<string option> (None)
+    let (creatorName, setCreatorName) = React.useState<option<string>> (None)
 
     let location =
         React.useMemo ((fun () -> getLocation eventCtx.Events id), [| eventCtx.Events; id |])
@@ -997,7 +997,7 @@ let private useLocationDetail (auth0 : Auth0Hook) (roles : RolesHook) id =
 let private useLocationDetail (auth0 : Auth0Hook) (roles : RolesHook) id =
     let id = Guid.Parse(id)
     let eventCtx = React.useContext (eventContext)
-    let (creatorName, setCreatorName) = React.useState<string option> (None)
+    let (creatorName, setCreatorName) = React.useState<option<string>> (None)
 
     let location =
         React.useMemo ((fun () -> getLocation eventCtx.Events id), [| eventCtx.Events; id |])

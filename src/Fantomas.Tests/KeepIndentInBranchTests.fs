@@ -313,7 +313,7 @@ let ``match is return value of SynBinding with return type`` () =
 module Foo =
     let make () =
         { new IBar with
-            member __.DoIt (i : int) : int option =
+            member __.DoIt (i : int) : option<int> =
                 doSomeStuff ()
                 match i with
                 | 0 ->
@@ -340,7 +340,7 @@ module Foo =
 module Foo =
     let make () =
         { new IBar with
-            member __.DoIt(i: int) : int option =
+            member __.DoIt(i: int) : option<int> =
                 doSomeStuff ()
 
                 match i with
@@ -1778,7 +1778,7 @@ let ``short function application in if branch`` () =
     formatSourceString
         false
         """
-let private parseModel (modelSrc: string) : Result<MyReturnType, string list> =
+let private parseModel (modelSrc: string) : Result<MyReturnType, list<string>> =
   if not (File.Exists(modelSrc)) then
     Error [ sprintf "Provided modelSrc \"%s\" does not exist" modelSrc ]
   else
@@ -1807,7 +1807,7 @@ let private parseModel (modelSrc: string) : Result<MyReturnType, string list> =
     |> should
         equal
         """
-let private parseModel (modelSrc: string) : Result<MyReturnType, string list> =
+let private parseModel (modelSrc: string) : Result<MyReturnType, list<string>> =
     if not (File.Exists(modelSrc)) then
         Error [ sprintf "Provided modelSrc \"%s\" does not exist" modelSrc ]
     else

@@ -251,7 +251,7 @@ let ``recursive classes`` () =
         """
 type Folder(pathIn: string) =
   let path = pathIn
-  let filenameArray : string array = System.IO.Directory.GetFiles(path)
+  let filenameArray : array<string> = System.IO.Directory.GetFiles(path)
   member this.FileArray = Array.map (fun elem -> new File(elem, this)) filenameArray
 
 and File(filename: string, containingFolder: Folder) =
@@ -265,7 +265,7 @@ and File(filename: string, containingFolder: Folder) =
         """
 type Folder(pathIn: string) =
     let path = pathIn
-    let filenameArray: string array = System.IO.Directory.GetFiles(path)
+    let filenameArray: array<string> = System.IO.Directory.GetFiles(path)
     member this.FileArray = Array.map (fun elem -> new File(elem, this)) filenameArray
 
 and File(filename: string, containingFolder: Folder) =
@@ -348,20 +348,20 @@ let ``should keep parens in class inheritance in the right place`` () =
 let ``should keep type annotations on auto properties`` () =
     formatSourceString
         false
-        """type Document(id : string, library : string, name : string option) =
+        """type Document(id : string, library : string, name : option<string>) =
     member val ID = id
     member val Library = library
     member val Name = name with get, set
-    member val LibraryID : string option = None with get, set
+    member val LibraryID : option<string> = None with get, set
 """
         config
     |> should
         equal
-        """type Document(id: string, library: string, name: string option) =
+        """type Document(id: string, library: string, name: option<string>) =
     member val ID = id
     member val Library = library
     member val Name = name with get, set
-    member val LibraryID: string option = None with get, set
+    member val LibraryID: option<string> = None with get, set
 """
 
 [<Test>]
@@ -843,7 +843,7 @@ let ``comment before multiline class member`` () =
 type MaybeBuilder () =
     member inline __.Bind
 // meh
-        (value, binder : 'T -> 'U option) : 'U option =
+        (value, binder : 'T -> option<'U>) : option<'U> =
         Option.bind binder value
 """
         config
@@ -856,8 +856,8 @@ type MaybeBuilder() =
         // meh
         (
             value,
-            binder: 'T -> 'U option
-        ) : 'U option =
+            binder: 'T -> option<'U>
+        ) : option<'U> =
         Option.bind binder value
 """
 
@@ -874,7 +874,7 @@ type MaybeBuilder () =
 #else
     member inline __.Bind
 #endif
-        (value, binder : 'T -> 'U option) : 'U option =
+        (value, binder : 'T -> option<'U>) : option<'U> =
         Option.bind binder value
 """
         config
@@ -892,8 +892,8 @@ type MaybeBuilder() =
 #endif
         (
             value,
-            binder: 'T -> 'U option
-        ) : 'U option =
+            binder: 'T -> option<'U>
+        ) : option<'U> =
         Option.bind binder value
 """
 

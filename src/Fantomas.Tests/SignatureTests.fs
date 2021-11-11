@@ -317,7 +317,7 @@ module Teq =
 
     /// Returns a Teq when the two type parameters have the same value,
     /// otherwise returns None.
-    val tryRefl<'a, 'b> : Teq<'a, 'b> option
+    val tryRefl<'a, 'b> : option<Teq<'a, 'b>>
 
     /// Order isn't important
     /// a = b => b = a
@@ -369,22 +369,22 @@ module Teq =
         val believeMe<'a, 'b, 'a2, 'b2> : Teq<'a, 'b> -> Teq<'a2, 'b2>
 
         /// Given a type equality between two types, returns the type equality on the corresponding array types.
-        val array<'a, 'b> : Teq<'a, 'b> -> Teq<'a array, 'b array>
+        val array<'a, 'b> : Teq<'a, 'b> -> Teq<array<'a>, array<'b>>
 
         /// Given a type equality between two array types, returns the type equality on the corresponding element types.
-        val arrayOf<'a, 'b> : Teq<'a array, 'b array> -> Teq<'a, 'b>
+        val arrayOf<'a, 'b> : Teq<array<'a>, array<'b>> -> Teq<'a, 'b>
 
         /// Given a type equality between two types, returns the type equality on the corresponding list types.
-        val list<'a, 'b> : Teq<'a, 'b> -> Teq<'a list, 'b list>
+        val list<'a, 'b> : Teq<'a, 'b> -> Teq<list<'a>, list<'b>>
 
         /// Given a type equality between two list types, returns the type equality on the corresponding element types.
-        val listOf<'a, 'b> : Teq<'a list, 'b list> -> Teq<'a, 'b>
+        val listOf<'a, 'b> : Teq<list<'a>, list<'b>> -> Teq<'a, 'b>
 
         /// Given a type equality between two types, returns the type equality on the corresponding option types.
-        val option<'a, 'b> : Teq<'a, 'b> -> Teq<'a option, 'b option>
+        val option<'a, 'b> : Teq<'a, 'b> -> Teq<option<'a>, option<'b>>
 
         /// Given a type equality between two option types, returns the type equality on the corresponding element types.
-        val optionOf<'a, 'b> : Teq<'a option, 'b option> -> Teq<'a, 'b>
+        val optionOf<'a, 'b> : Teq<option<'a>, option<'b>> -> Teq<'a, 'b>
 
         /// Given a type equality between two types 'domain1 and 'domain2, returns the type equality
         /// on the function types ('domain1 -> 'range) and ('domain2 -> 'range), for any arbitrary 'range.
@@ -439,7 +439,7 @@ module Teq =
 
     /// Returns a Teq when the two type parameters have the same value,
     /// otherwise returns None.
-    val tryRefl<'a, 'b> : Teq<'a, 'b> option
+    val tryRefl<'a, 'b> : option<Teq<'a, 'b>>
 
     /// Order isn't important
     /// a = b => b = a
@@ -491,22 +491,22 @@ module Teq =
         val believeMe<'a, 'b, 'a2, 'b2> : Teq<'a, 'b> -> Teq<'a2, 'b2>
 
         /// Given a type equality between two types, returns the type equality on the corresponding array types.
-        val array<'a, 'b> : Teq<'a, 'b> -> Teq<'a array, 'b array>
+        val array<'a, 'b> : Teq<'a, 'b> -> Teq<array<'a>, array<'b>>
 
         /// Given a type equality between two array types, returns the type equality on the corresponding element types.
-        val arrayOf<'a, 'b> : Teq<'a array, 'b array> -> Teq<'a, 'b>
+        val arrayOf<'a, 'b> : Teq<array<'a>, array<'b>> -> Teq<'a, 'b>
 
         /// Given a type equality between two types, returns the type equality on the corresponding list types.
-        val list<'a, 'b> : Teq<'a, 'b> -> Teq<'a list, 'b list>
+        val list<'a, 'b> : Teq<'a, 'b> -> Teq<list<'a>, list<'b>>
 
         /// Given a type equality between two list types, returns the type equality on the corresponding element types.
-        val listOf<'a, 'b> : Teq<'a list, 'b list> -> Teq<'a, 'b>
+        val listOf<'a, 'b> : Teq<list<'a>, list<'b>> -> Teq<'a, 'b>
 
         /// Given a type equality between two types, returns the type equality on the corresponding option types.
-        val option<'a, 'b> : Teq<'a, 'b> -> Teq<'a option, 'b option>
+        val option<'a, 'b> : Teq<'a, 'b> -> Teq<option<'a>, option<'b>>
 
         /// Given a type equality between two option types, returns the type equality on the corresponding element types.
-        val optionOf<'a, 'b> : Teq<'a option, 'b option> -> Teq<'a, 'b>
+        val optionOf<'a, 'b> : Teq<option<'a>, option<'b>> -> Teq<'a, 'b>
 
         /// Given a type equality between two types 'domain1 and 'domain2, returns the type equality
         /// on the function types ('domain1 -> 'range) and ('domain2 -> 'range), for any arbitrary 'range.
@@ -584,7 +584,7 @@ open FSharp.Compiler.SourceCodeServices
 [<Sealed>]
 type CodeFormatter =
     /// Parse a source string using given config
-    static member ParseAsync : fileName:string * source:SourceOrigin * parsingOptions: FSharpParsingOptions * checker:FSharpChecker -> Async<(ParsedInput * string list) array>
+    static member ParseAsync : fileName:string * source:SourceOrigin * parsingOptions: FSharpParsingOptions * checker:FSharpChecker -> Async<array<(ParsedInput * list<string>)>>
 """
         config
     |> prepend newline
@@ -604,7 +604,7 @@ type CodeFormatter =
     /// Parse a source string using given config
     static member ParseAsync:
         fileName: string * source: SourceOrigin * parsingOptions: FSharpParsingOptions * checker: FSharpChecker ->
-        Async<(ParsedInput * string list) array>
+        Async<array<(ParsedInput * list<string>)>>
 """
 
 [<Test>]
@@ -632,7 +632,7 @@ let ``operator with constraint`` () =
     formatSourceString
         true
         """namespace Bar
-    val inline (.+.) : x : ^a Foo -> y : ^b Foo -> ^c Foo when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
+    val inline (.+.) : x : Foo< ^a > -> y : Foo< ^b > -> Foo< ^c > when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
 """
         { config with SpaceBeforeColon = true }
     |> prepend newline
@@ -641,7 +641,7 @@ let ``operator with constraint`` () =
         """
 namespace Bar
 
-val inline (.+.) : x : ^a Foo -> y : ^b Foo -> ^c Foo when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
+val inline (.+.) : x : Foo< ^a > -> y : Foo< ^b > -> Foo< ^c > when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
 """
 
 [<Test>]
@@ -649,7 +649,7 @@ let ``operator with named constraint`` () =
     formatSourceString
         true
         """namespace Bar
-    val inline (.+.) : x : ^a Foo -> y : ^b Foo -> z: ^c Foo when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
+    val inline (.+.) : x : Foo< ^a > -> y : Foo< ^b > -> z: Foo< ^c > when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
 """
         { config with SpaceBeforeColon = true }
     |> prepend newline
@@ -658,7 +658,7 @@ let ``operator with named constraint`` () =
         """
 namespace Bar
 
-val inline (.+.) : x : ^a Foo -> y : ^b Foo -> z : ^c Foo when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
+val inline (.+.) : x : Foo< ^a > -> y : Foo< ^b > -> z : Foo< ^c > when (^a or ^b) : (static member (+) : ^a * ^b -> ^c)
 """
 
 [<Test>]
@@ -686,7 +686,7 @@ let ``internal keyword before short record type, 830`` () =
     formatSourceString
         true
         """namespace Bar
-type 'a Baz =
+type Baz<'a> =
     internal {
         Value : 'a
     }
@@ -698,7 +698,7 @@ type 'a Baz =
         """
 namespace Bar
 
-type 'a Baz = internal { Value: 'a }
+type Baz<'a> = internal { Value: 'a }
 """
 
 [<Test>]
@@ -728,7 +728,7 @@ let ``multiple constraints on function declaration, 886`` () =
         """namespace Blah
 
 module Foo =
-    val inline sum : ('a -> ^value) -> 'a Foo -> ^value
+    val inline sum : ('a -> ^value) -> Foo<'a> -> ^value
         when ^value : (static member (+) : ^value * ^value -> ^value) and ^value : (static member Zero : ^value)
 """
         config
@@ -739,7 +739,7 @@ module Foo =
 namespace Blah
 
 module Foo =
-    val inline sum: ('a -> ^value) -> 'a Foo -> ^value
+    val inline sum: ('a -> ^value) -> Foo<'a> -> ^value
         when ^value: (static member (+): ^value * ^value -> ^value) and ^value: (static member Zero: ^value)
 """
 
@@ -904,9 +904,9 @@ let ``don't add duplicate parentheses for TypeAbbrev, 1057`` () =
     formatSourceString
         false
         """
-type AB = A -> B list * C -> D
-type AB = A -> (B list * C -> D)
-type AB = A -> ((B list * C -> D))
+type AB = A -> list<B> * C -> D
+type AB = A -> (list<B> * C -> D)
+type AB = A -> ((list<B> * C -> D))
 
 type AB = A -> (C -> D)
 """
@@ -915,9 +915,9 @@ type AB = A -> (C -> D)
     |> should
         equal
         """
-type AB = A -> B list * C -> D
-type AB = A -> (B list * C -> D)
-type AB = A -> ((B list * C -> D))
+type AB = A -> list<B> * C -> D
+type AB = A -> (list<B> * C -> D)
+type AB = A -> ((list<B> * C -> D))
 
 type AB = A -> (C -> D)
 """
@@ -929,7 +929,7 @@ let ``don't add duplicate parentheses for TypeAbbrev in signature file`` () =
         """
 namespace Foo
 
-type AB = A -> (B list * C -> D)
+type AB = A -> (list<B> * C -> D)
 """
         config
     |> prepend newline
@@ -938,7 +938,7 @@ type AB = A -> (B list * C -> D)
         """
 namespace Foo
 
-type AB = A -> (B list * C -> D)
+type AB = A -> (list<B> * C -> D)
 """
 
 [<Test>]
@@ -1324,7 +1324,7 @@ let ``comment above first DU case`` () =
         """
 namespace Baz
 
-type 'a Bar =
+type Bar<'a> =
     ///
     | Foo
     ///
@@ -1337,7 +1337,7 @@ type 'a Bar =
         """
 namespace Baz
 
-type 'a Bar =
+type Bar<'a> =
     ///
     | Foo
     ///
@@ -1566,7 +1566,7 @@ let ``long multiline prefix type name should be indented far enough, 1687`` () =
 namespace Foo
 
 type Bar =
-    member Hello : thing : XLongLongLongLongLongLongLongLong<bool -> 'a, bool -> 'b, bool -> 'c, bool -> 'd, bool -> ('e -> 'f) -> 'g, ('h -> 'i) -> 'j> * item : int list -> LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong
+    member Hello : thing : XLongLongLongLongLongLongLongLong<bool -> 'a, bool -> 'b, bool -> 'c, bool -> 'd, bool -> ('e -> 'f) -> 'g, ('h -> 'i) -> 'j> * item : list<int> -> LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong
 """
         { config with
               SpaceBeforeUppercaseInvocation = true
@@ -1587,7 +1587,7 @@ type Bar =
         thing : XLongLongLongLongLongLongLongLong<bool -> 'a, bool -> 'b, bool -> 'c, bool -> 'd, bool
                                                       -> ('e -> 'f)
                                                       -> 'g, ('h -> 'i) -> 'j>
-        * item : int list ->
+        * item : list<int> ->
         LongLongLongLongLongLongLongLongLongLongLongLongLongLongLongLong
 """
 

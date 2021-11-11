@@ -1360,12 +1360,12 @@ let ``record with an access modifier and a static member, 1300, 657`` () =
 type RequestParser<'ctx, 'a> =
     internal
         { consumedFields: Set<ConsumedFieldName>
-          parse: 'ctx -> Request -> Async<Result<'a, Error list>>
-          prohibited: ProhibitedRequestGetter list }
+          parse: 'ctx -> Request -> Async<Result<'a, list<Error>>>
+          prohibited: list<ProhibitedRequestGetter> }
 
         static member internal Create
             (
-                consumedFields, parse: 'ctx -> Request -> Async<Result<'a, Error list>>
+                consumedFields, parse: 'ctx -> Request -> Async<Result<'a, list<Error>>>
             ) : RequestParser<'ctx, 'a> =
             { consumedFields = consumedFields
               parse = parse
@@ -1380,13 +1380,13 @@ type RequestParser<'ctx, 'a> =
 type RequestParser<'ctx, 'a> =
     internal
         { consumedFields: Set<ConsumedFieldName>
-          parse: 'ctx -> Request -> Async<Result<'a, Error list>>
-          prohibited: ProhibitedRequestGetter list }
+          parse: 'ctx -> Request -> Async<Result<'a, list<Error>>>
+          prohibited: list<ProhibitedRequestGetter> }
 
     static member internal Create
         (
             consumedFields,
-            parse: 'ctx -> Request -> Async<Result<'a, Error list>>
+            parse: 'ctx -> Request -> Async<Result<'a, list<Error>>>
         ) : RequestParser<'ctx, 'a> =
         { consumedFields = consumedFields
           parse = parse

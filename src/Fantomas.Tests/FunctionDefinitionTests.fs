@@ -509,7 +509,7 @@ let ``respect page-width setting in function signature, 495`` () =
     formatSourceString
         false
         """
-let fold (funcs : ResultFunc<'Input, 'Output, 'TError> seq) (input : 'Input) : Result<'Output list, 'TError list> =
+let fold (funcs : seq<ResultFunc<'Input, 'Output, 'TError>>) (input : 'Input) : Result<list<'Output>, list<'TError>> =
     let mutable anyErrors = false
     let mutable collectedOutputs = []
     let mutable collectedErrors = []
@@ -535,9 +535,9 @@ let fold (funcs : ResultFunc<'Input, 'Output, 'TError> seq) (input : 'Input) : R
         equal
         """
 let fold
-    (funcs : ResultFunc<'Input, 'Output, 'TError> seq)
+    (funcs : seq<ResultFunc<'Input, 'Output, 'TError>>)
     (input : 'Input)
-    : Result<'Output list, 'TError list> =
+    : Result<list<'Output>, list<'TError>> =
     let mutable anyErrors = false
     let mutable collectedOutputs = []
     let mutable collectedErrors = []
@@ -580,10 +580,10 @@ let ``internal keyword included in function signature length check`` () =
     formatSourceString
         false
         """
-  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : StrongNameKeyPair option) =
+  let internal UpdateStrongName01 (assembly : AssemblyDefinition) (key : option<StrongNameKeyPair>) =
     assembly.Name
 
-  let UpdateStrongNamingX (assembly : AssemblyDefinition) (key : StrongNameKeyPair option) =
+  let UpdateStrongName02 (assembly : AssemblyDefinition) (key : option<StrongNameKeyPair>) =
     assembly.Name
 """
         { config with
@@ -593,13 +593,13 @@ let ``internal keyword included in function signature length check`` () =
     |> should
         equal
         """
-let internal UpdateStrongNaming
+let internal UpdateStrongName01
     (assembly : AssemblyDefinition)
-    (key : StrongNameKeyPair option)
+    (key : option<StrongNameKeyPair>)
     =
     assembly.Name
 
-let UpdateStrongNamingX (assembly : AssemblyDefinition) (key : StrongNameKeyPair option) =
+let UpdateStrongName02 (assembly : AssemblyDefinition) (key : option<StrongNameKeyPair>) =
     assembly.Name
 """
 
@@ -728,7 +728,7 @@ let private addTaskToScheduler
 let ``long function signature should align with equal sign, 883`` () =
     formatSourceString
         false
-        """let readModel (updateState : 'State -> EventEnvelope<'Event> list -> 'State) (initState : 'State) : ReadModel<'Event, 'State> =
+        """let readModel (updateState : 'State -> list<EventEnvelope<'Event>> -> 'State) (initState : 'State) : ReadModel<'Event, 'State> =
     ()
 """
         { config with
@@ -739,7 +739,7 @@ let ``long function signature should align with equal sign, 883`` () =
         equal
         """
 let readModel
-  (updateState : 'State -> EventEnvelope<'Event> list -> 'State)
+  (updateState : 'State -> list<EventEnvelope<'Event>> -> 'State)
   (initState : 'State)
   : ReadModel<'Event, 'State> =
   ()
@@ -749,7 +749,7 @@ let readModel
 let ``long function signature should align with equal sign, no return type`` () =
     formatSourceString
         false
-        """let readModel (updateState : 'State -> EventEnvelope<'Event> list -> 'State) (initState : 'State) =
+        """let readModel (updateState : 'State -> list<EventEnvelope<'Event>> -> 'State) (initState : 'State) =
     ()
 """
         { config with
@@ -761,7 +761,7 @@ let ``long function signature should align with equal sign, no return type`` () 
         equal
         """
 let readModel
-  (updateState : 'State -> EventEnvelope<'Event> list -> 'State)
+  (updateState : 'State -> list<EventEnvelope<'Event>> -> 'State)
   (initState : 'State)
   =
   ()
@@ -772,7 +772,7 @@ let ``long function signature with single tuple parameter and no return type`` (
     formatSourceString
         false
         """
-let fold (funcs: ResultFunc<'Input, 'Output, 'TError> seq, input: 'Input, input2: 'Input, input3: 'Input) =
+let fold (funcs: seq<ResultFunc<'Input, 'Output, 'TError>>, input: 'Input, input2: 'Input, input3: 'Input) =
     ()
 """
         { config with MaxLineLength = 90 }
@@ -782,7 +782,7 @@ let fold (funcs: ResultFunc<'Input, 'Output, 'TError> seq, input: 'Input, input2
         """
 let fold
     (
-        funcs: ResultFunc<'Input, 'Output, 'TError> seq,
+        funcs: seq<ResultFunc<'Input, 'Output, 'TError>>,
         input: 'Input,
         input2: 'Input,
         input3: 'Input
@@ -795,7 +795,7 @@ let ``long function signature with single tuple parameter and return type`` () =
     formatSourceString
         false
         """
-let fold (funcs: ResultFunc<'Input, 'Output, 'TError> seq, input: 'Input, input2: 'Input, input3: 'Input) : Result<'Output list, 'TError list> =
+let fold (funcs: seq<ResultFunc<'Input, 'Output, 'TError>>, input: 'Input, input2: 'Input, input3: 'Input) : Result<list<'Output>, list<'TError>> =
     ()
 """
         { config with MaxLineLength = 90 }
@@ -805,11 +805,11 @@ let fold (funcs: ResultFunc<'Input, 'Output, 'TError> seq, input: 'Input, input2
         """
 let fold
     (
-        funcs: ResultFunc<'Input, 'Output, 'TError> seq,
+        funcs: seq<ResultFunc<'Input, 'Output, 'TError>>,
         input: 'Input,
         input2: 'Input,
         input3: 'Input
-    ) : Result<'Output list, 'TError list> =
+    ) : Result<list<'Output>, list<'TError>> =
     ()
 """
 
@@ -818,7 +818,7 @@ let ``align long function signature to indentation without return type `` () =
     formatSourceString
         false
         """
-let fold (funcs: ResultFunc<'Input, 'Output, 'TError> seq) (input: 'Input) (input2: 'Input) (input3: 'Input) = ()
+let fold (funcs: seq<ResultFunc<'Input, 'Output, 'TError>>) (input: 'Input) (input2: 'Input) (input3: 'Input) = ()
 """
         { config with
               MaxLineLength = 60
@@ -828,7 +828,7 @@ let fold (funcs: ResultFunc<'Input, 'Output, 'TError> seq) (input: 'Input) (inpu
         equal
         """
 let fold
-    (funcs: ResultFunc<'Input, 'Output, 'TError> seq)
+    (funcs: seq<ResultFunc<'Input, 'Output, 'TError>>)
     (input: 'Input)
     (input2: 'Input)
     (input3: 'Input)
@@ -840,7 +840,7 @@ let fold
 let ``align long function signature to indentation with return type`` () =
     formatSourceString
         false
-        """let readModel (updateState : 'State -> EventEnvelope<'Event> list -> 'State) (initState : 'State) : ReadModel<'Event, 'State> =
+        """let readModel (updateState : 'State -> list<EventEnvelope<'Event>> -> 'State) (initState : 'State) : ReadModel<'Event, 'State> =
     ()
 """
         { config with
@@ -852,7 +852,7 @@ let ``align long function signature to indentation with return type`` () =
         equal
         """
 let readModel
-  (updateState : 'State -> EventEnvelope<'Event> list -> 'State)
+  (updateState : 'State -> list<EventEnvelope<'Event>> -> 'State)
   (initState : 'State)
   : ReadModel<'Event, 'State>
   =
@@ -1385,12 +1385,12 @@ let ``function argument with parenthesis, 1470`` () =
     formatSourceString
         false
         """
-let bazka (f: ((FooTypeX -> string * string list)) Bar) = failwith ""
+let bazka (f: Bar<((FooTypeX -> string * list<string>))>) = failwith ""
 """
         config
     |> prepend newline
     |> should
         equal
         """
-let bazka (f: ((FooTypeX -> string * string list)) Bar) = failwith ""
+let bazka (f: Bar<((FooTypeX -> string * list<string>))>) = failwith ""
 """

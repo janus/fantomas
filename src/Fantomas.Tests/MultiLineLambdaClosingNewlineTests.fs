@@ -571,7 +571,7 @@ namespace Bar
 [<RequireQualifiedAccess>]
 module Foo =
     /// Blah
-    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : ('a * System.TimeSpan) list) : bool =
+    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : list<('a * System.TimeSpan)>) : bool =
         List.length x = List.length y
         &&
         List.forall2
@@ -600,7 +600,7 @@ namespace Bar
 [<RequireQualifiedAccess>]
 module Foo =
     /// Blah
-    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : ('a * System.TimeSpan) list) : bool =
+    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : list<('a * System.TimeSpan)>) : bool =
         List.length x = List.length y
         && List.forall2
             //
@@ -619,7 +619,7 @@ namespace Bar
 [<RequireQualifiedAccess>]
 module Foo =
     /// Blah
-    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : ('a * System.TimeSpan) list) : bool =
+    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : list<('a * System.TimeSpan)>) : bool =
         List.length x = List.length y
         && List.forall2
             //
@@ -647,7 +647,7 @@ namespace Bar
 [<RequireQualifiedAccess>]
 module Foo =
     /// Blah
-    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : ('a * System.TimeSpan) list) : bool =
+    let bang<'a when 'a : equality> (a : Foo<'a>) (ans : list<('a * System.TimeSpan)>) : bool =
         List.length x = List.length y
         && List.forall2
             //

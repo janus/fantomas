@@ -942,7 +942,7 @@ let rec runPendingJobs () =
 let ``let + let + let bang + if/then/else in ce`` () =
     formatSourceString
         false
-        """let rec private appendToAzureTableStorage (cosmoEvents: EventWrite<JsonValue> seq) =
+        """let rec private appendToAzureTableStorage (cosmoEvents: seq<EventWrite<JsonValue>>) =
     task {
         let moreThanBatchLimit = Seq.length cosmoEvents > BatchLimit
 
@@ -965,7 +965,7 @@ let ``let + let + let bang + if/then/else in ce`` () =
     |> should
         equal
         """
-let rec private appendToAzureTableStorage (cosmoEvents: EventWrite<JsonValue> seq) =
+let rec private appendToAzureTableStorage (cosmoEvents: seq<EventWrite<JsonValue>>) =
     task {
         let moreThanBatchLimit = Seq.length cosmoEvents > BatchLimit
 
@@ -987,7 +987,7 @@ let rec private appendToAzureTableStorage (cosmoEvents: EventWrite<JsonValue> se
 let ``short do bang in ce`` () =
     formatSourceString
         false
-        """let appendEvents userId (events: Event list) =
+        """let appendEvents userId (events: list<Event>) =
     let cosmoEvents = List.map (createEvent userId) events
     task { do! appendToAzureTableStorage cosmoEvents }
 """
@@ -996,7 +996,7 @@ let ``short do bang in ce`` () =
     |> should
         equal
         """
-let appendEvents userId (events: Event list) =
+let appendEvents userId (events: list<Event>) =
     let cosmoEvents = List.map (createEvent userId) events
     task { do! appendToAzureTableStorage cosmoEvents }
 """
@@ -2053,13 +2053,13 @@ let ``overloads of custom keywords in computation expressions`` () =
 open System
 
 type InputKind =
-    | Text of placeholder:string option
-    | Password of placeholder: string option
+    | Text of placeholder:option<string>
+    | Password of placeholder: option<string>
 
 type InputOptions =
-  { Label: string option
+  { Label: option<string>
     Kind : InputKind
-    Validators : (string -> bool) array }
+    Validators : array<(string -> bool)> }
 
 type InputBuilder() =
     member t.Yield(_) =
@@ -2120,13 +2120,13 @@ let password =
 open System
 
 type InputKind =
-    | Text of placeholder: string option
-    | Password of placeholder: string option
+    | Text of placeholder: option<string>
+    | Password of placeholder: option<string>
 
 type InputOptions =
-    { Label: string option
+    { Label: option<string>
       Kind: InputKind
-      Validators: (string -> bool) array }
+      Validators: array<(string -> bool)> }
 
 type InputBuilder() =
     member t.Yield(_) =
@@ -2176,7 +2176,7 @@ let ``multiline do bang`` () =
         false
         """
 type ProjectController(checker: FSharpChecker) =
-  member x.LoadWorkspace (files: string list) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
+  member x.LoadWorkspace (files: list<string>) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
     async {
       match Environment.workspaceLoadDelay () with
       | delay when delay > TimeSpan.Zero ->
@@ -2196,7 +2196,7 @@ type ProjectController(checker: FSharpChecker) =
         equal
         """
 type ProjectController(checker: FSharpChecker) =
-  member x.LoadWorkspace (files: string list) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
+  member x.LoadWorkspace (files: list<string>) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
     async {
       match Environment.workspaceLoadDelay () with
       | delay when delay > TimeSpan.Zero ->
@@ -2217,7 +2217,7 @@ let ``multiline do`` () =
         false
         """
 type ProjectController(checker: FSharpChecker) =
-  member x.LoadWorkspace (files: string list) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
+  member x.LoadWorkspace (files: list<string>) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
     async {
       match Environment.workspaceLoadDelay () with
       | delay when delay > TimeSpan.Zero ->
@@ -2234,7 +2234,7 @@ type ProjectController(checker: FSharpChecker) =
         equal
         """
 type ProjectController(checker: FSharpChecker) =
-  member x.LoadWorkspace (files: string list) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
+  member x.LoadWorkspace (files: list<string>) (tfmForScripts: FSIRefs.TFM) onProjectLoaded (generateBinlog: bool) =
     async {
       match Environment.workspaceLoadDelay () with
       | delay when delay > TimeSpan.Zero ->

@@ -40,7 +40,7 @@ let ``comments on local let bindings`` () =
 let print_30_permut() =
 
     /// declare and initialize
-    let permutation : int array = Array.init n (fun i -> Console.Write(i+1); i)
+    let permutation : array<int> = Array.init n (fun i -> Console.Write(i+1); i)
     permutation
     """
         config
@@ -51,7 +51,7 @@ let print_30_permut() =
 let print_30_permut () =
 
     /// declare and initialize
-    let permutation: int array =
+    let permutation: array<int> =
         Array.init
             n
             (fun i ->
@@ -69,7 +69,7 @@ let ``comments on local let bindings with desugared lambda`` () =
 let print_30_permut() =
 
     /// declare and initialize
-    let permutation : int array = Array.init n (fun (i,j) -> Console.Write(i+1); i)
+    let permutation : array<int> = Array.init n (fun (i,j) -> Console.Write(i+1); i)
     permutation
     """
         config
@@ -80,7 +80,7 @@ let print_30_permut() =
 let print_30_permut () =
 
     /// declare and initialize
-    let permutation: int array =
+    let permutation: array<int> =
         Array.init
             n
             (fun (i, j) ->
@@ -344,7 +344,7 @@ type IlxGenOptions =
       workAroundReflectionEmitBugs: bool
       emitConstantArraysUsingStaticDataBlobs: bool
       // If this is set, then the last module becomes the "main" module and its toplevel bindings are executed at startup
-      mainMethodInfo: Tast.Attribs option
+      mainMethodInfo: option<Tast.Attribs>
       localOptimizationsAreOn: bool
       generateDebugSymbols: bool
       testFlagEmitFeeFeeAs100001: bool
@@ -374,7 +374,7 @@ type IlxGenOptions =
       workAroundReflectionEmitBugs: bool;
       emitConstantArraysUsingStaticDataBlobs: bool;
       // If this is set, then the last module becomes the "main" module and its toplevel bindings are executed at startup
-      mainMethodInfo: Tast.Attribs option;
+      mainMethodInfo: option<Tast.Attribs>;
       localOptimizationsAreOn: bool;
       generateDebugSymbols: bool;
       testFlagEmitFeeFeeAs100001: bool;
@@ -1023,7 +1023,7 @@ let ``multiple line comments form a single trivia`` () =
 /// more freedom about typechecking these expressions.
 /// LongIdent can be empty list - it is used to denote that name of some AST element is absent (i.e. empty type name in inherit)
 type LongIdentWithDots =
-    | LongIdentWithDots of id: LongIdent * dotms: range list
+    | LongIdentWithDots of id: LongIdent * dotms: list<range>
 """
         config
     |> prepend newline
@@ -1037,7 +1037,7 @@ type LongIdentWithDots =
 /// if dotms.Length = lid.Length, then the parser must have reported an error, so the typechecker is allowed
 /// more freedom about typechecking these expressions.
 /// LongIdent can be empty list - it is used to denote that name of some AST element is absent (i.e. empty type name in inherit)
-type LongIdentWithDots = LongIdentWithDots of id: LongIdent * dotms: range list
+type LongIdentWithDots = LongIdentWithDots of id: LongIdent * dotms: list<range>
 """
 
 [<Test>]

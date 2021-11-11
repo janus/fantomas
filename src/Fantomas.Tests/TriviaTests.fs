@@ -490,7 +490,7 @@ let ``multiple line comments form a single trivia`` () =
 /// more freedom about typechecking these expressions.
 /// LongIdent can be empty list - it is used to denote that name of some AST element is absent (i.e. empty type name in inherit)
 type LongIdentWithDots =
-    | LongIdentWithDots of id: LongIdent * dotms: range list
+    | LongIdentWithDots of id: LongIdent * dotms: list<range>
 """
 
     let trivia = toTrivia source |> List.head

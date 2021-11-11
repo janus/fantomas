@@ -441,9 +441,9 @@ let ``single line and multiline module decls`` () =
 let b =  8
 type Model =
     { ActiveTab : ActiveTab
-      Trivia : Trivia list
-      TriviaNodes: TriviaNode list
-      Exception: exn option
+      Trivia : list<Trivia>
+      TriviaNodes: list<TriviaNode>
+      Exception: option<exn>
       IsLoading: bool
       ActiveByTriviaNodeIndex: int
       ActiveByTriviaIndex: int
@@ -466,9 +466,9 @@ let b = 8
 
 type Model =
     { ActiveTab: ActiveTab
-      Trivia: Trivia list
-      TriviaNodes: TriviaNode list
-      Exception: exn option
+      Trivia: list<Trivia>
+      TriviaNodes: list<TriviaNode>
+      Exception: option<exn>
       IsLoading: bool
       ActiveByTriviaNodeIndex: int
       ActiveByTriviaIndex: int
@@ -492,9 +492,9 @@ let b =  8
 
 type Model =
     { ActiveTab : ActiveTab
-      Trivia : Trivia list
-      TriviaNodes: TriviaNode list
-      Exception: exn option
+      Trivia : list<Trivia>
+      TriviaNodes: list<TriviaNode>
+      Exception: option<exn>
       IsLoading: bool
       ActiveByTriviaNodeIndex: int
       ActiveByTriviaIndex: int
@@ -518,9 +518,9 @@ let b = 8
 
 type Model =
     { ActiveTab: ActiveTab
-      Trivia: Trivia list
-      TriviaNodes: TriviaNode list
-      Exception: exn option
+      Trivia: list<Trivia>
+      TriviaNodes: list<TriviaNode>
+      Exception: option<exn>
       IsLoading: bool
       ActiveByTriviaNodeIndex: int
       ActiveByTriviaIndex: int
