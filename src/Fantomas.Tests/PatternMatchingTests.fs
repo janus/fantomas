@@ -2087,3 +2087,45 @@ match foo with
     ) -> bar ()
 | _ -> ()
 """
+
+[<Test>]
+let ``vanity alignment removed from multiline match expression`` () =
+    formatSourceString
+        false
+        """
+match directoryRouter.GetIdentity()
+      |> self.ServerDescriptors.TryFind with
+| None -> CircuitNodeDetail.FastCreate
+| Some serverDescriptor -> self.ConvertToCircuitNodeDetail serverDescriptor
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match
+    directoryRouter.GetIdentity()
+    |> self.ServerDescriptors.TryFind
+    with
+| None -> CircuitNodeDetail.FastCreate
+| Some serverDescriptor -> self.ConvertToCircuitNodeDetail serverDescriptor
+"""
+
+[<Test>]
+let ``match expression covering one line`` () =
+    formatSourceString
+        false
+        """
+match directoryRouter.GetIdentity() with
+| None -> CircuitNodeDetail.FastCreate
+| Some serverDescriptor ->
+    self.ConvertToCircuitNodeDetail serverDescriptor"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match directoryRouter.GetIdentity() with
+| None -> CircuitNodeDetail.FastCreate
+| Some serverDescriptor -> self.ConvertToCircuitNodeDetail serverDescriptor
+"""

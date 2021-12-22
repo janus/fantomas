@@ -1614,7 +1614,10 @@ and genExpr astContext synExpr ctx =
                 +> expressionFitsOnRestOfLine
                     (genExpr astContext e
                      +> genWithAfterMatch withRange)
-                    (genExprInIfOrMatch astContext e
+                    (genExprInIfOrMatch
+                        { astContext with
+                              IsInsideMatchClausePattern = true }
+                        e
                      +> (sepNlnUnlessLastEventIsNewline
                          +> (genWithAfterMatch withRange)))
 
@@ -3320,6 +3323,14 @@ and genExprInIfOrMatch astContext (e: SynExpr) (ctx: Context) : Context =
         let fallback =
             if hasCommentBeforeExpr e then
                 genExpr astContext e |> indentNlnUnindentNln
+            elif astContext.IsInsideMatchClausePattern then
+                indent
+                +> sepNln
+                +> genExpr
+                    { astContext with
+                          IsInsideMatchClausePattern = false }
+                    e
+                +> unindent
             else
                 sepNlnWhenWriteBeforeNewlineNotEmpty sepNone
                 +> genExpr astContext e
