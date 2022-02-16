@@ -189,9 +189,9 @@ module Card =
         | Outline of bool
         | Color of Common.Color
         | Body of bool
-        | Custom of IHTMLProp list
+        | Custom of list<IHTMLProp>
 
-    let card (props: CardProps seq) (elems: ReactElement seq): ReactElement =
+    let card (props: seq<CardProps>) (elems: seq<ReactElement>): ReactElement =
         let customProps =
             props
             |> Seq.collect (function
@@ -226,9 +226,9 @@ module Card =
         | Outline of bool
         | Color of Common.Color
         | Body of bool
-        | Custom of IHTMLProp list
+        | Custom of list<IHTMLProp>
 
-    let card (props: CardProps seq) (elems: ReactElement seq) : ReactElement =
+    let card (props: seq<CardProps>) (elems: seq<ReactElement>) : ReactElement =
         let customProps =
             props
             |> Seq.collect (function
@@ -461,7 +461,7 @@ let ``has symbol in signature requires paren, 564`` () =
     formatSourceString
         false
         """module Bar =
-  let foo (_ : #(int seq)) = 1
+  let foo (_ : #(seq<int>)) = 1
   let meh (_: #seq<int>) = 2
   let evenMoreMeh (_: #seq<int>) : int = 2
 """
@@ -475,7 +475,7 @@ let ``has symbol in signature requires paren, 564`` () =
         equal
         """
 module Bar =
-    let foo(_: #(int seq)) = 1
+    let foo(_: #(seq<int>)) = 1
     let meh(_: #seq<int>) = 2
     let evenMoreMeh(_: #seq<int>) : int = 2
 """
@@ -749,7 +749,7 @@ let useEntries month year =
 
     let filter = Projections.isInMonth month year
 
-    let sortMapAndToArray (input: Transaction seq) =
+    let sortMapAndToArray (input: seq<Transaction>) =
         input
         |> Seq.sortBy (fun ai -> ai.Created)
         |> Seq.map (fun ai ->
@@ -787,7 +787,7 @@ let useEntries month year =
 
     let filter = Projections.isInMonth month year
 
-    let sortMapAndToArray (input: Transaction seq) =
+    let sortMapAndToArray (input: seq<Transaction>) =
         input
         |> Seq.sortBy (fun ai -> ai.Created)
         |> Seq.map (fun ai ->
@@ -1728,7 +1728,7 @@ let useGeolocation : unit ->
     {| latitude: float
        longitude: float
        loading: bool
-       error: obj option |} =
+       error: option<obj> |} =
         import "useGeolocation" "react-use"
 
 type Viewport =
@@ -1747,7 +1747,7 @@ let useGeolocation: unit
     -> {| latitude: float
           longitude: float
           loading: bool
-          error: obj option |} =
+          error: option<obj> |} =
     import "useGeolocation" "react-use"
 
 type Viewport =

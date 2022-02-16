@@ -474,7 +474,7 @@ let ``some spacing is still lost in and around #if blocks, 303`` () =
     formatSourceString
         false
         """
-  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : StrongNameKeyPair option) =
+  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : option<StrongNameKeyPair>) =
     let assemblyName = assembly.Name
 #if NETCOREAPP2_0
     do
@@ -497,7 +497,7 @@ let ``some spacing is still lost in and around #if blocks, 303`` () =
     |> should
         equal
         """
-let internal UpdateStrongNaming (assembly: AssemblyDefinition) (key: StrongNameKeyPair option) =
+let internal UpdateStrongNaming (assembly: AssemblyDefinition) (key: option<StrongNameKeyPair>) =
     let assemblyName = assembly.Name
 #if NETCOREAPP2_0
     do
@@ -522,7 +522,7 @@ let ``some spacing is still lost in and around #if blocks, no defines`` () =
     formatSourceStringWithDefines
         []
         """
-  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : StrongNameKeyPair option) =
+  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : option<StrongNameKeyPair>) =
     let assemblyName = assembly.Name
 #if NETCOREAPP2_0
     do
@@ -545,7 +545,7 @@ let ``some spacing is still lost in and around #if blocks, no defines`` () =
     |> should
         equal
         """
-let internal UpdateStrongNaming (assembly: AssemblyDefinition) (key: StrongNameKeyPair option) =
+let internal UpdateStrongNaming (assembly: AssemblyDefinition) (key: option<StrongNameKeyPair>) =
     let assemblyName = assembly.Name
 #if NETCOREAPP2_0
 
@@ -570,7 +570,7 @@ let ``some spacing is still lost in and around #if blocks, NETCOREAPP2_0`` () =
     formatSourceStringWithDefines
         [ "NETCOREAPP2_0" ]
         """
-  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : StrongNameKeyPair option) =
+  let internal UpdateStrongNaming (assembly : AssemblyDefinition) (key : option<StrongNameKeyPair>) =
     let assemblyName = assembly.Name
 #if NETCOREAPP2_0
     do
@@ -593,7 +593,7 @@ let ``some spacing is still lost in and around #if blocks, NETCOREAPP2_0`` () =
     |> should
         equal
         """
-let internal UpdateStrongNaming (assembly: AssemblyDefinition) (key: StrongNameKeyPair option) =
+let internal UpdateStrongNaming (assembly: AssemblyDefinition) (key: option<StrongNameKeyPair>) =
     let assemblyName = assembly.Name
 #if NETCOREAPP2_0
     do
@@ -2323,7 +2323,7 @@ let ``directive above SynExpr.Do, 1333`` () =
 module ReactHookExtensions =
     type React with
         [<Hook>]
-        static member useDeferred(operation: Async<'T>, dependencies: obj array) =
+        static member useDeferred(operation: Async<'T>, dependencies: array<obj>) =
             let (deferred, setDeferred) = React.useState(Deferred.HasNotStartedYet)
             let token = React.useCancellationToken()
             let executeOperation = async {
@@ -2351,7 +2351,7 @@ module ReactHookExtensions =
 module ReactHookExtensions =
     type React with
         [<Hook>]
-        static member useDeferred(operation: Async<'T>, dependencies: obj array) =
+        static member useDeferred(operation: Async<'T>, dependencies: array<obj>) =
             let (deferred, setDeferred) = React.useState (Deferred.HasNotStartedYet)
             let token = React.useCancellationToken ()
 
@@ -2732,10 +2732,10 @@ let ``type definition in signature file wrapped with hash directives, 1115`` () 
         """
 namespace X
 
-type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * AssemblyReference list
+type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * list<AssemblyReference>
 
 #if !NO_EXTENSIONTYPING
-type ResolvedExtensionReference = ResolvedExtensionReference of string * AssemblyReference list * Tainted<ITypeProvider> list
+type ResolvedExtensionReference = ResolvedExtensionReference of string * list<AssemblyReference> * list<Tainted<ITypeProvider>>
 #endif
 """
         config
@@ -2745,10 +2745,10 @@ type ResolvedExtensionReference = ResolvedExtensionReference of string * Assembl
         """
 namespace X
 
-type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * AssemblyReference list
+type UnresolvedAssemblyReference = UnresolvedAssemblyReference of string * list<AssemblyReference>
 
 #if !NO_EXTENSIONTYPING
 type ResolvedExtensionReference =
-    | ResolvedExtensionReference of string * AssemblyReference list * Tainted<ITypeProvider> list
+    | ResolvedExtensionReference of string * list<AssemblyReference> * list<Tainted<ITypeProvider>>
 #endif
 """
