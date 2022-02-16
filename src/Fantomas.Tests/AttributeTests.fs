@@ -653,7 +653,7 @@ type RoleAdminImportController(akkaService: AkkaService) =
   [<HttpPost("jobs/create");
     DisableRequestSizeLimit;
     RequestFormLimits(MultipartBodyLengthLimit = 509715200L);
-    ProducesResponseType(typeof<RoleChangeSummaryDto list>, 200);
+    ProducesResponseType(typeof<list<RoleChangeSummaryDto>>, 200);
     ProducesResponseType(404);
     Authorize(AuthorizationScopePolicies.Write)>]
   member _.StartJob(file: IFormFile, [<FromQuery>] args: ImporterJobArgs) =
@@ -700,7 +700,7 @@ type RoleAdminImportController(akkaService: AkkaService) =
     [<HttpPost("jobs/create");
       DisableRequestSizeLimit;
       RequestFormLimits(MultipartBodyLengthLimit = 509715200L);
-      ProducesResponseType(typeof<RoleChangeSummaryDto list>, 200);
+      ProducesResponseType(typeof<list<RoleChangeSummaryDto>>, 200);
       ProducesResponseType(404);
       Authorize(AuthorizationScopePolicies.Write)>]
     member _.StartJob(file: IFormFile, [<FromQuery>] args: ImporterJobArgs) =

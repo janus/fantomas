@@ -246,7 +246,7 @@ let ``recursive types`` () =
     formatSourceString
         false
         """
-type Cmd<'msg> = Cmd'<'msg> list
+type Cmd<'msg> = list<Cmd'<'msg>>
 and private Cmd'<'msg> = Send<'msg> -> unit
 """
         config
@@ -254,7 +254,7 @@ and private Cmd'<'msg> = Send<'msg> -> unit
     |> should
         equal
         """
-type Cmd<'msg> = Cmd'<'msg> list
+type Cmd<'msg> = list<Cmd'<'msg>>
 and private Cmd'<'msg> = Send<'msg> -> unit
 """
 
@@ -264,7 +264,7 @@ let ``multiline recursive types`` () =
         false
         """
 type ViewBinding<'model,'msg> = string * Variable<'model,'msg>
-and ViewBindings<'model,'msg> = ViewBinding<'model,'msg> list
+and ViewBindings<'model,'msg> = list<ViewBinding<'model,'msg>>
 and Variable<'model,'msg> =
     | Bind of Getter<'model>
     | BindTwoWay of Getter<'model> * Setter<'model,'msg>
@@ -279,7 +279,7 @@ and Variable<'model,'msg> =
         equal
         """
 type ViewBinding<'model, 'msg> = string * Variable<'model, 'msg>
-and ViewBindings<'model, 'msg> = ViewBinding<'model, 'msg> list
+and ViewBindings<'model, 'msg> = list<ViewBinding<'model, 'msg>>
 and Variable<'model, 'msg> =
     | Bind of Getter<'model>
     | BindTwoWay of Getter<'model> * Setter<'model, 'msg>
@@ -296,7 +296,7 @@ let ``recursive types in signature file`` () =
         """
 namespace Foobar
 
-type Cmd<'msg> = Cmd'<'msg> list
+type Cmd<'msg> = list<Cmd'<'msg>>
 and private Cmd'<'msg> = Send<'msg> -> unit
 """
         config
@@ -306,6 +306,6 @@ and private Cmd'<'msg> = Send<'msg> -> unit
         """
 namespace Foobar
 
-type Cmd<'msg> = Cmd'<'msg> list
+type Cmd<'msg> = list<Cmd'<'msg>>
 and private Cmd'<'msg> = Send<'msg> -> unit
 """

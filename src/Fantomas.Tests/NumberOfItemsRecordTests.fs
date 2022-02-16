@@ -716,7 +716,7 @@ type Args =
     { [<Foo "">]
       [<Bar>]
       [<Baz 1>]
-      Hi: int list }
+      Hi: list<int> }
 
 module Foo =
 
@@ -732,7 +732,7 @@ type Args =
     { [<Foo "">]
       [<Bar>]
       [<Baz 1>]
-      Hi: int list }
+      Hi: list<int> }
 
 module Foo =
 
@@ -826,7 +826,7 @@ let ``number of items sized record definitions are formatted properly`` () =
     formatSourceString
         false
         """
-type R = { a: int; b: string; c: float option }
+type R = { a: int; b: string; c: option<float> }
 type S = { AReallyLongExpressionThatIsMuchLongerThan50Characters: int }
     """
         { config with RecordMultilineFormatter = NumberOfItems }
@@ -837,7 +837,7 @@ type S = { AReallyLongExpressionThatIsMuchLongerThan50Characters: int }
 type R =
     { a: int
       b: string
-      c: float option }
+      c: option<float> }
 
 type S = { AReallyLongExpressionThatIsMuchLongerThan50Characters: int }
 """
@@ -849,7 +849,7 @@ let ``number of items sized record definitions with multiline block brackets on 
     formatSourceString
         false
         """
-type R = { a: int; b: string; c: float option }
+type R = { a: int; b: string; c: option<float> }
 type S = { AReallyLongExpressionThatIsMuchLongerThan50Characters: int }
     """
         { config with
@@ -863,7 +863,7 @@ type R =
     {
         a: int
         b: string
-        c: float option
+        c: option<float>
     }
 
 type S = { AReallyLongExpressionThatIsMuchLongerThan50Characters: int }

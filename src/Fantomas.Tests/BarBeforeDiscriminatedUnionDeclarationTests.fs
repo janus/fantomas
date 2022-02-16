@@ -61,7 +61,7 @@ let ``multiline DU case`` () =
 [<NoEquality; NoComparison>]
 type SynBinding =
     SynBinding of
-                        accessibility: SynAccess option *
+                        accessibility: option<SynAccess> *
                         kind: SynBindingKind *
                         mustInline: bool *
                         isMutable: bool *
@@ -69,7 +69,7 @@ type SynBinding =
                         xmlDoc: PreXmlDoc *
                         valData: SynValData *
                         headPat: SynPat *
-                        returnInfo: SynBindingReturnInfo option *
+                        returnInfo: option<SynBindingReturnInfo> *
                         expr: SynExpr *
                         range: range *
                         seqPoint: DebugPointAtBinding
@@ -82,7 +82,7 @@ type SynBinding =
 [<NoEquality; NoComparison>]
 type SynBinding =
     | SynBinding of
-        accessibility: SynAccess option *
+        accessibility: option<SynAccess> *
         kind: SynBindingKind *
         mustInline: bool *
         isMutable: bool *
@@ -90,7 +90,7 @@ type SynBinding =
         xmlDoc: PreXmlDoc *
         valData: SynValData *
         headPat: SynPat *
-        returnInfo: SynBindingReturnInfo option *
+        returnInfo: option<SynBindingReturnInfo> *
         expr: SynExpr *
         range: range *
         seqPoint: DebugPointAtBinding

@@ -1584,7 +1584,7 @@ let ``comment after [ should be preserved, 551`` () =
     formatSourceString
         false
         """
-let nestedList: obj list = [
+let nestedList: list<obj> = [
     "11111111aaaaaaaaa"
     "22222222aaaaaaaaa"
     "33333333aaaaaaaaa"
@@ -1600,7 +1600,7 @@ let nestedList: obj list = [
     |> should
         equal
         """
-let nestedList: obj list =
+let nestedList: list<obj> =
     [ "11111111aaaaaaaaa"
       "22222222aaaaaaaaa"
       "33333333aaaaaaaaa"
@@ -1616,7 +1616,7 @@ let ``comment after [| should be preserved, 551`` () =
     formatSourceString
         false
         """
-let nestedList: obj list = [|
+let nestedList: list<obj> = [|
     "11111111aaaaaaaaa"
     "22222222aaaaaaaaa"
     "33333333aaaaaaaaa"
@@ -1632,7 +1632,7 @@ let nestedList: obj list = [|
     |> should
         equal
         """
-let nestedList: obj list =
+let nestedList: list<obj> =
     [| "11111111aaaaaaaaa"
        "22222222aaaaaaaaa"
        "33333333aaaaaaaaa"
@@ -1647,7 +1647,7 @@ let ``comment after |] should be preserved, 551`` () =
     formatSourceString
         false
         """
-let nestedList: obj list = [|
+let nestedList: list<obj> = [|
     "11111111aaaaaaaaa"
     "22222222aaaaaaaaa"
     "33333333aaaaaaaaa"
@@ -1663,7 +1663,7 @@ let nestedList: obj list = [|
     |> should
         equal
         """
-let nestedList: obj list =
+let nestedList: list<obj> =
     [| "11111111aaaaaaaaa"
        "22222222aaaaaaaaa"
        "33333333aaaaaaaaa"
@@ -1678,7 +1678,7 @@ let ``line comment before nested ] should be preserved`` () =
     formatSourceString
         false
         """
-let nestedList: obj list = [
+let nestedList: list<obj> = [
     "11111111aaaaaaaaa"
     "22222222aaaaaaaaa"
     "33333333aaaaaaaaa"
@@ -1695,7 +1695,7 @@ let nestedList: obj list = [
     |> should
         equal
         """
-let nestedList: obj list =
+let nestedList: list<obj> =
     [ "11111111aaaaaaaaa"
       "22222222aaaaaaaaa"
       "33333333aaaaaaaaa"
@@ -1711,7 +1711,7 @@ let ``line comment before nested |] should be preserved`` () =
     formatSourceString
         false
         """
-let nestedList: obj list = [|
+let nestedList: list<obj> = [|
     "11111111aaaaaaaaa"
     "22222222aaaaaaaaa"
     "33333333aaaaaaaaa"
@@ -1728,7 +1728,7 @@ let nestedList: obj list = [|
     |> should
         equal
         """
-let nestedList: obj list =
+let nestedList: list<obj> =
     [| "11111111aaaaaaaaa"
        "22222222aaaaaaaaa"
        "33333333aaaaaaaaa"
@@ -1883,7 +1883,7 @@ let ``calling indexed item in list, 798`` () =
         false
         """namespace Foo
 
-type T = { A : (unit -> unit) array }
+type T = { A : array<(unit -> unit)> }
 module F =
   let f (a : T) =
     a.A.[0] ()
@@ -1895,7 +1895,7 @@ module F =
         """
 namespace Foo
 
-type T = { A: (unit -> unit) array }
+type T = { A: array<(unit -> unit)> }
 
 module F =
     let f (a: T) = a.A.[0]()
@@ -1975,7 +1975,7 @@ let ``multiline yield expression should be indented, 882`` () =
     formatSourceString
         false
         """
-let choices : Foo list =
+let choices : list<Foo> =
     [
         yield! getMore 9
         yield
@@ -1988,7 +1988,7 @@ let choices : Foo list =
     |> should
         equal
         """
-let choices: Foo list =
+let choices: list<Foo> =
     [ yield! getMore 9
       yield
           // Test
@@ -2000,7 +2000,7 @@ let ``multiline yield bang inside list`` () =
     formatSourceString
         false
         """
-let choices : Foo list =
+let choices : list<Foo> =
     [
         yield!
             // Test
@@ -2012,7 +2012,7 @@ let choices : Foo list =
     |> should
         equal
         """
-let choices: Foo list =
+let choices: list<Foo> =
     [ yield!
           // Test
           [ Foo 2 ] ]

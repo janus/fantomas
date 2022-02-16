@@ -997,7 +997,7 @@ let argExpr =
             (pats: Context -> Context)
             (bodyExpr: SynExpr)
             (lpr: Range)
-            (rpr: Range option)
+            (rpr: option<Range>)
             (arrowRange: Range)
             (pr: Range)
             : Context -> Context =
@@ -1023,7 +1023,7 @@ let argExpr =
             (pats: Context -> Context)
             (bodyExpr: SynExpr)
             (lpr: Range)
-            (rpr: Range option)
+            (rpr: option<Range>)
             (arrowRange: Range)
             (pr: Range)
             : Context -> Context =

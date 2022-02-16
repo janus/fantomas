@@ -390,14 +390,14 @@ let ``should put brackets around app type tests`` () =
         false
         """
 match item.Item with
-| :? (Instruction seq) -> ()"""
+| :? (seq<Instruction>) -> ()"""
         config
     |> prepend newline
     |> should
         equal
         """
 match item.Item with
-| :? (Instruction seq) -> ()
+| :? (seq<Instruction>) -> ()
 """
 
 [<Test>]

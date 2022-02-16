@@ -23,7 +23,7 @@ let ``don't add whitespace in chained accessors, 566`` () =
     formatSourceString
         false
         """type F =
-  abstract G : int list -> Map<int, int>
+  abstract G : list<int> -> Map<int, int>
 
 let x : F = { new F with member __.G _ = Map.empty }
 x.G[].TryFind 3
@@ -37,7 +37,7 @@ x.G[].TryFind 3
         equal
         """
 type F =
-    abstract G: int list -> Map<int,int>
+    abstract G: list<int> -> Map<int,int>
 
 let x: F =
     {new F with
