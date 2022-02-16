@@ -538,10 +538,7 @@ and genTypeAndParam astContext typeName (tds: SynTyparDecls option) tcs =
     | None -> !-typeName
     | Some (SynTyparDecls.PostfixList (tds, tcs, _range)) -> !-typeName +> types "<" tds tcs ">"
     | Some (SynTyparDecls.PrefixList (tds, _range)) -> types "(" tds [] ")" -- " " -- typeName
-    | Some (SynTyparDecls.SinglePrefix (td, _range)) ->
-        genTyparDecl { astContext with IsFirstTypeParam = true } td
-        +> sepSpace
-        -- typeName
+    | Some (SynTyparDecls.SinglePrefix (td, _range)) -> !-typeName +> types "<" [ td ] [] ">"
     +> colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext)
 
 and genTypeParamPostfix astContext tds =
@@ -4286,7 +4283,11 @@ and genType astContext outerBracket t =
             let postForm =
                 match ts with
                 | [] -> loop t
-                | [ t' ] -> loop t' +> sepSpace +> loop t
+                | [ t' ] ->
+                    match t with
+                    | SynType.LongIdent (LongIdentWithDots.LongIdentWithDots ([ lid ], _)) when lid.idText = "[]" ->
+                        loop t' +> sepSpace +> loop t
+                    | _ -> loop t +> sepOpenAng +> loop t' +> sepCloseAng
                 | ts ->
                     sepOpenT
                     +> col sepComma ts loop
