@@ -1,4 +1,4 @@
-﻿module Fantomas.Tests.RemoveUnnecessaryParenthesesTests
+module Fantomas.Tests.RemoveUnnecessaryParenthesesTests
 
 open NUnit.Framework
 open FsUnit
@@ -368,4 +368,84 @@ module Foo =
         """
 module Foo =
     let sum (a: int) (b: int) = a + b
+"""
+
+
+[<Test>]
+let ``parentheses in function call should be removed`` () =
+    formatSourceString
+        false
+        """
+raise(InvalidPassword)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise InvalidPassword
+"""
+
+[<Test>]
+let ``nothing should be changed`` () =
+    formatSourceString
+        false
+        """
+raise InvalidPassword
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise InvalidPassword
+"""
+
+[<Test>]
+let ``parentheses should be removed and left pipe introduced between arguments and function call`` () =
+    formatSourceString
+        false
+        """
+raise(AddressWithInvalidChecksum None)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise <| AddressWithInvalidChecksum None
+"""
+
+[<Test>]
+let ``parentheses should be removed and left pipe introduced between argument(inner function call)  and function call``
+    ()
+    =
+    formatSourceString
+        false
+        """
+raise(Exception("foo"))
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise <| Exception("foo")
+"""
+
+[<Test>]
+let ``parentheses should be removed and left pipe introduced between argument(inner function call with two arguments)  and function call``
+    ()
+    =
+    formatSourceString
+        false
+        """
+raise(Exception(ex.ToString(), (ex.InnerException)))
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise <| Exception(ex.ToString(), (ex.InnerException))
 """
