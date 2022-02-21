@@ -836,6 +836,18 @@ let (|AppSingleParenArg|_|) =
         | _ -> Some(e, px)
     | _ -> None
 
+let (|RaiseApp|_|) =
+    function
+    | App (e1, [ Paren (_, e2, _, _) ]) ->
+        match e1 with
+        | SynExpr.Ident (Ident id) when id.Equals "raise" ->
+            match e2 with
+            | SynExpr.Lambda _
+            | SynExpr.MatchLambda _ -> None
+            | _ -> Some(e1, e2)
+        | _ -> None
+    | _ -> None
+
 let (|AppOrTypeApp|_|) e =
     match e with
     | App (TypeApp (e, lt, ts, gt), es) -> Some(e, Some(lt, ts, gt), es)
