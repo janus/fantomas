@@ -369,3 +369,87 @@ module Foo =
 module Foo =
     let sum (a: int) (b: int) = a + b
 """
+
+[<Ignore "WIP">]
+[<Test>]
+let ``parentheses in function call should be removed`` () =
+    formatSourceString
+        false
+        """
+raise(InvalidPassword)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise InvalidPassword
+"""
+
+[<Ignore "WIP">]
+[<Test>]
+let ``nothing should be changed`` () =
+    formatSourceString
+        false
+        """
+raise InvalidPassword
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise InvalidPassword
+"""
+
+[<Ignore "WIP">]
+[<Test>]
+let ``parentheses should be removed and left pipe introduced between arguments and function call`` () =
+    formatSourceString
+        false
+        """
+raise(AddressWithInvalidChecksum None)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise <| AddressWithInvalidChecksum None
+"""
+
+[<Ignore "WIP">]
+[<Test>]
+let ``parentheses should be removed and left pipe introduced between argument(inner function call)  and function call``
+    ()
+    =
+    formatSourceString
+        false
+        """
+raise(Exception("foo"))
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise <| Exception("foo")
+"""
+
+[<Ignore "WIP">]
+[<Test>]
+let ``parentheses should be removed and left pipe introduced between argument(inner function call with two arguments)  and function call``
+    ()
+    =
+    formatSourceString
+        false
+        """
+raise(Exception(ex.ToString(), (ex.InnerException)))
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+raise <| Exception(ex.ToString(), (ex.InnerException))
+"""
