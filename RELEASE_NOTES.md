@@ -1,3 +1,31 @@
+#### 4.5.12 - 01/2022
+
+* Fix Strings containing spaces at end of line change meaning. [#1941](https://github.com/fsprojects/fantomas/issues/1941)
+* Fix Explicit class/end/with loses members. [#1940](https://github.com/fsprojects/fantomas/issues/1940)
+* Fix Idempotency problem when static member with get. [#1913](https://github.com/fsprojects/fantomas/issues/1913)
+
+#### 4.5.11 - 12/2021
+
+* Fix KeepIndentInBranch not being respected. [#2003](https://github.com/fsprojects/fantomas/issues/2003)
+
+#### 4.5.10 - 12/2021
+
+* Fix Fantomas writes even when not necessary. [#1984](https://github.com/fsprojects/fantomas/issues/1984)
+
+#### 4.5.9 - 11/2021
+
+* Fix Operator application to some literals doesn't preserve spacing. [#1979](https://github.com/fsprojects/fantomas/issues/1979)
+
+#### 4.5.8 - 11/2021
+
+* Fix Fantomas is unable to format valid F# (.net 6.0) program. [#1969](https://github.com/fsprojects/fantomas/issues/1969)
+* Fix Attributes on static members of recursive types formats incorrectly. [#1962](https://github.com/fsprojects/fantomas/issues/1962)
+* Fix val mutable in signature loses 'mutable'. [#1954](https://github.com/fsprojects/fantomas/issues/1954)
+* Fix Literals in signatures lose values. [#1953](https://github.com/fsprojects/fantomas/issues/1953)
+* Fix Attribute on member of mutually dependent types fails to validate. [#1918](https://github.com/fsprojects/fantomas/issues/1918)
+* Fix Wrong code is generated for member attribute in recursive type. [#1898](https://github.com/fsprojects/fantomas/issues/1898)
+* Fix Attribute on type function incorrectly placed for 'and' types. [#1874](https://github.com/fsprojects/fantomas/issues/1874)
+
 #### 4.5.7 - 11/2021
 
 * Fix Formatting power operator in code quotation pattern match fails. [#1945](https://github.com/fsprojects/fantomas/issues/1945)

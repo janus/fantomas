@@ -527,8 +527,18 @@ let (|DoBinding|LetBinding|MemberBinding|PropertyBinding|ExplicitCtor|) =
     function
     | SynBinding.Binding (ao, _, _, _, ats, px, SynValData (Some MFConstructor, _, ido), pat, _, expr, _, _) ->
         ExplicitCtor(ats, px, ao, pat, expr, Option.map (|Ident|) ido)
-    | SynBinding.Binding (ao, _, isInline, _, ats, px, SynValData (Some (MFProperty _ as mf), _, _), pat, _, expr, _, _) ->
-        PropertyBinding(ats, px, ao, isInline, mf, pat, expr)
+    | SynBinding.Binding (ao,
+                          _,
+                          isInline,
+                          _,
+                          ats,
+                          px,
+                          SynValData (Some (MFProperty _ as mf), synValInfo, _),
+                          pat,
+                          _,
+                          expr,
+                          _,
+                          _) -> PropertyBinding(ats, px, ao, isInline, mf, pat, expr, synValInfo)
     | SynBinding.Binding (ao, _, isInline, _, ats, px, SynValData (Some mf, synValInfo, _), pat, _, expr, _, _) ->
         MemberBinding(ats, px, ao, isInline, mf, pat, expr, synValInfo)
     | SynBinding.Binding (_, DoBinding, _, _, ats, px, _, _, _, expr, _, _) -> DoBinding(ats, px, expr)
@@ -1073,7 +1083,7 @@ let (|LongIdentSet|_|) =
 
 let (|TryWith|_|) =
     function
-    | SynExpr.TryWith (e, _, cs, _, _, _, _) -> Some(e, cs)
+    | SynExpr.TryWith (e, _, cs, mWithToLast, _, _, _) -> Some(e, mWithToLast, cs)
     | _ -> None
 
 let (|TryFinally|_|) =
@@ -1758,7 +1768,8 @@ let private shouldNotIndentBranch e es =
         | Match _
         | TryWith _
         | App (_, [ ObjExpr _ ])
-        | NewlineInfixApp (_, _, AppParenTupleArg _, _) -> true
+        | NewlineInfixApp (_, _, AppParenTupleArg _, _)
+        | NewlineInfixApp (_, _, _, App (_, [ Paren (_, Lambda _, _, _) ])) -> true
         | _ -> false
 
     List.forall isShortIfBranch es

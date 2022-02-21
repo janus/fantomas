@@ -37,7 +37,7 @@ jobs:
   publish:
     env:
       DEFAULT_REF_TO_NUGET_PUSH: refs/heads/master
-      VERSION: 4.5.7.2
+      VERSION: 4.5.12.5
     runs-on: windows-latest
     needs: build
     steps:

@@ -1609,47 +1609,6 @@ let foo a =
 """
 
 [<Test>]
-let ``comment after bracket in record should not be duplicated in computation expression, 1912`` () =
-    formatSourceString
-        false
-        """
-type TorDirectory =
-    private
-        {
-            NetworkStatus: NetworkStatusDocument
-        }
-
-    static member Bootstrap (nodeEndPoint: IPEndPoint) =
-        async {
-            return
-                {
-                    TorDirectory.NetworkStatus =
-                        NetworkStatusDocument.Parse consensusStr
-                    ServerDescriptors = Map.empty
-                    // comment
-                }
-        }
-"""
-        config
-    |> prepend newline
-    |> should
-        equal
-        """
-type TorDirectory =
-    private
-        { NetworkStatus: NetworkStatusDocument }
-
-    static member Bootstrap(nodeEndPoint: IPEndPoint) =
-        async {
-            return
-                { TorDirectory.NetworkStatus = NetworkStatusDocument.Parse consensusStr
-                  ServerDescriptors = Map.empty
-                // comment
-                }
-        }
-"""
-
-[<Test>]
 let ``should not move the starting point of a multi-line comment, 1223`` () =
     formatSourceString
         false
@@ -1724,4 +1683,150 @@ module Foo =
     let! blockForConfirmationReference = GetBlockToCheckForConfirmedBalance web3
         (* test *)
     return blockForConfirmationReference
+"""
+
+[<Test>]
+let ``comment after bracket in record should not be duplicated in computation expression, 1912`` () =
+    formatSourceString
+        false
+        """
+type TorDirectory =
+    private
+        {
+            NetworkStatus: NetworkStatusDocument
+        }
+
+    static member Bootstrap (nodeEndPoint: IPEndPoint) =
+        async {
+            return
+                {
+                    TorDirectory.NetworkStatus =
+                        NetworkStatusDocument.Parse consensusStr
+                    ServerDescriptors = Map.empty
+                    // comment
+                }
+        }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type TorDirectory =
+    private
+        { NetworkStatus: NetworkStatusDocument }
+
+    static member Bootstrap(nodeEndPoint: IPEndPoint) =
+        async {
+            return
+                { TorDirectory.NetworkStatus = NetworkStatusDocument.Parse consensusStr
+                  ServerDescriptors = Map.empty
+                // comment
+                }
+        }
+"""
+
+[<Test>]
+let ``double try-with, comment before inner 'with' not duplicated, 1969`` () =
+    formatSourceString
+        false
+        """
+try
+    try
+        ()
+        // xxx
+    with
+    | _ -> ()
+with
+| _ -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+try
+    try
+        ()
+    // xxx
+    with
+    | _ -> ()
+with
+| _ -> ()
+"""
+
+[<Test>]
+let ``comment shold not be lost`` () =
+    formatSourceString
+        false
+        """
+try
+    a
+// comment
+with
+
+
+| b -> c
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+try
+    a
+// comment
+with
+
+
+| b -> c
+"""
+
+[<Test>]
+let ``nested try/with with comment on with`` () =
+    formatSourceString
+        false
+        """
+try
+    a
+with
+| b ->
+    try c
+    // inner comment
+    with
+    | d -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+try
+    a
+with
+| b ->
+    try
+        c
+    // inner comment
+    with
+    | d -> ()
+"""
+
+[<Test>]
+let ``trailing spaces in comments should be removed`` () =
+    formatSourceString
+        false
+        """
+// foo       
+// bar          
+let a = 9
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+// foo
+// bar
+let a = 9
 """
