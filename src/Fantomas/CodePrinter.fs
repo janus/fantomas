@@ -27,6 +27,8 @@ type ASTContext =
       IsUnionField: bool
       /// First type param might need extra spaces to avoid parsing errors on `<^`, `<'`, etc.
       IsFirstTypeParam: bool
+      /// Remove parenthesis when using raise keyword
+      IsRaiseKeyWord: bool
       /// Inside a SynPat of MatchClause
       IsInsideMatchClausePattern: bool }
     static member Default =
@@ -35,6 +37,7 @@ type ASTContext =
           IsNakedRange = false
           IsUnionField = false
           IsFirstTypeParam = false
+          IsRaiseKeyWord = false
           IsInsideMatchClausePattern = false }
 
 let rec addSpaceBeforeParensInFunCall functionOrMethod arg (ctx: Context) =
@@ -2042,6 +2045,13 @@ and genExpr astContext synExpr ctx =
             expressionFitsOnRestOfLine short long
 
         | AppSingleParenArg (e, px) ->
+
+            (*let astContext =
+                if e.idText.Equals "raise" then
+                    { astContext with IsRaiseKeyWord = true }
+                else
+                    astContext*)
+
             let sepSpace (ctx: Context) =
                 match e with
                 | Paren _ -> sepSpace ctx
