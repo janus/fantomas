@@ -1696,7 +1696,12 @@ and genExpr astContext isRaise synExpr ctx =
                 +> sepCloseTFor rpr pr
             | _ ->
                 if isRaise then
-                    genExpr astContext isRaise e
+                    match e with
+                    | App (_, _) ->
+                        !- "<| "
+                        +> sepSpace
+                        +> genExpr astContext isRaise e
+                    | _ -> genExpr astContext isRaise e
                 else
                     sepOpenTFor lpr
                     +> genExpr astContext isRaise e
