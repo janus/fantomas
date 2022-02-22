@@ -416,7 +416,6 @@ raise(AddressWithInvalidChecksum None)
 raise <| AddressWithInvalidChecksum None
 """
 
-[<Ignore "WIP">]
 [<Test>]
 let ``parentheses should be removed and left pipe introduced between argument(inner function call)  and function call``
     ()
