@@ -370,9 +370,8 @@ module Foo =
     let sum (a: int) (b: int) = a + b
 """
 
-
 [<Test>]
-let ``parentheses in function call should be removed, 1234567`` () =
+let ``parentheses in function call should be removed`` () =
     formatSourceString
         false
         """
@@ -386,9 +385,8 @@ raise(InvalidPassword)
 raise InvalidPassword
 """
 
-[<Ignore "WIP">]
 [<Test>]
-let ``nothing should be changed`` () =
+let ``nothing should be changed, 1234567`` () =
     formatSourceString
         false
         """
