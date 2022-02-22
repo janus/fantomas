@@ -433,7 +433,6 @@ raise(Exception("foo"))
 raise <| Exception("foo")
 """
 
-[<Ignore "WIP">]
 [<Test>]
 let ``parentheses should be removed and left pipe introduced between argument(inner function call with two arguments)  and function call``
     ()
