@@ -1698,7 +1698,7 @@ and genExpr astContext isRaise synExpr ctx =
                 if isRaise then
                     match e with
                     | App (_, _) ->
-                        !- "<| "
+                        !- "<|"
                         +> sepSpace
                         +> genExpr astContext isRaise e
                     | _ -> genExpr astContext isRaise e
