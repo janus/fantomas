@@ -1346,7 +1346,27 @@ and genExpr astContext synExpr ctx =
                     let size = getListOrArrayExprSize ctx ctx.Config.MaxArrayOrListWidth xs
 
                     isSmallExpression size smallExpression multilineExpression ctx
+        | RecordBaseCtorCall (openingBrace, typ, lpr, e1, rpr, xs, closingBrace) ->
+            let fieldsExpr = col sepSemiNln xs (genRecordFieldName astContext)
+            let extraSpace = 4
 
+            genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
+            +> atCurrentColumn (
+                !- "inherit "
+                +> indent
+                +> sepNln
+                +> genType astContext false typ
+                +> sepOpenTFor lpr
+                +> sepNln
+                +> rep extraSpace (!- " ")
+                +> genExpr astContext e1
+                +> sepNln
+                +> sepCloseTFor rpr
+                +> onlyIf (List.isNotEmpty xs) sepNln
+                +> fieldsExpr
+                +> unindent
+                +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
+            )
         | Record (openingBrace, inheritOpt, xs, eo, closingBrace) ->
             let smallRecordExpr =
                 genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
@@ -2942,7 +2962,7 @@ and genMultilineRecordInstance
                 !- "inherit "
                 +> genType astContext false t
                 +> addSpaceBeforeClassConstructor e
-                +> genExpr astContext e
+                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e)
                 +> onlyIf (List.isNotEmpty xs) sepNln
                 +> fieldsExpr
                 +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
@@ -3012,7 +3032,7 @@ and genMultilineRecordInstanceAlignBrackets
         +> !- "inherit "
         +> genType astContext false inheritType
         +> addSpaceBeforeClassConstructor inheritExpr
-        +> genExpr astContext inheritExpr
+        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext inheritExpr)
         +> ifElse
             hasFields
             (sepNln
