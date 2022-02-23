@@ -1813,3 +1813,12 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
         else
             None
     | _ -> None
+
+let (|Raise|_|) =
+    function
+    | SynExpr.Ident (Ident id) ->
+        if id.Equals "raise" then
+            Some true
+        else
+            None
+    | _ -> None

@@ -2062,11 +2062,7 @@ and genExpr astContext isRaise synExpr ctx =
 
             let isRaiseTheIdentifier =
                 match e with
-                | SynExpr.Ident d ->
-                    if d.idText.Equals "raise" then
-                        true
-                    else
-                        false
+                | Raise _ -> true
                 | _ -> false
 
             let sepSpace (ctx: Context) =
