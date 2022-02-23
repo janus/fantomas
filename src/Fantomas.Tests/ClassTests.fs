@@ -1048,3 +1048,38 @@ type Subject<'a> private () =
     /// Each notification is broadcasted to all subscribed observers.
     static member broadcast = new System.Reactive.Subjects.Subject<'a>()
 """
+
+[<Test>]
+let ``Vanity alignment used inside base ctor call, 2111`` () =
+    formatSourceString
+        false
+        """
+type UnhandledWebException =
+    inherit Exception
+
+    new(status: WebExceptionStatus, innerException: Exception) =
+        { inherit Exception(SPrintF1
+                                "Backend not prepared for this WebException with Status[%i]"
+                                (int status),
+                            innerException) }
+
+    new(info: SerializationInfo, context: StreamingContext) =
+        { inherit Exception(info, context) }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type UnhandledWebException =
+    inherit Exception
+
+    new(status: WebExceptionStatus, innerException: Exception) =
+        { inherit
+            Exception(
+                SPrintF1 "Backend not prepared for this WebException with Status[%i]" (int status),
+                innerException
+            ) }
+
+    new(info: SerializationInfo, context: StreamingContext) = { inherit Exception(info, context) }
+"""
