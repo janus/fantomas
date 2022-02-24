@@ -2940,8 +2940,11 @@ and genMultilineRecordInstance
             genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
             +> atCurrentColumn (
                 !- "inherit "
+                +> indent
+                +> sepNln
                 +> genType astContext false t
                 +> addSpaceBeforeClassConstructor e
+                +> unindent
                 +> genExpr astContext e
                 +> onlyIf (List.isNotEmpty xs) sepNln
                 +> fieldsExpr
