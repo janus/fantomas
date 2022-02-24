@@ -793,6 +793,18 @@ let (|AppSingleParenArg|_|) =
         | _ -> Some(e, px)
     | _ -> None
 
+let (|RaiseApp|_|) =
+    function
+    | App (e1, [ Paren (_, e2, _, _) ]) ->
+        match e1 with
+        | SynExpr.Ident (Ident id) when id.Equals "raise" ->
+            match e2 with
+            | SynExpr.Lambda _
+            | SynExpr.MatchLambda _ -> None
+            | _ -> Some(e1, e2)
+        | _ -> None
+    | _ -> None
+
 let (|AppOrTypeApp|_|) e =
     match e with
     | App (TypeApp (e, lt, ts, gt), es) -> Some(e, Some(lt, ts, gt), es)
@@ -1810,15 +1822,6 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
 
         if shouldNotIndentBranch elseExpr branchBodies then
             Some(branches, elseExpr, e.Range)
-        else
-            None
-    | _ -> None
-
-let (|Raise|_|) =
-    function
-    | SynExpr.Ident (Ident id) ->
-        if id.Equals "raise" then
-            Some true
         else
             None
     | _ -> None

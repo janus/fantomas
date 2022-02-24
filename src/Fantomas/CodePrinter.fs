@@ -2041,12 +2041,20 @@ and genExpr astContext synExpr ctx =
 
             expressionFitsOnRestOfLine short long
 
-        | AppSingleParenArg (e, px) ->
+        | RaiseApp (e1, e2) ->
+            match e2 with
+            | App (_, _) ->
+                genExpr astContext e1
+                +> sepSpace
+                +> !- "<|"
+                +> sepSpace
+                +> genExpr astContext e2
+            | _ ->
+                genExpr astContext e1
+                +> sepSpace
+                +> genExpr astContext e2
 
-            (*let isRaiseTheIdentifier =
-                match e with
-                | Raise _ -> true
-                | _ -> false*)
+        | AppSingleParenArg (e, px) ->
             let sepSpace (ctx: Context) =
                 match e with
                 | Paren _ -> sepSpace ctx
@@ -2063,31 +2071,7 @@ and genExpr astContext synExpr ctx =
                 +> sepSpace
                 +> genMultilineFunctionApplicationArguments astContext px
 
-
-            match e with
-            | Raise _ ->
-                match px with
-                | Paren (_lpr, e1, _rpr, _pr) ->
-                    match e1 with
-                    | App (_, _) ->
-                        genExpr astContext e
-                        +> sepSpace
-                        +> !- "<|"
-                        +> sepSpace
-                        +> genExpr astContext e1
-                    | _ ->
-                        genExpr astContext e
-                        +> sepSpace
-                        +> genExpr astContext e1
-                | _ -> expressionFitsOnRestOfLine short long
-            | _ -> expressionFitsOnRestOfLine short long
-
-        (*let isRaiseTheIdentifier =
-                match e with
-                | RaiseSynType _ -> true
-                | _ -> false*)
-
-        //expressionFitsOnRestOfLine short long
+            expressionFitsOnRestOfLine short long
 
         // Always spacing in multiple arguments
         | App (e, es) -> genApp astContext e es
