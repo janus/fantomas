@@ -1,4 +1,4 @@
-﻿module Fantomas.Tests.RemoveUnnecessaryParenthesesTests
+module Fantomas.Tests.RemoveUnnecessaryParenthesesTests
 
 open NUnit.Framework
 open FsUnit
