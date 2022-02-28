@@ -1773,3 +1773,12 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
         else
             None
     | _ -> None
+
+let (|RecordInherit|_|) =
+    function
+    | SynExpr.Record (inheritOpt, eo, xs, StartEndRange 1 (openingBrace, _, closingBrace)) ->
+        match inheritOpt with
+        | Some (typ, expr, _, _, _) ->
+            Some(openingBrace, (typ, expr), xs, Option.map fst eo, closingBrace)
+        | _ -> None
+    | _ -> None
