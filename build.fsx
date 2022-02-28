@@ -289,7 +289,7 @@ Target.create "Benchmark" (fun _ ->
          </> "Fantomas.Benchmarks"
          </> "bin"
          </> "Release"
-         </> "net6.0"
+         </> "net5.0"
          </> "Fantomas.Benchmarks.dll")
         ""
     |> ignore
