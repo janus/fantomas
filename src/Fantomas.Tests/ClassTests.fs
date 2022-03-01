@@ -1091,7 +1091,7 @@ type UnhandledWebException =
 
     new(status: WebExceptionStatus, innerException: Exception) =
         { inherit Exception(SPrintF1
-                                "Backend not prepared for this WebException with Status[%i]"
+                                "Backend not prepared for this System.Net.WebException with Status[%i]"
                                 (int status),
                             innerException) }
 
@@ -1108,7 +1108,8 @@ type UnhandledWebException =
 
     new(status: WebExceptionStatus, innerException: Exception) =
         { inherit Exception
-            (SPrintF1 "Backend not prepared for this WebException with Status[%i]" (int status), innerException) }
+            (SPrintF1 "Backend not prepared for this System.Net.WebException with Status[%i]" (int status),
+             innerException) }
 
     new(info: SerializationInfo, context: StreamingContext) = { inherit Exception(info, context) }
 """
