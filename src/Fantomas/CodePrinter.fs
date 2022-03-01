@@ -2942,7 +2942,7 @@ and genMultilineRecordInstance
                 !- "inherit "
                 +> genType astContext false t
                 +> addSpaceBeforeClassConstructor e
-                +> genExpr astContext e
+                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e)
                 +> onlyIf (List.isNotEmpty xs) sepNln
                 +> fieldsExpr
                 +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
@@ -3012,7 +3012,7 @@ and genMultilineRecordInstanceAlignBrackets
         +> !- "inherit "
         +> genType astContext false inheritType
         +> addSpaceBeforeClassConstructor inheritExpr
-        +> genExpr astContext inheritExpr
+        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext inheritExpr)
         +> ifElse
             hasFields
             (sepNln
