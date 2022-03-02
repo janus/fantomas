@@ -1346,7 +1346,26 @@ and genExpr astContext synExpr ctx =
                     let size = getListOrArrayExprSize ctx ctx.Config.MaxArrayOrListWidth xs
 
                     isSmallExpression size smallExpression multilineExpression ctx
+        | RecordBaseCtorCall (openingBrace, typ, lpr, e1, rpr, xs, closingBrace) ->
+            let fieldsExpr = col sepSemiNln xs (genRecordFieldName astContext)
 
+            genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
+            +> atCurrentColumn (
+                !- "inherit "
+                +> indent
+                +> sepNln
+                +> genType astContext false typ
+                +> sepOpenTFor lpr
+                +> sepNln
+                -- "    "
+                +> genExpr astContext e1
+                +> sepNln
+                +> sepCloseTFor rpr
+                +> onlyIf (List.isNotEmpty xs) sepNln
+                +> fieldsExpr
+                +> unindent
+                +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
+            )
         | Record (openingBrace, inheritOpt, xs, eo, closingBrace) ->
             let smallRecordExpr =
                 genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS

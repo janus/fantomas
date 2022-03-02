@@ -1780,7 +1780,7 @@ let (|RecordBaseCtorCall|_|) =
         match inheritOpt with
         | Some (typ, expr, _, _, _) when expr.Range.EndLine > expr.Range.StartLine ->
             match expr with
-            | Paren (lpr, e1, rpr, _pr) -> Some(openingBrace, typ, lpr, e1, rpr, closingBrace)
+            | Paren (lpr, e1, rpr, _pr) -> Some(openingBrace, typ, lpr, e1, rpr, xs, closingBrace)
             | _ -> None
         | _ -> None
     | _ -> None
