@@ -1774,10 +1774,14 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
             None
     | _ -> None
 
-let (|RecordInherit|_|) =
+let (|RecordBaseCtorCall|_|) =
     function
     | SynExpr.Record (inheritOpt, eo, xs, StartEndRange 1 (openingBrace, _, closingBrace)) ->
         match inheritOpt with
-        | Some (typ, expr, _, _, _) -> Some(openingBrace, (typ, expr), xs, Option.map fst eo, closingBrace)
+        | Some (typ, expr, _, _, _) when expr.Range.EndLine > expr.Range.StartLine ->
+            match expr with
+            | Paren (lpr, e1, rpr, _pr) ->
+                Some(openingBrace, typ, lpr, e1, rpr, closingBrace)
+            | _ -> None
         | _ -> None
     | _ -> None
