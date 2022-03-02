@@ -1109,7 +1109,7 @@ type UnhandledWebException =
     new(status: WebExceptionStatus, innerException: Exception) =
         { inherit
             Exception(
-                SPrintF1 "Backend not prepared for this WebException with Status[%i]" (int status),
+                SPrintF1 "Backend not prepared for this System.Net.WebException with Status[%i]" (int status),
                 innerException
             ) }
 
