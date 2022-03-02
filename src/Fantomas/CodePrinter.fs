@@ -1639,7 +1639,7 @@ and genExpr astContext synExpr ctx =
                 +> sepCloseTFor rpr
             | _ ->
                 sepOpenTFor lpr
-                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e)
+                +> genExpr astContext e
                 +> sepCloseTFor rpr
 
         // This supposes to be an infix function, but for some reason it isn't picked up by InfixApps
@@ -2942,7 +2942,7 @@ and genMultilineRecordInstance
                 !- "inherit "
                 +> genType astContext false t
                 +> addSpaceBeforeClassConstructor e
-                +> genExpr astContext e
+                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e)
                 +> onlyIf (List.isNotEmpty xs) sepNln
                 +> fieldsExpr
                 +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
