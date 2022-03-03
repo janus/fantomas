@@ -1774,13 +1774,35 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
             None
     | _ -> None
 
+let getLength synExpr =
+    let inheritLengthWithSpaces = 9
+
+    let rec length exprs =
+        match exprs with
+        | SynExpr.App (_, _, e1, e2, _) -> length e1 + length e2
+        | e -> e.Range.EndColumn - e.Range.StartColumn
+
+    let rec loop expressions =
+        match expressions with
+        | head :: rest -> length head + loop rest
+        | [] -> inheritLengthWithSpaces
+
+    loop synExpr
+
 let (|RecordBaseCtorCall|_|) =
     function
     | SynExpr.Record (inheritOpt, eo, xs, StartEndRange 1 (openingBrace, _, closingBrace)) ->
         match inheritOpt with
-        | Some (typ, expr, _, _, _) when expr.Range.EndLine > expr.Range.StartLine ->
+        | Some (typ, expr, _, _, _) ->
             match expr with
-            | Paren (lpr, e1, rpr, _pr) -> Some(openingBrace, typ, lpr, e1, rpr, xs, closingBrace)
+            | Paren (lpr, e1, rpr, _pr) ->
+                let maxLineLength = 120
+                let typeLength = typ.Range.EndColumn - typ.Range.StartColumn
+
+                match e1 with
+                | SynExpr.Tuple (_, exprs, _, _) when getLength exprs + typeLength > maxLineLength ->
+                    Some(openingBrace, typ, lpr, e1, rpr, xs, closingBrace)
+                | _ -> None
             | _ -> None
         | _ -> None
     | _ -> None

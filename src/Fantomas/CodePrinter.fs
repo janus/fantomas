@@ -1348,6 +1348,7 @@ and genExpr astContext synExpr ctx =
                     isSmallExpression size smallExpression multilineExpression ctx
         | RecordBaseCtorCall (openingBrace, typ, lpr, e1, rpr, xs, closingBrace) ->
             let fieldsExpr = col sepSemiNln xs (genRecordFieldName astContext)
+            let extraSpace = 4
 
             genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
             +> atCurrentColumn (
@@ -1357,7 +1358,7 @@ and genExpr astContext synExpr ctx =
                 +> genType astContext false typ
                 +> sepOpenTFor lpr
                 +> sepNln
-                -- "    "
+                +> rep extraSpace (!- " ")
                 +> genExpr astContext e1
                 +> sepNln
                 +> sepCloseTFor rpr
