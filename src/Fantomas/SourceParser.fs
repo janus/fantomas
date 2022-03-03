@@ -1774,33 +1774,33 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
             None
     | _ -> None
 
-let getLength synExpr =
+let getLength synExprs (typ: SynType) =
     let inheritLengthWithSpaces = 9
+    let typeLengthAndBracket = typ.Range.EndColumn - typ.Range.StartColumn + 2
 
     let rec length exprs =
         match exprs with
-        | SynExpr.App (_, _, e1, e2, _) -> length e1 + length e2
-        | e -> e.Range.EndColumn - e.Range.StartColumn
+        | SynExpr.App (_, _, expr1, expr2, _) -> length expr1 + length expr2
+        | expr -> expr.Range.EndColumn - expr.Range.StartColumn
 
     let rec loop expressions =
         match expressions with
         | head :: rest -> length head + loop rest
-        | [] -> inheritLengthWithSpaces
+        | [] -> inheritLengthWithSpaces + typeLengthAndBracket
 
-    loop synExpr
+    loop synExprs
 
 let (|RecordBaseCtorCall|_|) =
     function
-    | SynExpr.Record (inheritOpt, eo, xs, StartEndRange 1 (openingBrace, _, closingBrace)) ->
+    | SynExpr.Record (inheritOpt, _eo, xs, StartEndRange 1 (openingBrace, _, closingBrace)) ->
         match inheritOpt with
         | Some (typ, expr, _, _, _) ->
             match expr with
             | Paren (lpr, e1, rpr, _pr) ->
                 let maxLineLength = 120
-                let typeLength = typ.Range.EndColumn - typ.Range.StartColumn
 
                 match e1 with
-                | SynExpr.Tuple (_, exprs, _, _) when getLength exprs + typeLength > maxLineLength ->
+                | SynExpr.Tuple (_, exprs, _, _) when getLength exprs typ > maxLineLength ->
                     Some(openingBrace, typ, lpr, e1, rpr, xs, closingBrace)
                 | _ -> None
             | _ -> None
