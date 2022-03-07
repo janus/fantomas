@@ -1346,27 +1346,6 @@ and genExpr astContext synExpr ctx =
                     let size = getListOrArrayExprSize ctx ctx.Config.MaxArrayOrListWidth xs
 
                     isSmallExpression size smallExpression multilineExpression ctx
-        | RecordBaseCtorCall (openingBrace, typ, lpr, e1, rpr, xs, closingBrace) ->
-            let fieldsExpr = col sepSemiNln xs (genRecordFieldName astContext)
-            let extraSpace = 4
-
-            genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
-            +> atCurrentColumn (
-                !- "inherit "
-                +> indent
-                +> sepNln
-                +> genType astContext false typ
-                +> sepOpenTFor lpr
-                +> sepNln
-                +> rep extraSpace (!- " ")
-                +> genExpr astContext e1
-                +> sepNln
-                +> sepCloseTFor rpr
-                +> onlyIf (List.isNotEmpty xs) sepNln
-                +> fieldsExpr
-                +> unindent
-                +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
-            )
         | Record (openingBrace, inheritOpt, xs, eo, closingBrace) ->
             let smallRecordExpr =
                 genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
@@ -2954,19 +2933,58 @@ and genMultilineRecordInstance
 
     let fieldsExpr = col sepSemiNln xs (genRecordFieldName astContext)
 
+    let getLength synExprs (typ: SynType) =
+        let inheritLengthWithSpaces = " inherit ".Length
+        let typeLength = typ.Range.EndColumn - typ.Range.StartColumn
+
+        let rec length exprs =
+            match exprs with
+            | SynExpr.App (_, _, expr1, expr2, _) -> length expr1 + length expr2
+            | expr -> expr.Range.EndColumn - expr.Range.StartColumn
+
+        let rec loop expressions =
+            match expressions with
+            | head :: rest -> length head + loop rest
+            | [] -> inheritLengthWithSpaces + typeLength
+
+        loop synExprs
+
     let expr =
         match inheritOpt with
         | Some (t, e) ->
-            genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
-            +> atCurrentColumn (
-                !- "inherit "
-                +> genType astContext false t
-                +> addSpaceBeforeClassConstructor e
-                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e)
-                +> onlyIf (List.isNotEmpty xs) sepNln
-                +> fieldsExpr
-                +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
-            )
+
+            match e with
+            | Paren (lpr, (SynExpr.Tuple (_, exprs, _, _) as e1), rpr, _pr) when
+                getLength exprs t > ctx.Config.MaxLineLength
+                ->
+                genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
+                +> atCurrentColumn (
+                    !- "inherit "
+                    +> indent
+                    +> sepNln
+                    +> genType astContext false t
+                    +> sepOpenTFor lpr
+                    +> sepNln
+                    +> rep ctx.Config.IndentSize (!- " ")
+                    +> genExpr astContext e1
+                    +> sepNln
+                    +> sepCloseTFor rpr
+                    +> onlyIf (List.isNotEmpty xs) sepNln
+                    +> fieldsExpr
+                    +> unindent
+                    +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
+                )
+            | _ ->
+                genTriviaFor SynExpr_Record_OpeningBrace openingBrace sepOpenS
+                +> atCurrentColumn (
+                    !- "inherit "
+                    +> genType astContext false t
+                    +> addSpaceBeforeClassConstructor e
+                    +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e)
+                    +> onlyIf (List.isNotEmpty xs) sepNln
+                    +> fieldsExpr
+                    +> genTriviaFor SynExpr_Record_ClosingBrace closingBrace sepCloseS
+                )
         | None ->
             match eo with
             | None ->
@@ -3032,7 +3050,7 @@ and genMultilineRecordInstanceAlignBrackets
         +> !- "inherit "
         +> genType astContext false inheritType
         +> addSpaceBeforeClassConstructor inheritExpr
-        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext inheritExpr)
+        +> genExpr astContext inheritExpr
         +> ifElse
             hasFields
             (sepNln

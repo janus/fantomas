@@ -1050,7 +1050,7 @@ type Subject<'a> private () =
 """
 
 [<Test>]
-let ``Vanity alignment used inside base ctor call with maxLineLength not more than 120`` () =
+let ``avoid vanity alignment in base ctor call (less than maxLineLength), 2111`` () =
     formatSourceString
         false
         """
@@ -1082,7 +1082,7 @@ type UnhandledWebException =
 """
 
 [<Test>]
-let ``Vanity alignment used inside base ctor call, 2111`` () =
+let ``avoid vanity alignment in base ctor call (more than maxLineLength), 2111`` () =
     formatSourceString
         false
         """
