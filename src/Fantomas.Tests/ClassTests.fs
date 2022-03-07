@@ -1050,6 +1050,73 @@ type Subject<'a> private () =
 """
 
 [<Test>]
+let ``avoid vanity alignment in base ctor call (less than maxLineLength), 2111`` () =
+    formatSourceString
+        false
+        """
+type UnhandledWebException =
+    inherit Exception
+
+    new(status: WebExceptionStatus, innerException: Exception) =
+        { inherit Exception(SPrintF1
+                                "Backend not prepared for this WebException with S[%i]"
+                                (int status),
+                            innerException) }
+
+    new(info: SerializationInfo, context: StreamingContext) =
+        { inherit Exception(info, context) }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type UnhandledWebException =
+    inherit Exception
+
+    new(status: WebExceptionStatus, innerException: Exception) =
+        { inherit Exception
+            (SPrintF1 "Backend not prepared for this WebException with S[%i]" (int status), innerException) }
+
+    new(info: SerializationInfo, context: StreamingContext) = { inherit Exception(info, context) }
+"""
+
+[<Test>]
+let ``avoid vanity alignment in base ctor call (more than maxLineLength), 2111`` () =
+    formatSourceString
+        false
+        """
+type UnhandledWebException =
+    inherit Exception
+
+    new(status: WebExceptionStatus, innerException: Exception) =
+        { inherit Exception(SPrintF1
+                                "Backend not prepared for this System.Net.WebException with Status[%i]"
+                                (int status),
+                            innerException) }
+
+    new(info: SerializationInfo, context: StreamingContext) =
+        { inherit Exception(info, context) }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+type UnhandledWebException =
+    inherit Exception
+
+    new(status: WebExceptionStatus, innerException: Exception) =
+        { inherit
+            Exception(
+                SPrintF1 "Backend not prepared for this System.Net.WebException with Status[%i]" (int status),
+                innerException
+            ) }
+
+    new(info: SerializationInfo, context: StreamingContext) = { inherit Exception(info, context) }
+"""
+
+[<Test>]
 let ``comments after equals sign in read/write property`` () =
     formatSourceString
         false
