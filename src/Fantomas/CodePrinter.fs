@@ -4976,7 +4976,7 @@ and genPat astContext pat =
                  +> sepNln
                  +> genTriviaFor SynPat_Paren_OpeningParenthesis lpr sepOpenT
                  +> sepNln
-                 -- "    "
+                 +> (fun ctx -> (rep ctx.Config.IndentSize (!- " ")) ctx)
                  +> genPat astContext p
                  +> sepNln
                  +> genTriviaFor SynPat_Paren_ClosingParenthesis rpr sepCloseT
