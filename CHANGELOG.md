@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.7.1] - 2022-03-08
+## [4.7.99] - 2022-03-08
 
 ### Fixed
 * Comment after equals is remove in anonymous record. [#1921](https://github.com/fsprojects/fantomas/issues/1921)
