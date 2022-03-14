@@ -534,12 +534,18 @@ and genTypeAndParam astContext typeName (tds: SynTyparDecls option) tcs =
          +> colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext)
          -- closeSep)
 
+    let mutable isSinglePrefix = false
+
     match tds with
     | None -> !-typeName
     | Some (SynTyparDecls.PostfixList (tds, tcs, _range)) -> !-typeName +> types "<" tds tcs ">"
     | Some (SynTyparDecls.PrefixList (tds, _range)) -> types "(" tds [] ")" -- " " -- typeName
-    | Some (SynTyparDecls.SinglePrefix (td, _range)) -> !-typeName +> types "<" [ td ] [] ">"
-    +> colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext)
+    | Some (SynTyparDecls.SinglePrefix (td, _range)) ->
+        if not(List.isEmpty tcs) then isSinglePrefix <- true
+        !-typeName +> types "<" [ td ] tcs ">"
+    +> ifElse isSinglePrefix
+        sepNone
+        (colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext))
 
 and genTypeParamPostfix astContext tds =
     match tds with
