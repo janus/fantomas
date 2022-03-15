@@ -1,6 +1,6 @@
 # Changelog
 
-## [4.7.3] - 2022-03-12
+## [4.7.99] - 2022-03-12
 
 ### Fixed
 * Option parameter name is lost in tuple. [#2144](https://github.com/fsprojects/fantomas/issues/2144)
