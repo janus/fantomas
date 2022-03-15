@@ -1,28 +1,32 @@
-Fantomas
-========
+Fantomless
+==========
 
 ![Fantomas logo](https://raw.githubusercontent.com/fsprojects/fantomas/master/fantomas_logo.png)
 
-F# source code formatter, inspired by [scalariform](https://github.com/mdr/scalariform) for Scala, [ocp-indent](https://github.com/OCamlPro/ocp-indent) for OCaml and [PythonTidy](https://github.com/acdha/PythonTidy) for Python.
+F# source code formatter, fork of fantomas, which was inspired by [scalariform](https://github.com/mdr/scalariform) for Scala, [ocp-indent](https://github.com/OCamlPro/ocp-indent) for OCaml and [PythonTidy](https://github.com/acdha/PythonTidy) for Python.
 
 [![Build Status Github Actions](https://github.com/fsprojects/fantomas/workflows/Build%20master/badge.svg?branch=master&event=push)](https://github.com/fsprojects/fantomas/actions)
 [![Discord](https://img.shields.io/discord/940511234179096586?label=Fantomas%20Discord&style=flat-square)](https://discord.gg/D5QXvQrBVa)
 
+## Why a fork
+
+We haven't yet contributed upstream the fixes for the following tickets:
+
+* https://github.com/fsprojects/fantomas/issues/2111
+* https://github.com/fsharp/fslang-design/issues/647
+* https://github.com/fsharp/fslang-design/issues/646
+
 ## Quick install
 
-* Command line: `dotnet tool install -g fantomas-tool`
-* JetBrains Rider: preinstalled
-* VSCode: part of [Ionide](http://ionide.io/) and [fantomas-fmt](https://marketplace.visualstudio.com/items?itemName=paolodellepiane.fantomas-fmt).
-* [Visual Studio 2019](https://marketplace.visualstudio.com/items?itemName=asti.fantomas-vs)
-* [Visual Studio 2022](https://marketplace.visualstudio.com/items?itemName=asti.fantomas-vs22)
+* Command line: `dotnet tool install -g fantomless-tool`
 
 ## How to use
 
 ### Command line tool / API
-Use this command to install Fantomas as a .NET 5 SDK global tool:
+Use this command to install Fantomless as a .NET 5 SDK global tool:
 
 ```
-dotnet tool install -g fantomas-tool
+dotnet tool install -g fantomless-tool
 ```
 
 For detailed guidelines, please read [Fantomas: How to use](docs/Documentation.md#using-the-command-line-tool).
