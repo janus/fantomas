@@ -534,17 +534,18 @@ and genTypeAndParam astContext typeName (tds: SynTyparDecls option) tcs =
          +> colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext)
          -- closeSep)
 
-    let isSinglePrefix = false
+    let isSinglePrefix, contx =
 
-    match tds with
-    | None -> !-typeName
-    | Some (SynTyparDecls.PostfixList (tds, tcs, _range)) -> !-typeName +> types "<" tds tcs ">"
-    | Some (SynTyparDecls.PrefixList (tds, _range)) -> types "(" tds [] ")" -- " " -- typeName
-    | Some (SynTyparDecls.SinglePrefix (td, _range)) ->
-        //isSinglePrefix = not (List.isEmpty tcs)
+        match tds with
+        | None -> false, !-typeName
+        | Some (SynTyparDecls.PostfixList (tds, tcs, _range)) -> false, !-typeName +> types "<" tds tcs ">"
+        | Some (SynTyparDecls.PrefixList (tds, _range)) -> false, types "(" tds [] ")" -- " " -- typeName
+        | Some (SynTyparDecls.SinglePrefix (td, _range)) ->
 
-        !-typeName +> types "<" [ td ] tcs ">"
-    +> ifElse (not (List.isEmpty tcs)) sepNone (colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext))
+            (not (List.isEmpty tcs)), !-typeName +> types "<" [ td ] tcs ">"
+
+    contx
+    +> ifElse isSinglePrefix sepNone (colPre (!- " when ") wordAnd tcs (genTypeConstraint astContext))
 
 and genTypeParamPostfix astContext tds =
     match tds with
