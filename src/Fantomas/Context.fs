@@ -1191,20 +1191,29 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         printfn "Identend = %A" indented*)
 
         let delta1 =
-            if commentRange.StartColumn = writerModel.Indent then
+            if commentRange.StartColumn = writerModel.Indent
+               && commentRange.StartColumn = writerModel.AtColumn then
                 0
-            elif ctx.Column > commentRange.StartColumn then
-                (commentRange.StartColumn - writerModel.Indent)
+            elif commentRange.StartColumn >= ctx.Column then
+                commentRange.StartColumn - ctx.Column
+            else if writerModel.AtColumn > writerModel.Indent then
+                commentRange.StartColumn - writerModel.AtColumn
             else
-                (commentRange.StartColumn - writerModel.AtColumn)
+                commentRange.StartColumn - writerModel.Indent
+
 
         let delta2 =
             if indented then
                 (commentRange.StartColumn - writerModel.Indent)
-            elif commentRange.StartColumn = writerModel.Indent then
+            elif commentRange.StartColumn = writerModel.Indent
+                 && commentRange.StartColumn = writerModel.AtColumn then
                 0
+            elif commentRange.StartColumn >= ctx.Column then
+                commentRange.StartColumn - ctx.Column
+            else if writerModel.AtColumn > writerModel.Indent then
+                commentRange.StartColumn - writerModel.AtColumn
             else
-                (commentRange.StartColumn - ctx.Column)
+                commentRange.StartColumn - writerModel.Indent
 
         (*(ifElse addNewline sepNlnForTrivia sepNone)
         +> ifElse (ctx.WriterModel.Indent = 0) (rep commentRange.StartColumn !- " ") sepNone
