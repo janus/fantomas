@@ -258,7 +258,7 @@ let ``inner comment should make item multiline`` () =
         equal
         """
 let a =
-    // foo
+        // foo
     getA ()
 
 return a
