@@ -39,7 +39,7 @@ let foo () =
 """
 
 [<Test>]
-let ``sequential in if branch, let or use in else branch, 2002001`` () =
+let ``sequential in if branch, let or use in else branch`` () =
     formatSourceString
         false
         """
@@ -89,7 +89,7 @@ let main argv =
 """
 
 [<Test>]
-let ``sequential in first clause, let or use in last clause, 2002001`` () =
+let ``sequential in first clause, let or use in last clause`` () =
     formatSourceString
         false
         """
@@ -141,7 +141,7 @@ let main argv =
 """
 
 [<Test>]
-let ``always add newline before un-indented last clause, 2002001`` () =
+let ``always add newline before un-indented last clause`` () =
     formatSourceString
         false
         """
@@ -194,7 +194,7 @@ let main argv =
 """
 
 [<Test>]
-let ``sequential in first clause, let or use in last clause, match bang, 2002001`` () =
+let ``sequential in first clause, let or use in last clause, match bang`` () =
     formatSourceString
         false
         """
@@ -358,7 +358,7 @@ module Foo =
 """
 
 [<Test>]
-let ``match is return value of let binding, 2002001`` () =
+let ``match is return value of let binding`` () =
     formatSourceString
         false
         """
@@ -389,7 +389,7 @@ let sum a b =
 """
 
 [<Test>]
-let ``nested match expression should not indent in both cases, 2002001`` () =
+let ``nested match expression should not indent in both cases`` () =
     formatSourceString
         false
         """
@@ -424,7 +424,7 @@ let sum a b =
 """
 
 [<Test>]
-let ``nested ifThenElse should not indent in both cases, 2002001`` () =
+let ``nested ifThenElse should not indent in both cases`` () =
     formatSourceString
         false
         """
@@ -462,7 +462,7 @@ let sum a b =
 """
 
 [<Test>]
-let ``match followed by if should not indent in both cases, 2002001`` () =
+let ``match followed by if should not indent in both cases`` () =
     formatSourceString
         false
         """
@@ -1864,7 +1864,7 @@ let nextModel, objectsRemoved =
 """
 
 [<Test>]
-let ``parenthesis tuple is consider as short branch, 2002001`` () =
+let ``parenthesis tuple is consider as short branch`` () =
     formatSourceString
         false
         """

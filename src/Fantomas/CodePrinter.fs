@@ -510,11 +510,12 @@ and genAttributes astContext (ats: SynAttributes) =
 and genPreXmlDoc (PreXmlDoc (lines, range)) =
     let offset =
         if lines.Length > 0 then
-            if lines.[0].StartsWith " "
+            if (lines.[0].Trim().Length = 0)
+               || lines.[0].Equals ""
                || lines.[0].StartsWith "\t" then
                 0
             else
-                range.StartColumn - 1
+                range.StartColumn
         else
             0
 
@@ -524,7 +525,6 @@ and genPreXmlDoc (PreXmlDoc (lines, range)) =
         lines
         (sprintf "%s///%s" (String.replicate offset " ")
          >> (!-))
-//(sprintf "///%s" >> (!-))
 
 and genExprSepEqPrependType
     (astContext: ASTContext)

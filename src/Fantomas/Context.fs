@@ -1170,32 +1170,13 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         +> ifElse after sepNlnForTrivia sepNone
     | Comment (LineCommentOnSingleLine (s, commentRange)) ->
         let writerModel = ctx.WriterModel
-        let oldIndent = writerModel.Indent
-        let oldColumn = writerModel.AtColumn
-
-        let oneSpace = 1
-
-
-        //printfn "%A" s
-        (*printfn "%A" addNewline
-        printfn "%A" addSpace
-        printfn "%A" writerModel.Indent
-        printfn "%A" writerModel.AtColumn
-        printfn "%A" commentRange.StartColumn
-        printfn "%A" writerModel.AtColumn
-        printfn "%A" ctx.Column
-        printfn "%A" addNewline
-        printfn "%A" commentRange.StartColumn
-        printfn "%A" writerModel.Indent
-        printfn "%A" s
-        printfn "Identend = %A" indented*)
 
         let delta1 =
             if commentRange.StartColumn = writerModel.Indent
                && commentRange.StartColumn = writerModel.AtColumn then
                 0
             elif commentRange.StartColumn >= ctx.Column then
-                commentRange.StartColumn - ctx.Column
+                commentRange.StartColumn - ctx.Column - 1
             else if writerModel.AtColumn > writerModel.Indent then
                 commentRange.StartColumn - writerModel.AtColumn
             else
@@ -1204,7 +1185,10 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
 
         let delta2 =
             if indented then
-                (commentRange.StartColumn - writerModel.Indent)
+                if commentRange.StartColumn > writerModel.Indent then
+                    (commentRange.StartColumn - writerModel.Indent)
+                else
+                    0
             elif commentRange.StartColumn = writerModel.Indent
                  && commentRange.StartColumn = writerModel.AtColumn then
                 0
@@ -1215,42 +1199,11 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
             else
                 commentRange.StartColumn - writerModel.Indent
 
-        (*(ifElse addNewline sepNlnForTrivia sepNone)
-        +> ifElse (ctx.WriterModel.Indent = 0) (rep commentRange.StartColumn !- " ") sepNone
-        +> !-s
-        +> sepNlnForTrivia*)
-
         (ifElse addNewline sepNln sepNone)
         +> ifElse addNewline (rep delta1 !- " ") (rep delta2 !- " ")
         +> !-s
         +> sepNlnForTrivia
 
-    (*writerEvent (SetAtColumn 0)
-        +> writerEvent (SetIndent commentRange.StartColumn)
-        +> writerEvent (SetIndent 0)
-        +> (ifElse addNewline sepNlnForTrivia sepNone)
-        +> (rep commentRange.StartColumn !- " ")
-        +> writerEvent (RestoreAtColumn oldColumn)
-        +> writerEvent (RestoreIndent oldIndent)
-        +> ifElse
-            (not addNewline
-             && commentRange.StartColumn > writerModel.AtColumn)
-            (rep oneSpace !- " ")
-            sepNone
-        +> !-s
-        +> sepNlnForTrivia*)
-
-    (*ifElse
-            addNewline
-            (writerEvent (SetAtColumn 0)
-             +> writerEvent (SetIndent commentRange.StartColumn)
-             +> sepNlnForTrivia
-             +> writerEvent (RestoreAtColumn oldColumn)
-             +> writerEvent (RestoreIndent oldIndent)
-             +> writerEvent (Write s))
-            (sepNone //Todo:  This is a hack. sepSpace is not working here.
-             +> !-s)*)
-    //+> sepNlnForTrivia
     | Newline -> (ifElse addNewline (sepNlnForTrivia +> sepNlnForTrivia) sepNlnForTrivia)
     | Keyword _
     | Number _
