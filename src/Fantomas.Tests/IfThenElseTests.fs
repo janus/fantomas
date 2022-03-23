@@ -2137,10 +2137,10 @@ if
 
     (env.reflect // Check the attributes on any enclosing module
      ||
-            // Check the attributes on the value
+               // Check the attributes on the value
      HasFSharpAttribute g g.attrib_ReflectedDefinitionAttribute v.Attribs
      ||
-            // Also check the enclosing type for members - for historical reasons, in the TAST member values
+               // Also check the enclosing type for members - for historical reasons, in the TAST member values
                // are stored in the entity that encloses the type, hence we will not have noticed the ReflectedDefinition
                // on the enclosing type at this point.
      HasFSharpAttribute g g.attrib_ReflectedDefinitionAttribute v.TopValDeclaringEntity.Attribs)

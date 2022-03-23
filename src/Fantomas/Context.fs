@@ -1170,6 +1170,9 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         +> ifElse after sepNlnForTrivia sepNone
     | Comment (LineCommentOnSingleLine (s, commentRange)) ->
         let writerModel = ctx.WriterModel
+        let oldIndent = writerModel.Indent
+        let oldColumn = writerModel.AtColumn
+
 
         let delta1 =
             if commentRange.StartColumn = writerModel.Indent
@@ -1199,8 +1202,15 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
             else
                 commentRange.StartColumn - writerModel.Indent
 
-        (ifElse addNewline sepNlnForTrivia sepNone)
-        +> ifElse addNewline (rep delta1 !- " ") (rep delta2 !- " ")
+        ifElse
+            addNewline
+            (writerEvent (SetAtColumn 0)
+             +> writerEvent (SetIndent commentRange.StartColumn)
+             +> sepNlnForTrivia
+             +> writerEvent (RestoreAtColumn oldColumn)
+             +> writerEvent (RestoreIndent oldIndent))
+            sepNone
+        +> ifElse addNewline sepNone (rep delta2 !- " ")
         +> !-s
         +> sepNlnForTrivia
 
