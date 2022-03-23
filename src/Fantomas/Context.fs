@@ -1176,7 +1176,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
                && commentRange.StartColumn = writerModel.AtColumn then
                 0
             elif commentRange.StartColumn >= ctx.Column then
-                commentRange.StartColumn - ctx.Column - 1
+                commentRange.StartColumn - ctx.Column
             else if writerModel.AtColumn > writerModel.Indent then
                 commentRange.StartColumn - writerModel.AtColumn
             else
