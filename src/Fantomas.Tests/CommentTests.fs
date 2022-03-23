@@ -345,7 +345,7 @@ let a =
         """
 let a =
     { c = 4
-      // foo
+        // foo
       // bar
       B = 7 }
 """
@@ -368,8 +368,8 @@ let a =
         """
 let a =
     {c = 4
-     // foo
-     // bar
+       // foo
+      // bar
      B = 7}
 """
 
@@ -1743,7 +1743,7 @@ type TorDirectory =
             return
                 { TorDirectory.NetworkStatus = NetworkStatusDocument.Parse consensusStr
                   ServerDescriptors = Map.empty
-                // comment
+                    // comment
                 }
         }
 """
@@ -1770,7 +1770,7 @@ with
 try
     try
         ()
-    // xxx
+        // xxx
     with
     | _ -> ()
 with
