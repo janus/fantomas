@@ -1199,7 +1199,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
             else
                 commentRange.StartColumn - writerModel.Indent
 
-        (ifElse addNewline sepNln sepNone)
+        (ifElse addNewline sepNlnForTrivia sepNone)
         +> ifElse addNewline (rep delta1 !- " ") (rep delta2 !- " ")
         +> !-s
         +> sepNlnForTrivia
