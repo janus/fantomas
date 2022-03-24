@@ -1148,8 +1148,11 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         |> Option.defaultValue false
 
     let indented =
-        if ctx.WriterModel.Indent > 0 then
-            let indentSpace = String.replicate ctx.WriterModel.Indent " "
+        if ctx.WriterModel.Indent > 0
+           || ctx.WriterModel.AtColumn > 0 then
+
+            let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
+            let indentSpace = String.replicate indentSize " "
 
             currentLastLine
             |> Option.map (fun line -> line.EndsWith indentSpace)
@@ -1173,7 +1176,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let oldIndent = writerModel.Indent
         let oldColumn = writerModel.AtColumn
 
-        (*printfn  "%A" s
+        (* printfn  "%A" s
         printfn "%A" writerModel.AtColumn
         printfn "%A" writerModel.Indent
         printfn "%A" ctx.Column
@@ -1182,7 +1185,13 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
 
         let delta2 =
             if indented then
-                0
+                let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
+
+                if commentRange.StartColumn > indentSize then
+                    //let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
+                    (commentRange.StartColumn - indentSize)
+                else
+                    0
             elif commentRange.StartColumn = writerModel.Indent
                  && commentRange.StartColumn = writerModel.AtColumn then
                 0
