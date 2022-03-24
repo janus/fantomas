@@ -1214,7 +1214,6 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
     | IdentBetweenTicks _
     | CharContent _
     | EmbeddedIL _ -> sepNone
-    //| KeywordString _ -> sepNone // don't print here but somewhere in CodePrinter
     | Directive s ->
         (ifElse addNewline sepNlnForTrivia sepNone)
         +> !-s
