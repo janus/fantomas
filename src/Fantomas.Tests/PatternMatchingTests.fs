@@ -1648,13 +1648,13 @@ let GenApp (cenv: cenv) cgbuf eenv (f, fty, tyargs, curriedArgs, m) sequel =
         | Some (kind, _) ->
             (not v.IsConstructor
              &&
-             // when branch-calling methods we must have the right type parameters
+            // when branch-calling methods we must have the right type parameters
              (match kind with
               | BranchCallClosure _ -> true
               | BranchCallMethod (_, _, tps, _, _, _) ->
                   (List.lengthsEqAndForall2 (fun ty tp -> typeEquiv g ty (mkTyparTy tp)) tyargs tps))
              &&
-             // must be exact #args, ignoring tupling - we untuple if needed below
+            // must be exact #args, ignoring tupling - we untuple if needed below
              (let arityInfo =
                  match kind with
                  | BranchCallClosure arityInfo
