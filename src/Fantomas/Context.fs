@@ -1176,30 +1176,21 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let oldIndent = writerModel.Indent
         let oldColumn = writerModel.AtColumn
 
-        (* printfn  "%A" s
-        printfn "%A" writerModel.AtColumn
-        printfn "%A" writerModel.Indent
-        printfn "%A" ctx.Column
-        printfn "%A" addNewline
-        printfn "%A" commentRange.StartColumn *)
+        let delta =
+            let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
 
-        let delta2 =
             if indented then
-                let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
-
                 if commentRange.StartColumn > indentSize then
-                    //let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
-                    (commentRange.StartColumn - indentSize)
+                    commentRange.StartColumn - indentSize
                 else
                     0
-            elif commentRange.StartColumn = writerModel.Indent
-                 && commentRange.StartColumn = writerModel.AtColumn then
+            elif commentRange.StartColumn = indentSize then
                 0
             elif commentRange.StartColumn >= ctx.Column then
-                if writerModel.AtColumn > writerModel.Indent then
-                    commentRange.StartColumn - writerModel.AtColumn
+                if commentRange.StartColumn > indentSize then
+                    commentRange.StartColumn - indentSize
                 else
-                    commentRange.StartColumn - writerModel.Indent
+                    0
             else
                 0
 
@@ -1211,7 +1202,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
              +> writerEvent (RestoreAtColumn oldColumn)
              +> writerEvent (RestoreIndent oldIndent))
             sepNone
-        +> ifElse addNewline sepNone (rep delta2 !- " ")
+        +> ifElse addNewline sepNone (rep delta !- " ")
         +> !-s
         +> sepNlnForTrivia
 
