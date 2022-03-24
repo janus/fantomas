@@ -1173,34 +1173,26 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let oldIndent = writerModel.Indent
         let oldColumn = writerModel.AtColumn
 
-
-        let delta1 =
-            if commentRange.StartColumn = writerModel.Indent
-               && commentRange.StartColumn = writerModel.AtColumn then
-                0
-            elif commentRange.StartColumn >= ctx.Column then
-                commentRange.StartColumn - ctx.Column
-            else if writerModel.AtColumn > writerModel.Indent then
-                commentRange.StartColumn - writerModel.AtColumn
-            else
-                commentRange.StartColumn - writerModel.Indent
-
+        (*printfn  "%A" s
+        printfn "%A" writerModel.AtColumn
+        printfn "%A" writerModel.Indent
+        printfn "%A" ctx.Column
+        printfn "%A" addNewline
+        printfn "%A" commentRange.StartColumn *)
 
         let delta2 =
             if indented then
-                if commentRange.StartColumn > writerModel.Indent then
-                    (commentRange.StartColumn - writerModel.Indent)
-                else
-                    0
+                0
             elif commentRange.StartColumn = writerModel.Indent
                  && commentRange.StartColumn = writerModel.AtColumn then
                 0
             elif commentRange.StartColumn >= ctx.Column then
-                commentRange.StartColumn - ctx.Column
-            else if writerModel.AtColumn > writerModel.Indent then
-                commentRange.StartColumn - writerModel.AtColumn
+                if writerModel.AtColumn > writerModel.Indent then
+                    commentRange.StartColumn - writerModel.AtColumn
+                else
+                    commentRange.StartColumn - writerModel.Indent
             else
-                commentRange.StartColumn - writerModel.Indent
+                0
 
         ifElse
             addNewline
