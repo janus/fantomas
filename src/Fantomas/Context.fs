@@ -1186,8 +1186,8 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
                 commentRange.StartColumn - writerModel.Indent
 
 
-        let delta2 = 0
-        (*if indented then
+        let delta2 =
+            if indented then
                 if commentRange.StartColumn > writerModel.Indent then
                     (commentRange.StartColumn - writerModel.Indent)
                 else
@@ -1200,7 +1200,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
             else if writerModel.AtColumn > writerModel.Indent then
                 commentRange.StartColumn - writerModel.AtColumn
             else
-                commentRange.StartColumn - writerModel.Indent*)
+                commentRange.StartColumn - writerModel.Indent
 
         ifElse
             addNewline
@@ -1210,6 +1210,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
              +> writerEvent (RestoreAtColumn oldColumn)
              +> writerEvent (RestoreIndent oldIndent))
             sepNone
+        +> ifElse addNewline sepNone (rep delta2 !- " ")
         +> !-s
         +> sepNlnForTrivia
 
