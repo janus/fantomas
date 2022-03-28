@@ -1182,11 +1182,11 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let writerModel = ctx.WriterModel
         let oldIndent = writerModel.Indent
         let oldColumn = writerModel.AtColumn
-
+        let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
 
 
         let delta =
-            let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
+            //let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
 
             if indented then
                 if commentRange.StartColumn > indentSize then
@@ -1218,7 +1218,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
                  +> sepNlnForTrivia
                  +> writerEvent (RestoreAtColumn oldColumn)
                  +> writerEvent (RestoreIndent oldIndent))
-                sepNone)
+                (ifElse (indentSize = 0) (rep commentRange.StartColumn !- " ") sepNone))
         +> !-s
         +> sepNlnForTrivia
 
