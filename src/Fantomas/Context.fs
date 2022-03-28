@@ -1210,12 +1210,15 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
              +> sepNlnForTrivia
              +> writerEvent (RestoreAtColumn oldColumn)
              +> writerEvent (RestoreIndent oldIndent))
-            (writerEvent (SetAtColumn 0)
-             +> writerEvent RemoveNewLine
-             +> writerEvent (SetIndent commentRange.StartColumn)
-             +> sepNlnForTrivia
-             +> writerEvent (RestoreAtColumn oldColumn)
-             +> writerEvent (RestoreIndent oldIndent))
+            (ifElse
+                indented
+                (writerEvent (SetAtColumn 0)
+                 +> writerEvent RemoveNewLine
+                 +> writerEvent (SetIndent commentRange.StartColumn)
+                 +> sepNlnForTrivia
+                 +> writerEvent (RestoreAtColumn oldColumn)
+                 +> writerEvent (RestoreIndent oldIndent))
+                sepNone)
         +> !-s
         +> sepNlnForTrivia
 
