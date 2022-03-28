@@ -2262,7 +2262,6 @@ let setup =
 """
 
 [<Test>]
-[<Ignore "Fixme">]
 let ``keep new line before match bang, 1313`` () =
     formatSourceString
         false

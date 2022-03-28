@@ -245,7 +245,6 @@ let f () =
 """
 
 [<Test>]
-[<Ignore "Fixme">]
 let ``should align mis-aligned comments`` () =
     formatSourceString
         false

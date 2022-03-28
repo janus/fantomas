@@ -694,7 +694,6 @@ let internal coli f' (c: seq<'T>) f (ctx: Context) =
 """
 
 [<Test>]
-[<Ignore "Fixme">]
 let ``keep new line before for loop, 1317`` () =
     formatSourceString
         false
