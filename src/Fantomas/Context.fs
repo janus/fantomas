@@ -1201,8 +1201,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
              +> sepNlnForTrivia
              +> writerEvent (RestoreAtColumn oldColumn)
              +> writerEvent (RestoreIndent oldIndent))
-            sepNone
-        +> ifElse addNewline sepNone (rep delta !- " ")
+            (rep delta !- " ")
         +> !-s
         +> sepNlnForTrivia
 

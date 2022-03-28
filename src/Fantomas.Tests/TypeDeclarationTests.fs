@@ -2700,7 +2700,7 @@ type X =
 """
 
 [<Test>]
-let ``short or long member depending on compiler define, followed by next member, 50506`` () =
+let ``short or long member depending on compiler define, followed by next member`` () =
     formatSourceString
         false
         """
