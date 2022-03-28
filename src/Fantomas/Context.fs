@@ -1184,25 +1184,6 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let oldColumn = writerModel.AtColumn
         let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
 
-
-        let delta =
-            //let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
-
-            if indented then
-                if commentRange.StartColumn > indentSize then
-                    commentRange.StartColumn - indentSize
-                else
-                    0
-            elif commentRange.StartColumn = indentSize then
-                0
-            elif commentRange.StartColumn >= ctx.Column then
-                if commentRange.StartColumn > indentSize then
-                    commentRange.StartColumn - indentSize
-                else
-                    0
-            else
-                0
-        //WriteLineInsideTrivia
         ifElse
             addNewline
             (writerEvent (SetAtColumn 0)
