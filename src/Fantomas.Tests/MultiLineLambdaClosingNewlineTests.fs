@@ -63,7 +63,7 @@ let mySuperFunction a =
     someOtherFunction
         a
         (fun b ->
-            // doing some stuff her
+        // doing some stuff her
             b * b
         )
 """
@@ -87,7 +87,7 @@ let mySuperFunction a =
 let mySuperFunction a =
     someOtherFunction
         (fun b ->
-            // doing some stuff her
+        // doing some stuff her
             b * b
         )
         a
@@ -135,7 +135,7 @@ let printListWithOffset a list1 =
 let printListWithOffset a list1 =
     List.iter
         (fun { ItemOne = a } ->
-            // print
+        // print
             printfn "%s" a
         )
         list1
@@ -167,7 +167,7 @@ let mySuperFunction v =
             a
         )
         (fun b ->
-            // probably wrong
+        // probably wrong
             42
         )
         v
@@ -199,7 +199,7 @@ let myTopLevelFunction v =
             a
         )
         (fun ({ B = b }) ->
-            // probably wrong
+        // probably wrong
             42
         )
         v
@@ -592,7 +592,7 @@ module Foo =
     let bang<'a when 'a : equality> (a : Foo<'a>) (ans : list<('a * System.TimeSpan)>) : bool =
         List.length x = List.length y
         && List.forall2
-            //
+        //
             (fun (a, ta) (b, tb) -> a.Equals b && ta = tb)
             x
             y

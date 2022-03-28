@@ -1850,7 +1850,7 @@ let nextModel, objectsRemoved =
         (fun acc item ->
             match entityInCurrentModel with
             | None ->
-                // look it's a tuple
+          // look it's a tuple
                 nextModel, objectsRemoved
             | Some subjectToRemove ->
 
@@ -1895,7 +1895,7 @@ let nextModel, objectsRemoved =
         (fun acc item ->
             match entityInCurrentModel with
             | None ->
-                // look it's a tuple but wrapped in parenthesis
+          // look it's a tuple but wrapped in parenthesis
                 (nextModel, objectsRemoved)
             | Some subjectToRemove ->
 

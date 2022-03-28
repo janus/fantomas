@@ -2039,7 +2039,7 @@ let x =
     [
     // comment
       1
-      // another comment
+    // another comment
       2 ]
 """
 

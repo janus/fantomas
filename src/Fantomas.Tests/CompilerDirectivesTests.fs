@@ -669,7 +669,7 @@ type FunctionComponent =
 #if FABLE_COMPILER
         let elemType =
             ReactBindings.React.``lazy`` (fun () ->
-                // React.lazy requires a default export
+            // React.lazy requires a default export
                 (importValueDynamic f)
                     .``then`` (fun x -> createObj [ "default" ==> x ]))
 
@@ -889,7 +889,7 @@ type FunctionComponent =
 #if FABLE_COMPILER
         let elemType =
             ReactBindings.React.``lazy`` (fun () ->
-                // React.lazy requires a default export
+            // React.lazy requires a default export
                 (importValueDynamic f)
                     .``then`` (fun x -> createObj [ "default" ==> x ]))
 

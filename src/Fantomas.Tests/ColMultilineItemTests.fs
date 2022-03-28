@@ -400,7 +400,7 @@ let blah<'a> config : Type =
         equal
         """
 let blah<'a> config : Type =
-    //#if DEBUG
+//#if DEBUG
     failwith ""
 //#endif
     DoThing.doIt ()

@@ -984,7 +984,7 @@ module Foo =
         try
             failwith ""
         with
-            // hi!
+        // hi!
             | :? Exception as e -> failwith ""
 """
 

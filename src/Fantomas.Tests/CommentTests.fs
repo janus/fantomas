@@ -324,7 +324,7 @@ let a =
         """
 let a =
     { // foo
-      // bar
+    // bar
       B = 7 }
 """
 
@@ -1317,7 +1317,7 @@ type T =
       module_: string
       name: string
       modifier: string
-      // Delay in ms since it entered the queue
+    // Delay in ms since it entered the queue
       delay: float }
 """
 

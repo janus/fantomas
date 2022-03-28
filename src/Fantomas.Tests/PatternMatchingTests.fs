@@ -1642,7 +1642,7 @@ let GenApp (cenv: cenv) cgbuf eenv (f, fty, tyargs, curriedArgs, m) sequel =
     let g = cenv.g
 
     match (f, tyargs, curriedArgs) with
-    // Look for tailcall to turn into branch
+  // Look for tailcall to turn into branch
     | (Expr.Val (v, _, _), _, _) when
         match ListAssoc.tryFind g.valRefEq v eenv.innerVals with
         | Some (kind, _) ->
