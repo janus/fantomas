@@ -16,6 +16,7 @@ type WriterEvent =
     | WriteBeforeNewline of string
     | WriteLineBecauseOfTrivia
     | WriteLineInsideTrivia
+    | RemoveNewLine
     | IndentBy of int
     | UnIndentBy of int
     | SetIndent of int
@@ -109,6 +110,12 @@ module WriterModel =
                     | h :: tail -> String.empty :: (h.TrimEnd()) :: tail
 
                 { m with Lines = lines; Column = 0 }
+            | RemoveNewLine ->
+                let otherLines = List.tail m.Lines
+
+                { m with
+                    Lines = otherLines
+                    Column = 0 }
             | Write s ->
                 { m with
                     Lines = (List.head m.Lines + s) :: (List.tail m.Lines)
@@ -1176,6 +1183,8 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
         let oldIndent = writerModel.Indent
         let oldColumn = writerModel.AtColumn
 
+
+
         let delta =
             let indentSize = max ctx.WriterModel.Indent ctx.WriterModel.AtColumn
 
@@ -1193,7 +1202,7 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
                     0
             else
                 0
-
+        //WriteLineInsideTrivia
         ifElse
             addNewline
             (writerEvent (SetAtColumn 0)
@@ -1201,7 +1210,12 @@ let internal printTriviaContent (c: TriviaContent) (ctx: Context) =
              +> sepNlnForTrivia
              +> writerEvent (RestoreAtColumn oldColumn)
              +> writerEvent (RestoreIndent oldIndent))
-            (rep delta !- " ")
+            (writerEvent (SetAtColumn 0)
+             +> writerEvent RemoveNewLine
+             +> writerEvent (SetIndent commentRange.StartColumn)
+             +> sepNlnForTrivia
+             +> writerEvent (RestoreAtColumn oldColumn)
+             +> writerEvent (RestoreIndent oldIndent))
         +> !-s
         +> sepNlnForTrivia
 
