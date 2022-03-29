@@ -364,7 +364,7 @@ let ``very long triple-quoted strings do not cause the interpolated string activ
 "
 
 [<Test>]
-let ``Replace %d with %i`` () =
+let ``Replace %d with %i, 20020099`` () =
     formatSourceString
         false
         """
@@ -391,4 +391,19 @@ Console.WriteLine(3)
         equal
         """
 Console.WriteLine(3)
+"""
+
+[<Test>]
+let ``Only replacement flag(should not change)`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine("%d")
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine("%d")
 """
