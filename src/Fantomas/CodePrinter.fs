@@ -5776,7 +5776,8 @@ and genConstBytes (bytes: byte []) (r: Range) =
         <| ctx
 
 and genConstString (stringKind: SynStringKind) (value: string) =
-    let escaped = Regex.Replace(value, "\"{1}", "\\\"")
+    let escapedIntegerInterpolation = Regex.Replace(value, "%d", "%i")
+    let escaped = Regex.Replace(escapedIntegerInterpolation, "\"{1}", "\\\"")
 
     let stringStart, stringEnd =
         match stringKind with

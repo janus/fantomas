@@ -362,3 +362,33 @@ let ``very long triple-quoted strings do not cause the interpolated string activ
         $"let value =
     \"\"\"{loremIpsum}\"\"\"
 "
+
+[<Test>]
+let ``Replace %d with %i`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine(sprintf "%d" 3)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine(sprintf "%i" 3)
+"""
+
+[<Test>]
+let ``Replace %d with %i(should not change)`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine(3)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine(3)
+"""
