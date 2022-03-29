@@ -41,7 +41,7 @@ let test x y =
     else "Don't know"
 
 if age < 10 then
-    printfn "You are only %d years old and already learning F#? Wow!" age
+    printfn "You are only %i years old and already learning F#? Wow!" age
 """
 
 [<Test>]
@@ -65,13 +65,13 @@ let ``for loops`` () =
         """
 let function1 () =
     for i = 1 to 10 do
-        printf "%d " i
+        printf "%i " i
 
     printfn ""
 
 let function2 () =
     for i = 10 downto 1 do
-        printf "%d " i
+        printf "%i " i
 
     printfn ""
 """
@@ -105,7 +105,7 @@ let lookForValue value maxValue =
 
     while continueLooping do
         let rand = randomNumberGenerator.Next(maxValue)
-        printf "%d " rand
+        printf "%i " rand
 
         if rand = value then
             printfn "\nFound a %d!" value
@@ -196,7 +196,7 @@ let ``range expressions`` () =
         """
 let function2 () =
     for i in 1..2..10 do
-        printf "%d " i
+        printf "%i " i
 
     printfn ""
 

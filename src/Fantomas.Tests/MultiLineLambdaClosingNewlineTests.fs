@@ -112,7 +112,7 @@ let printListWithOffset a list1 =
 let printListWithOffset a list1 =
     List.iter
         (((+) a)
-         >> printfn "%d")
+         >> printfn "%i")
         list1
 """
 
@@ -233,14 +233,14 @@ let printListWithOffset a list1 =
     list1
     |> List.iter (fun elem ->
         // print stuff
-        printfn "%d" (a + elem)
+        printfn "%i" (a + elem)
     )
 
 let printListWithOffset a list1 =
     list1
     |> List.iter (
         ((+) a)
-        >> printfn "%d"
+        >> printfn "%i"
     )
 """
 
@@ -305,17 +305,17 @@ let printListWithOffset a list1 =
     list1
     |> List.iter (
         ((+) veryVeryVeryVeryVeryVeryVeryVeryVeryLongThing)
-        >> printfn "%d"
+        >> printfn "%i"
     )
 
 let printListWithOffset' a list1 =
     list1
-    |> List.iter (((+) a) >> printfn "%d")
+    |> List.iter (((+) a) >> printfn "%i")
 
 let foldList a list1 =
     list1
     |> List.fold
-        (((+) a) >> printfn "%d")
+        (((+) a) >> printfn "%i")
         someVeryLongAccumulatorNameThatMakesTheWholeConstructMultilineBecauseOfTheLongName
 """
 

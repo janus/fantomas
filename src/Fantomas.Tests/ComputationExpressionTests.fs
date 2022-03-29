@@ -32,7 +32,7 @@ let fetchAsync (name, url: string) =
             let uri = new System.Uri(url)
             let webClient = new WebClient()
             let! html = webClient.AsyncDownloadString(uri)
-            printfn "Read %d characters for %s" html.Length name
+            printfn "Read %i characters for %s" html.Length name
         with
         | :? Exception -> ()
         | ex -> printfn "%s" (ex.Message)
@@ -56,7 +56,7 @@ let comp =
 let comp =
     eventually {
         for x in 1..2 do
-            printfn " x = %d" x
+            printfn " x = %i" x
 
         return 3 + 4
     }
@@ -2016,7 +2016,7 @@ let run r1 r2 r3 =
         }
 
     match res1 with
-    | Ok x -> printfn "%s is: %d" (nameof res1) x
+    | Ok x -> printfn "%s is: %i" (nameof res1) x
     | Error e -> printfn "%s is: %s" (nameof res1) e
 
 let printApplicatives () =

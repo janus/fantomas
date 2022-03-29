@@ -281,7 +281,7 @@ printfn "DIM from C# but via Object Expression: %d" md'.Z
         """
 // You can also implement it via an object expression
 let md' = { new MyDim }
-printfn "DIM from C# but via Object Expression: %d" md'.Z
+printfn "DIM from C# but via Object Expression: %i" md'.Z
 """
 
 [<Test>]
@@ -300,11 +300,11 @@ printfn "DIM from C# but via Object Expression: %d" md'.Z
     |> should
         equal
         """
-printfn "DIM from C#: %d" md.Z
+printfn "DIM from C#: %i" md.Z
 
 // You can also implement it via an object expression
 let md' = { new MyDim }
-printfn "DIM from C# but via Object Expression: %d" md'.Z
+printfn "DIM from C# but via Object Expression: %i" md'.Z
 """
 
 [<Test>]

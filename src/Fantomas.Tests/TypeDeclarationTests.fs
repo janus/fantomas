@@ -84,11 +84,11 @@ let ``type annotations`` () =
         """
 let iterate1 (f: unit -> seq<int>) =
     for e in f () do
-        printfn "%d" e
+        printfn "%i" e
 
 let iterate2 (f: unit -> #seq<int>) =
     for e in f () do
-        printfn "%d" e
+        printfn "%i" e
 """
 
 [<Test>]
@@ -138,7 +138,7 @@ type Connection(?rate0: int, ?duplex0: DuplexType, ?parity0: bool) =
             | Full -> 9600
             | Half -> 4800
 
-    do printfn "Baud Rate: %d Duplex: %A Parity: %b" rate duplex parity
+    do printfn "Baud Rate: %i Duplex: %A Parity: %b" rate duplex parity
 """
 
 [<Test>]
@@ -436,7 +436,7 @@ type MyType() =
         myInt1 <- i
         this.myInt2 <- i + 1
         this.myString <- str
-        printfn "%d %d %s" myInt1 (this.myInt2) (this.myString)
+        printfn "%i %i %s" myInt1 (this.myInt2) (this.myString)
 """
 
 [<Test>]

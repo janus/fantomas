@@ -217,7 +217,7 @@ let ``classes and implicit constructors`` () =
 type MyClass2(dataIn) as self =
     let data = dataIn
     do self.PrintMessage()
-    member this.PrintMessage() = printf "Creating MyClass2 with Data %d" data
+    member this.PrintMessage() = printf "Creating MyClass2 with Data %i" data
 """
 
 [<Test>]
@@ -238,7 +238,7 @@ let ``classes and private implicit constructors`` () =
 type MyClass2 private (dataIn) as self =
     let data = dataIn
     do self.PrintMessage()
-    member this.PrintMessage() = printf "Creating MyClass2 with Data %d" data
+    member this.PrintMessage() = printf "Creating MyClass2 with Data %i" data
 """
 
 [<Test>]
@@ -291,14 +291,14 @@ type MyClassBase2(x: int) =
 
     do
         for i in 1..z do
-            printf "%d " i
+            printf "%i " i
 
 type MyClassDerived2(y: int) =
     inherit MyClassBase2(y * 2)
 
     do
         for i in 1..y do
-            printf "%d " i
+            printf "%i " i
 """
 
 [<Test>]

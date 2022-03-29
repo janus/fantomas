@@ -81,7 +81,7 @@ printfn "%d -> %d" a[0] (b[0][0])
 let a = Array.create 10 -1
 let b = Array.create 10 a
 
-printfn "%d -> %d" a[0] (b[0][0])
+printfn "%i -> %i" a[0] (b[0][0])
 """
 
 [<Test>]
@@ -116,7 +116,7 @@ let g = [ .. (39 - 3) ] // complex expression
 let h = [| 1 .. MyModule.SomeConst |] // not all expressions are atomic
 
 for x in 1..2 do
-    printfn " x = %d" x
+    printfn " x = %i" x
 
 let s = seq { 0..10..100 }
 """

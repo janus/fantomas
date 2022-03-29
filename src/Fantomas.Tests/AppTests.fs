@@ -435,7 +435,7 @@ let ``classes and private implicit constructors`` () =
        let data = dataIn
        do self.PrintMessage()
        member this.PrintMessage() =
-           printf \"Creating MyClass2 with Data %d\" data\"\"\"
+           printf \"Creating MyClass2 with Data %i\" data\"\"\"
         { config with MaxFunctionBindingWidth = 120 }
 "
 

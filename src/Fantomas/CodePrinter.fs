@@ -2255,7 +2255,24 @@ and genExpr astContext synExpr ctx =
             expressionFitsOnRestOfLine short long
 
         // Always spacing in multiple arguments
-        | App (e, es) -> genApp astContext e es
+        | App (e, es) ->
+            match e with
+            | SynExpr.Ident id when
+                es.Length > 1
+                && (id.idText = "sprintf"
+                    || id.idText = "printf"
+                    || id.idText = "printfn")
+                ->
+                let expr = List.head es
+                let otherExprs = List.tail es
+
+                match expr with
+                | SynExpr.Const (SynConst.String (strLiteral, kind, range1), range2) ->
+                    let value = Regex.Replace(strLiteral, "%d", "%i")
+                    let firstArg = SynExpr.Const(SynConst.String(value, kind, range1), range2)
+                    genApp astContext e (firstArg :: otherExprs)
+                | _ -> genApp astContext e es
+            | _ -> genApp astContext e es
         | TypeApp (e, lt, ts, gt) ->
             genExpr astContext e
             +> genGenericTypeParameters astContext lt ts gt
@@ -5065,10 +5082,7 @@ and genPat astContext pat =
     | PatParen (lpr, p, rpr) ->
         let isParenNecessary =
             match p with
-            | SynPat.Named (expression, _, _, _) ->
-                match expression with
-                | Ident _ -> false
-                | _ -> true
+            | SynPat.Named (Ident _, _, _, _) -> false
             | SynPat.Wild _ -> false
             | _ -> true
 
