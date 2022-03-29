@@ -1421,7 +1421,7 @@ let months =
 
 let lookupMonth month =
     if (month > 12 || month < 1) then
-        invalidArg (nameof month) (sprintf "Value passed in was %d." month)
+        invalidArg (nameof month) (sprintf "Value passed in was %i." month)
 
     months.[month - 1]
 

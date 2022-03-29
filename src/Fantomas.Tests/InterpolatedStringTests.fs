@@ -362,3 +362,78 @@ let ``very long triple-quoted strings do not cause the interpolated string activ
         $"let value =
     \"\"\"{loremIpsum}\"\"\"
 "
+
+[<Test>]
+let ``Replace %d with %i`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine(sprintf "%d" 3)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine(sprintf "%i" 3)
+"""
+
+[<Test>]
+let ``Replace %d with %i(should not change)`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine(3)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine(3)
+"""
+
+[<Test>]
+let ``Only replacement flag(should not change)`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine("%d")
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine("%d")
+"""
+
+[<Test>]
+let ``Replace %d with %i when there are more than one flag`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine(sprintf "%d %d" 3 9)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine(sprintf "%i %i" 3 9)
+"""
+
+[<Test>]
+let ``Replace %d with %i while assigning to let value`` () =
+    formatSourceString
+        false
+        """
+let foo = sprintf "%d" 90
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let foo = sprintf "%i" 90
+"""
