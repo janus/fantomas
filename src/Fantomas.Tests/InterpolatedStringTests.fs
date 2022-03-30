@@ -422,3 +422,18 @@ Console.WriteLine(sprintf "%d %d" 3 9)
         """
 Console.WriteLine(sprintf "%i %i" 3 9)
 """
+
+[<Test>]
+let ``Replace %d with %i while assigning to let value`` () =
+    formatSourceString
+        false
+        """
+let foo = sprintf "%d" 90
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let foo = sprintf "%i" 90
+"""
