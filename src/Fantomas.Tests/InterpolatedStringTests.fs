@@ -407,3 +407,18 @@ Console.WriteLine("%d")
         """
 Console.WriteLine("%d")
 """
+
+[<Test>]
+let ``Replace %d with %i when there are more than one flag`` () =
+    formatSourceString
+        false
+        """
+Console.WriteLine(sprintf "%d %d" 3 9)
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+Console.WriteLine(sprintf "%i %i" 3 9)
+"""
