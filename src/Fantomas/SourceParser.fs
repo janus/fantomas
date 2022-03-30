@@ -1,6 +1,7 @@
 module internal Fantomas.SourceParser
 
 open System
+open System.Text.RegularExpressions
 open FSharp.Compiler.Syntax
 open FSharp.Compiler.Syntax.PrettyNaming
 open FSharp.Compiler.Text
@@ -1869,4 +1870,27 @@ let (|KeepIndentIfThenElse|_|) (e: SynExpr) =
             Some(branches, elseExpr, e.Range)
         else
             None
+    | _ -> None
+
+let (|AppConsoleWriteWithReplacement|_|) =
+    function
+    | App (SynExpr.DotGet _, [ (Paren (_, Tuple _, _, _)) ]) -> None
+    | App (e, [ Paren (lpr, singleExpr, rpr, _) as px ]) ->
+        match singleExpr with
+        | SynExpr.App (_, false, SynExpr.App (_, false, (SynExpr.Ident id as ident), arg, _), args, _) when
+            id.idText = "sprintf"
+            ->
+            match e with
+            | SynExpr.LongIdent (_, LongIdentWithDots identifier, _, _) when
+                "Console.WriteLine" = identifier
+                || "System.Console.WriteLine" = identifier
+                ->
+                match arg with
+                | SynExpr.Const (SynConst.String (a, b, c), r) ->
+                    let value = Regex.Replace(a, "%d", "%i")
+                    let narg = SynExpr.Const(SynConst.String(value, b, c), r)
+                    Some(e, lpr, ident, narg, args, rpr)
+                | _ -> None
+            | _ -> None
+        | _ -> None
     | _ -> None

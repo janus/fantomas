@@ -1980,6 +1980,16 @@ and genExpr astContext synExpr ctx =
 
             expressionFitsOnRestOfLine short long
 
+        | AppConsoleWriteWithReplacement (e, lpr, ident, arg, args, rpr) ->
+            genExpr astContext e
+            +> sepOpenTFor lpr
+            +> genExpr astContext ident
+            +> sepSpace
+            +> genExpr astContext arg
+            +> sepSpace
+            +> genExpr astContext args
+            +> sepCloseTFor rpr
+
         // path.Replace("../../../", "....")
         | AppSingleParenArg (LongIdentPiecesExpr lids as functionOrMethod, px) ->
             let addSpace =
@@ -5776,8 +5786,7 @@ and genConstBytes (bytes: byte []) (r: Range) =
         <| ctx
 
 and genConstString (stringKind: SynStringKind) (value: string) =
-    let escapedIntegerInterpolation = Regex.Replace(value, "%d", "%i")
-    let escaped = Regex.Replace(escapedIntegerInterpolation, "\"{1}", "\\\"")
+    let escaped = Regex.Replace(value, "\"{1}", "\\\"")
 
     let stringStart, stringEnd =
         match stringKind with

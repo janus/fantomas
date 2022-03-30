@@ -364,7 +364,7 @@ let ``very long triple-quoted strings do not cause the interpolated string activ
 "
 
 [<Test>]
-let ``Replace %d with %i, 20020099`` () =
+let ``Replace %d with %i`` () =
     formatSourceString
         false
         """
