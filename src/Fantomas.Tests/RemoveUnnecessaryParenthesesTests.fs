@@ -449,3 +449,25 @@ raise(Exception(ex.ToString(), (ex.InnerException)))
         """
 raise <| Exception(ex.ToString(), (ex.InnerException))
 """
+
+[<Test>]
+let ``using the new keyword`` () =
+    formatSourceString
+        false
+        """
+let CalculateSum (file: FileInfo) =
+    if not (file.Exists) then
+        raise (new FileNotFoundException("File not found", file.FullName))
+    ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let CalculateSum (file: FileInfo) =
+    if not (file.Exists) then
+        raise (new FileNotFoundException("File not found", file.FullName))
+
+    ()
+"""
