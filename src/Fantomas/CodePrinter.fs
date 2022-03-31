@@ -5058,7 +5058,7 @@ and genPat astContext pat =
     | PatParen (lpr, p, rpr) ->
         let isParenNecessary =
             match p with
-            | SynPat.Named (Ident _ , _, _, _) -> false
+            | SynPat.Named (Ident _, _, _, _) -> false
             | SynPat.Wild _ -> false
             | _ -> true
 
