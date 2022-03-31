@@ -838,13 +838,14 @@ let (|AppSingleParenArg|_|) =
 
 let (|RaiseApp|_|) =
     function
-    | App (e1, [ Paren (_, e2, _, _) ]) ->
+    | App (e1, [ Paren (lpr, e2, rpr, _) ]) ->
         match e1 with
         | SynExpr.Ident (Ident id) when id.Equals "raise" ->
             match e2 with
             | SynExpr.Lambda _
             | SynExpr.MatchLambda _ -> None
-            | _ -> Some(e1, e2)
+            | SynExpr.New _ -> Some(e1, e2, true, lpr, rpr)
+            | _ -> Some(e1, e2, false, lpr, rpr)
         | _ -> None
     | _ -> None
 
