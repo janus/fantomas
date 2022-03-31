@@ -437,3 +437,33 @@ let foo = sprintf "%d" 90
         """
 let foo = sprintf "%i" 90
 """
+
+[<Test>]
+let ``Replace %d with %i in printf call`` () =
+    formatSourceString
+        false
+        """
+printf "%d" 90
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+printf "%i" 90
+"""
+
+[<Test>]
+let ``Replace %d with %i in printfn call`` () =
+    formatSourceString
+        false
+        """
+printfn "%d" 90
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+printfn "%i" 90
+"""

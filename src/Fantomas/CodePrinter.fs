@@ -2247,8 +2247,12 @@ and genExpr astContext synExpr ctx =
 
         // Always spacing in multiple arguments
         | App (e, es) ->
+            let supportsInterpolation id =
+                [ "printfn"; "printf"; "sprintf" ]
+                |> List.exists (fun elem -> elem = id)
+
             match e with
-            | SynExpr.Ident id when id.idText = "sprintf" && es.Length > 1 ->
+            | SynExpr.Ident (Ident id) when (supportsInterpolation id) && es.Length > 1 ->
                 let expr = List.head es
                 let otherExprs = List.tail es
 
