@@ -233,14 +233,14 @@ let printListWithOffset a list1 =
     list1
     |> List.iter (fun elem ->
         // print stuff
-        printfn "%d" (a + elem)
+        printfn "%i" (a + elem)
     )
 
 let printListWithOffset a list1 =
     list1
     |> List.iter (
         ((+) a)
-        >> printfn "%d"
+        >> printfn "%i"
     )
 """
 

@@ -29,7 +29,7 @@ type IPrintable =
 
 type SomeClass1(x: int, y: float) =
     interface IPrintable with
-        member this.Print() = printfn "%d %f" x y
+        member this.Print() = printfn "%i %f" x y
 
 type Interface3 =
     inherit Interface1
@@ -354,11 +354,11 @@ type MyType() =
     interface MyDim
 
 let md = MyType() :> MyDim
-printfn "DIM from C#: %d" md.Z
+printfn "DIM from C#: %i" md.Z
 
 // You can also implement it via an object expression
 let md' = { new MyDim }
-printfn "DIM from C# but via Object Expression: %d" md'.Z
+printfn "DIM from C# but via Object Expression: %i" md'.Z
 """
 
 [<Test>]

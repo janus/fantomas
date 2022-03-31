@@ -92,7 +92,7 @@ let listLength list =
 let rec printList l =
     match l with
     | head :: tail ->
-        printf "%d " head
+        printf "%i " head
         printList tail
     | [] -> printfn ""
 

@@ -95,7 +95,7 @@ let g = [ .. (39 - 3) ] // complex expression
 let h = [| 1 .. MyModule.SomeConst |] // not all expressions are atomic
 
 for x in 1..2 do
-    printfn " x = %d" x
+    printfn " x = %i" x
 
 let s = seq { 0..10..100 }
 """
