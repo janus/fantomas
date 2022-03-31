@@ -1980,16 +1980,6 @@ and genExpr astContext synExpr ctx =
 
             expressionFitsOnRestOfLine short long
 
-        | AppConsoleWriteWithReplacement (e, lpr, ident, arg, args, rpr) ->
-            genExpr astContext e
-            +> sepOpenTFor lpr
-            +> genExpr astContext ident
-            +> sepSpace
-            +> genExpr astContext arg
-            +> sepSpace
-            +> genExpr astContext args
-            +> sepCloseTFor rpr
-
         // path.Replace("../../../", "....")
         | AppSingleParenArg (LongIdentPiecesExpr lids as functionOrMethod, px) ->
             let addSpace =
@@ -2256,7 +2246,19 @@ and genExpr astContext synExpr ctx =
             expressionFitsOnRestOfLine short long
 
         // Always spacing in multiple arguments
-        | App (e, es) -> genApp astContext e es
+        | App (e, es) ->
+            match e with
+            | SynExpr.Ident id when id.idText = "sprintf" && es.Length > 1 ->
+                let expr = List.head es
+                let otherExprs = List.tail es
+
+                match expr with
+                | SynExpr.Const (SynConst.String (strLiteral, kind, range1), range2) ->
+                    let value = Regex.Replace(strLiteral, "%d", "%i")
+                    let firstArg = SynExpr.Const(SynConst.String(value, kind, range1), range2)
+                    genApp astContext e (firstArg :: otherExprs)
+                | _ -> genApp astContext e es
+            | _ -> genApp astContext e es
         | TypeApp (e, lt, ts, gt) ->
             genExpr astContext e
             +> genGenericTypeParameters astContext lt ts gt
