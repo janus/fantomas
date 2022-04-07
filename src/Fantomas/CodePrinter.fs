@@ -1755,6 +1755,23 @@ and genExpr astContext synExpr ctx =
                 atCurrentColumn (isShortExpression ctx.Config.MaxInfixOperatorExpression shortExpr multilineExpr) ctx
 
         | InfixApp (operatorText, operatorExpr, e1, e2, _) ->
+            let e2 =
+                match e2 with
+                | SynExpr.App (nonAtomi, bool, SynExpr.Ident ident, expr, range) when
+
+                    (ident.idText = "sprintf"
+                     || ident.idText = "printf"
+                     || ident.idText = "printfn")
+                    ->
+
+                    match expr with
+                    | SynExpr.Const (SynConst.String (strLiteral, kind, range1), range2) ->
+                        let value = Regex.Replace(strLiteral, "%d", "%i")
+                        let firstArg = SynExpr.Const(SynConst.String(value, kind, range1), range2)
+                        SynExpr.App(nonAtomi, bool, SynExpr.Ident ident, firstArg, range)
+                    | _ -> e2
+                | _ -> e2
+
             fun ctx ->
                 isShortExpression
                     ctx.Config.MaxInfixOperatorExpression
