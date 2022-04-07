@@ -844,7 +844,6 @@ let (|RaiseApp|_|) =
             match e2 with
             | SynExpr.Lambda _
             | SynExpr.MatchLambda _ -> None
-            | SynExpr.New _ -> None
             | _ -> Some(e1, e2)
         | _ -> None
     | _ -> None

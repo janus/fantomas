@@ -2013,7 +2013,8 @@ and genExpr astContext synExpr ctx =
 
         | RaiseApp (e1, e2) ->
             match e2 with
-            | App (_, _) ->
+            | App (_, _)
+            | SynExpr.New _ ->
                 genExpr astContext e1
                 +> sepSpace
                 +> !- "<|"
