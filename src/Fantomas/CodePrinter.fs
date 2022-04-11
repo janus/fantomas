@@ -2273,32 +2273,6 @@ and genExpr astContext synExpr ctx =
 
         // Always spacing in multiple arguments
         | App (e, es) ->
-            let es =
-                let likelyInterpolation (literal: string) =
-
-                    List.exists (fun item -> literal.Contains item) [ "sprintf"; "printf"; "printfn" ]
-
-                let rec loop es inspected =
-                    match es with
-                    | SynExpr.Const (SynConst.String (strLiteral, kind, range1), range2) as target :: rest ->
-                        if likelyInterpolation strLiteral then
-                            let value = Regex.Replace(strLiteral, "%d", "%i")
-                            let element = SynExpr.Const(SynConst.String(value, kind, range1), range2)
-                            loop rest (element :: inspected)
-                        else
-                            loop rest (target :: inspected)
-                    | head :: rest -> loop rest (head :: inspected)
-                    | [] -> List.rev inspected
-
-                match e with
-                | SynExpr.Ident id when
-                    (id.idText = "sprintf"
-                     || id.idText = "printf"
-                     || id.idText = "printfn")
-                    ->
-                    es
-                | _ -> loop es List.Empty
-
             match e with
             | SynExpr.Ident id when
                 es.Length > 1
@@ -5745,6 +5719,15 @@ and genConst (c: SynConst) (r: Range) =
 
             match trivia with
             | Some ({ ContentItself = Some (StringContent sc) } as tn) ->
+                let sc =
+                    let likelyInterpolation (literal: string) =
+                        List.exists (fun item -> literal.Contains item) [ "sprintf"; "printf"; "printfn" ]
+
+                    if likelyInterpolation sc then
+                        Regex.Replace(sc, "%d", "%i")
+                    else
+                        sc
+
                 printContentBefore tn
                 +> !-sc
                 +> printContentAfter tn
