@@ -2282,3 +2282,35 @@ let fns =
  // I think the space at the start of the lines above matter
       ]
 """
+
+[<Test>]
+let ``replace array literal in parameter with array generic type`` () =
+    formatSourceString
+        false
+        """
+let foo (bar: string[]) =
+    ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let foo (bar: array<string>) =
+    ()
+"""
+
+[<Test>]
+let ``no parameter array literal in parameter`` () =
+    formatSourceString
+        false
+        """
+let foo = []
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let foo = []
+"""
