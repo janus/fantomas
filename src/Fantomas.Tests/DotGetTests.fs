@@ -150,7 +150,7 @@ module Services =
     type StreamResolver(storage: Storage.Instance) =
         member __.Resolve
             (
-                codec: FsCodec.IEventCodec<'event, byte [], _>,
+                codec: FsCodec.IEventCodec<'event, array<byte>, _>,
                 fold: ('state -> seq<'event> -> 'state),
                 initial: 'state,
                 snapshot: (('event -> bool) * ('state -> 'event))

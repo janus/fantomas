@@ -413,7 +413,7 @@ match item.Item with
         equal
         """
 match item.Item with
-| :? (Instruction []) -> ()
+| :? (array<Instruction>) -> ()
 """
 
 [<Test>]
