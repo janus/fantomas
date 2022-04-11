@@ -4352,8 +4352,15 @@ and genType astContext outerBracket t =
             +> addSpaceIfSynTypeStaticConstantHasAtSignBeforeString t2
             +> loop t2
         | TArray (t, n, r) ->
-            loop t -- " [" +> rep (n - 1) (!- ",") -- "]"
-            |> genTriviaFor SynType_Array r
+            if n = 1 then
+                match t with
+                | SynType.LongIdent (LongIdentWithDots ident) -> !- "array" -- "<" -- ident -- ">"
+                | _ ->
+                    loop t -- " [" +> rep (n - 1) (!- ",") -- "]"
+                    |> genTriviaFor SynType_Array r
+            else
+                loop t -- " [" +> rep (n - 1) (!- ",") -- "]"
+                |> genTriviaFor SynType_Array r
         | TAnon -> sepWild
         | TVar (tp, r) ->
             genTypar astContext tp
