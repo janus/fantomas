@@ -99,7 +99,7 @@ let count: int [] // foo
     |> should
         equal
         """
-let count: int [] // foo
+let count: array<int> // foo
     =
     [ 2 ]
 """
@@ -120,7 +120,7 @@ type Model =
         equal
         """
 type Model =
-    { Flags: bool [] // foo
+    { Flags: array<bool> // foo
       Name: string // bar
       Street: string }
 """

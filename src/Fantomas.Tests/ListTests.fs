@@ -2149,7 +2149,7 @@ let private fn (xs: int []) =
     |> should
         equal
         """
-let private fn (xs: int []) =
+let private fn (xs: array<int>) =
     fn2
         ""
         [ let r = Seq.head xs
@@ -2296,12 +2296,11 @@ let foo (bar: string[]) =
     |> should
         equal
         """
-let foo (bar: array<string>) =
-    ()
+let foo (bar: array<string>) = ()
 """
 
 [<Test>]
-let ``no parameter array literal in parameter`` () =
+let ``array assigned to let value`` () =
     formatSourceString
         false
         """
