@@ -4352,8 +4352,8 @@ and genType astContext outerBracket t =
             +> addSpaceIfSynTypeStaticConstantHasAtSignBeforeString t2
             +> loop t2
         | TArray (t, n, r) ->
-            match t with
-            | SynType.LongIdent (LongIdentWithDots identifier) when n = 1 ->
+            match n, t with
+            | 1, SynType.LongIdent (LongIdentWithDots identifier) ->
                 !-(sprintf "array<%s>" identifier)
                 |> genTriviaFor SynType_Array r
             | _ ->
