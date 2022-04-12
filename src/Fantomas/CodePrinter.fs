@@ -4354,7 +4354,9 @@ and genType astContext outerBracket t =
         | TArray (t, n, r) ->
             if n = 1 then
                 match t with
-                | SynType.LongIdent (LongIdentWithDots ident) -> !- "array" -- "<" -- ident -- ">"
+                | SynType.LongIdent (LongIdentWithDots identifier) ->
+                    !-(sprintf "array<%s>" identifier)
+                    |> genTriviaFor SynType_Array r
                 | _ ->
                     loop t -- " [" +> rep (n - 1) (!- ",") -- "]"
                     |> genTriviaFor SynType_Array r

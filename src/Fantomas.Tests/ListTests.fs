@@ -2300,7 +2300,7 @@ let foo (bar: array<string>) = ()
 """
 
 [<Test>]
-let ``array assigned to let value`` () =
+let ``empty list assigned to let value`` () =
     formatSourceString
         false
         """
