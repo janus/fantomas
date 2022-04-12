@@ -1052,6 +1052,11 @@ and genNamedArgumentExpr (astContext: ASTContext) operatorExpr e1 e2 appRange =
 
 and genExpr astContext synExpr ctx =
     let expr =
+        let isPrint identifier =
+            identifier = "sprintf"
+            || identifier = "printf"
+            || identifier = "printfn"
+
         match synExpr with
         | ElmishReactWithoutChildren (identifier, openingTokenRange, isArray, children, closingTokenRange) when
             (not ctx.Config.DisableElmishSyntax)
@@ -1757,13 +1762,7 @@ and genExpr astContext synExpr ctx =
         | InfixApp (operatorText, operatorExpr, e1, e2, _) ->
             let e2 =
                 match e2 with
-                | SynExpr.App (nonAtomi, bool, SynExpr.Ident ident, expr, range) when
-
-                    (ident.idText = "sprintf"
-                     || ident.idText = "printf"
-                     || ident.idText = "printfn")
-                    ->
-
+                | SynExpr.App (nonAtomi, bool, SynExpr.Ident ident, expr, range) when isPrint ident.idText ->
                     match expr with
                     | SynExpr.Const (SynConst.String (strLiteral, kind, range1), range2) ->
                         let value = Regex.Replace(strLiteral, "%d", "%i")
@@ -2274,12 +2273,7 @@ and genExpr astContext synExpr ctx =
         // Always spacing in multiple arguments
         | App (e, es) ->
             match e with
-            | SynExpr.Ident id when
-                es.Length > 1
-                && (id.idText = "sprintf"
-                    || id.idText = "printf"
-                    || id.idText = "printfn")
-                ->
+            | SynExpr.Ident id when es.Length > 1 && isPrint id.idText ->
                 let expr = List.head es
                 let otherExprs = List.tail es
 
@@ -5721,7 +5715,14 @@ and genConst (c: SynConst) (r: Range) =
             | Some ({ ContentItself = Some (StringContent sc) } as tn) ->
                 let sc =
                     let likelyInterpolation (literal: string) =
-                        List.exists (fun item -> literal.Contains item) [ "sprintf"; "printf"; "printfn" ]
+                        let words = literal.Split [| ' ' |]
+
+                        Array.exists
+                            (fun item ->
+                                item = "sprintf"
+                                || item = "printf"
+                                || item = "printfn")
+                            words
 
                     if likelyInterpolation sc then
                         Regex.Replace(sc, "%d", "%i")
