@@ -61,6 +61,11 @@ let addSpaceBeforeParensInFunDef (spaceBeforeSetting: bool) (functionOrMethod: s
     | _: string, _ -> not isLastPartUppercase
     | _ -> true
 
+let isPrintf identifier =
+    identifier = "sprintf"
+    || identifier = "printf"
+    || identifier = "printfn"
+
 let rec genParsedInput astContext ast =
     match ast with
     | ImplFile im -> genImpFile astContext im
@@ -1052,11 +1057,6 @@ and genNamedArgumentExpr (astContext: ASTContext) operatorExpr e1 e2 appRange =
 
 and genExpr astContext synExpr ctx =
     let expr =
-        let isPrint identifier =
-            identifier = "sprintf"
-            || identifier = "printf"
-            || identifier = "printfn"
-
         match synExpr with
         | ElmishReactWithoutChildren (identifier, openingTokenRange, isArray, children, closingTokenRange) when
             (not ctx.Config.DisableElmishSyntax)
@@ -1762,7 +1762,7 @@ and genExpr astContext synExpr ctx =
         | InfixApp (operatorText, operatorExpr, e1, e2, _) ->
             let e2 =
                 match e2 with
-                | SynExpr.App (nonAtomi, bool, SynExpr.Ident ident, expr, range) when isPrint ident.idText ->
+                | SynExpr.App (nonAtomi, bool, SynExpr.Ident ident, expr, range) when isPrintf ident.idText ->
                     match expr with
                     | SynExpr.Const (SynConst.String (strLiteral, kind, range1), range2) ->
                         let value = Regex.Replace(strLiteral, "%d", "%i")
@@ -2273,7 +2273,7 @@ and genExpr astContext synExpr ctx =
         // Always spacing in multiple arguments
         | App (e, es) ->
             match e with
-            | SynExpr.Ident id when es.Length > 1 && isPrint id.idText ->
+            | SynExpr.Ident id when es.Length > 1 && isPrintf id.idText ->
                 let expr = List.head es
                 let otherExprs = List.tail es
 
@@ -5716,13 +5716,7 @@ and genConst (c: SynConst) (r: Range) =
                 let sc =
                     let likelyInterpolation (literal: string) =
                         let words = literal.Split [| ' ' |]
-
-                        Array.exists
-                            (fun item ->
-                                item = "sprintf"
-                                || item = "printf"
-                                || item = "printfn")
-                            words
+                        Array.exists (fun item -> isPrintf item) words
 
                     if likelyInterpolation sc then
                         Regex.Replace(sc, "%d", "%i")
