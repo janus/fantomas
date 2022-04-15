@@ -5,6 +5,47 @@ open FsUnit
 open Fantomas.Tests.TestHelper
 
 [<Test>]
+let ``regression when trying to fix bug 1926`` () =
+    formatSourceString
+        false
+        """
+namespace GWallet.Backend
+
+module Foo =
+    let Bar (baz: option<_>): Async<unit> =
+        async {
+            if false then
+                return failwith "unreachable"
+            else
+                match baz with
+                | Some (AverageBetweenResponses (minimumNumberOfResponses,
+                                                 averageFunc)) ->
+                    return failwith "unreachable"
+                | _ ->
+                    return failwith "unreachable"
+        }"""
+        { config with MaxLineLength = 80 }
+    |> prepend newline
+    |> should
+        equal
+        """
+namespace GWallet.Backend
+
+module Foo =
+    let Bar (baz: option<_>) : Async<unit> =
+        async {
+            if false then
+                return failwith "unreachable"
+            else
+                match baz with
+                | Some (AverageBetweenResponses (minimumNumberOfResponses,
+                                                 averageFunc)) ->
+                    return failwith "unreachable"
+                | _ -> return failwith "unreachable"
+        }
+"""
+
+[<Test>]
 let ``match expressions`` () =
     formatSourceString
         false
