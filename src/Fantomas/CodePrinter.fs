@@ -5036,10 +5036,11 @@ and genPat astContext pat =
                 astContext.IsInsideMatchClausePattern
                 (indent
                  +> sepNln
+                 +> indent
                  +> genTriviaFor SynPat_Paren_OpeningParenthesis lpr sepOpenT
                  +> sepNln
-                 +> (fun ctx -> (rep ctx.Config.IndentSize (!- " ")) ctx)
                  +> genPat astContext p
+                 +> unindent
                  +> sepNln
                  +> genTriviaFor SynPat_Paren_ClosingParenthesis rpr sepCloseT
                  +> unindent)

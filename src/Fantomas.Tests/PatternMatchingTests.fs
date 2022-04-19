@@ -46,7 +46,8 @@ module Foo =
                             )
                     ) -> return failwith "unreachable"
                 | _ -> return failwith "unreachable"
-        }"""
+        }
+"""
 
 [<Test>]
 let ``match expressions`` () =
