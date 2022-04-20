@@ -36,8 +36,8 @@ jobs:
 
   publish:
     env:
-      DEFAULT_REF_TO_NUGET_PUSH: refs/heads/master
-      VERSION: 4.7.997
+      DEFAULT_REF_TO_NUGET_PUSH: refs/heads/prerelease
+      VERSION: 4.7.997-prerelease
     runs-on: windows-latest
     needs: build
     steps:

@@ -10,11 +10,12 @@ F# source code formatter, fork of fantomas, which was inspired by [scalariform](
 
 ## Why a fork
 
-We haven't yet contributed upstream the fixes for the following tickets:
-
-* https://github.com/fsprojects/fantomas/issues/2111
-* https://github.com/fsharp/fslang-design/issues/647
-* https://github.com/fsharp/fslang-design/issues/646
+Many reasons:
+1. The most important one is that fantomas' maintainer doesn't agree with fantomas removing unneeded parenthesis, so we're bringing this feature here.
+2. We also implemented a bugfix for comments misplacement that the maintainer doesn't agree with (trying to address his feedback would mean a lot more time to work on it, which we don't have).
+3. We don't hold any resentment about our PullRequests not being accepted; we can just create a fork and be happy (and we would love if at some point our diff is taken and this fork is not needed anymore).
+4. That being said, we don't understand some behaviours from fantomas' maintainer. We recognize that he does superb technical work, and has even fixed many of our issues, etc., but that doesn't, in our opinon, give him the right to keep being, at times, a complete jerk when replying to us in issues and some of our PullRequests. It's even more difficult to understand when, in this opensource world of meritocracy, we have even contributed so many fixes upstream ourselves (more than 10 PullRequests).
+5. Last but not least; we included a feature for generic type normalization which we found out makes fantomas (fantomless) incompatible with units of measure. As we don't use units of measure, we don't mind including this feature. But don't use fantomless if you use F#'s Units of Measure!
 
 ## Quick install
 
