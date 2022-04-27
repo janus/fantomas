@@ -471,3 +471,41 @@ let CalculateSum (file: FileInfo) =
 
     ()
 """
+
+[<Test>]
+let ``remove unneeded parentheses in match clause if tuple has only one element and also not DU`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| (Bar) -> ()
+| _ -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| Bar -> ()
+| _ -> ()
+"""
+
+[<Test>]
+let ``keep parentheses in match clause if tuple is a DU`` () =
+    formatSourceString
+        false
+        """
+match foo with
+| (Bar baz) -> ()
+| _ -> ()
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+match foo with
+| (Bar baz) -> ()
+| _ -> ()
+"""

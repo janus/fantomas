@@ -4698,6 +4698,7 @@ and genClause astContext hasBar (Clause (p, eo, arrowRange, e) as ce) =
     let astCtx = { astContext with IsInsideMatchClausePattern = true }
 
     let patAndBody =
+
         genPat astCtx p
         +> leadingExpressionIsMultiline
             (optPre (!- " when") sepNone eo (fun e ->
@@ -5109,6 +5110,7 @@ and genPat astContext pat =
             match p with
             | SynPat.Named (Ident _, _, _, _) -> false
             | SynPat.Wild _ -> false
+            | SynPat.LongIdent (LongIdentWithDots _, _, _, _, SynArgPats.Pats ([]), _, _) -> false
             | _ -> true
 
         let shortExpr =
