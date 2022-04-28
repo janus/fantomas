@@ -1464,19 +1464,35 @@ and genExpr astContext synExpr ctx =
 
         // Handle the form 'for i in e1 -> e2'
         | ForEach (p, e1, e2, isArrow) ->
-            atCurrentColumn (
-                !- "for " +> genPat astContext p -- " in "
-                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr { astContext with IsNakedRange = true } e1)
-                +> ifElse
-                    isArrow
-                    (sepArrow
-                     +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
-                    (!- " do"
-                     +> indent
-                     +> sepNln
-                     +> genExpr astContext e2
-                     +> unindent)
-            )
+            match e1 with
+            | Paren (_, (SynExpr.Ident _ as e1), _, _) ->
+                atCurrentColumn (
+                    !- "for " +> genPat astContext p -- " in "
+                    +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr { astContext with IsNakedRange = true } e1)
+                    +> ifElse
+                        isArrow
+                        (sepArrow
+                        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
+                        (!- " do"
+                        +> indent
+                        +> sepNln
+                        +> genExpr astContext e2
+                        +> unindent)
+                )
+            | _ ->
+                atCurrentColumn (
+                    !- "for " +> genPat astContext p -- " in "
+                    +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr { astContext with IsNakedRange = true } e1)
+                    +> ifElse
+                        isArrow
+                        (sepArrow
+                        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
+                        (!- " do"
+                        +> indent
+                        +> sepNln
+                        +> genExpr astContext e2
+                        +> unindent)
+                )
 
         | NamedComputationExpr (nameExpr, openingBrace, bodyExpr, closingBrace) ->
             fun ctx ->
