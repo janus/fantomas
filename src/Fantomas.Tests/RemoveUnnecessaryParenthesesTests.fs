@@ -509,3 +509,49 @@ match foo with
 | (Bar baz) -> ()
 | _ -> ()
 """
+
+[<Test>]
+let ``Remove unneeded parentheses in for loop`` () =
+    formatSourceString
+        false
+        """
+let private GrabTheFirstStringBeforeTheFirstColon (lines: seq<string>) =
+    seq {
+        for line in (lines) do
+            yield (line.Split([| ":" |], StringSplitOptions.RemoveEmptyEntries)).[0]
+    }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let private GrabTheFirstStringBeforeTheFirstColon (lines: seq<string>) =
+    seq {
+        for line in lines do
+            yield (line.Split([| ":" |], StringSplitOptions.RemoveEmptyEntries)).[0]
+    }
+"""
+
+[<Test>]
+let ``keep parentheses in for loop`` () =
+    formatSourceString
+        false
+        """
+let GrabTheFirstStringBeforeTheFirstColon () =
+    seq {
+        for line in (foo ()) do
+            yield line
+    }
+"""
+        config
+    |> prepend newline
+    |> should
+        equal
+        """
+let GrabTheFirstStringBeforeTheFirstColon () =
+    seq {
+        for line in (foo ()) do
+            yield line
+    }
+"""
