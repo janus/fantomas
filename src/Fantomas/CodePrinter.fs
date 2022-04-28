@@ -1472,12 +1472,12 @@ and genExpr astContext synExpr ctx =
                     +> ifElse
                         isArrow
                         (sepArrow
-                        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
+                         +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
                         (!- " do"
-                        +> indent
-                        +> sepNln
-                        +> genExpr astContext e2
-                        +> unindent)
+                         +> indent
+                         +> sepNln
+                         +> genExpr astContext e2
+                         +> unindent)
                 )
             | _ ->
                 atCurrentColumn (
@@ -1486,12 +1486,12 @@ and genExpr astContext synExpr ctx =
                     +> ifElse
                         isArrow
                         (sepArrow
-                        +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
+                         +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr astContext e2))
                         (!- " do"
-                        +> indent
-                        +> sepNln
-                        +> genExpr astContext e2
-                        +> unindent)
+                         +> indent
+                         +> sepNln
+                         +> genExpr astContext e2
+                         +> unindent)
                 )
 
         | NamedComputationExpr (nameExpr, openingBrace, bodyExpr, closingBrace) ->
