@@ -1464,9 +1464,14 @@ and genExpr astContext synExpr ctx =
 
         // Handle the form 'for i in e1 -> e2'
         | ForEach (p, e1, e2, isArrow) ->
+            let expr =
+                match e1 with
+                | Paren (_, (SynExpr.Ident _ as e11), _, _) -> genExpr { astContext with IsNakedRange = true } e11
+                | _ -> genExpr { astContext with IsNakedRange = true } e1
+
             atCurrentColumn (
                 !- "for " +> genPat astContext p -- " in "
-                +> autoIndentAndNlnIfExpressionExceedsPageWidth (genExpr { astContext with IsNakedRange = true } e1)
+                +> autoIndentAndNlnIfExpressionExceedsPageWidth expr
                 +> ifElse
                     isArrow
                     (sepArrow
