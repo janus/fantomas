@@ -4659,13 +4659,19 @@ and genClauses astContext cs =
 
 /// Each multiline member definition has a pre and post new line.
 and genMemberDefnList astContext nodes =
+
+    let isWronglyPlaced gs =
+        match fst gs with
+        | SynBinding(_, _, _, _, _, _, SynValData(Some {MemberKind = PropertyGet; IsOverrideOrExplicitImpl = true}, _, _), _, _, _, _, _, _) -> false
+        | _ -> true
+
     let rec collectItems
         (nodes: SynMemberDefn list)
         (finalContinuation: ColMultilineItem list -> ColMultilineItem list)
         : ColMultilineItem list =
         match nodes with
         | [] -> finalContinuation []
-        | PropertyWithGetSetMemberDefn (gs, rest) ->
+        | PropertyWithGetSetMemberDefn (gs, rest) when isWronglyPlaced gs ->
             let rangeOfFirstMember = List.head nodes |> fun m -> m.Range
 
             let expr =
